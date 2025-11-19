@@ -56,7 +56,8 @@ def main(model_path: str = "ddpm_1d.pt", num_samples: int = 200):
     # Plot histogram of generated samples
     plt.figure(figsize=(6, 4))
     plt.hist(samples, bins=30, density=True, alpha=0.7, label="Generated")
-    plt.axvline(2.0, color="red", linestyle="--", label="Offset (2.0)")
+    # Dataset is 10 + U(0, 1), so center around 10.5 roughly
+    plt.axvline(10.0, color="red", linestyle="--", label="Offset (10.0)")
     plt.title("DDPM 1D Samples")
     plt.xlabel("x")
     plt.ylabel("Density")

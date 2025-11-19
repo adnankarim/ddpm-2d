@@ -160,8 +160,8 @@ def train():
     device = torch.device(cfg.device)
     print(f"Using device: {device}")
 
-    # Dataset
-    data = make_toy_dataset(100, offset=2.0)
+    # Dataset: x = 10 + U(0, 1)
+    data = make_toy_dataset(100, offset=10.0)
     dataset = TensorDataset(data)
     loader = DataLoader(dataset, batch_size=cfg.batch_size, shuffle=True, drop_last=True)
 
