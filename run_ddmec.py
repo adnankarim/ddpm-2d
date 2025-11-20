@@ -9,6 +9,8 @@ This script:
 
 import torch
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
 from ddmec_1d import DDMEC1D
 
@@ -187,6 +189,7 @@ def visualize_results(results: dict, save_path: str = "ddmec_results.png"):
     plt.suptitle('DDMEC: Minimum Entropy Coupling Results', fontsize=16, fontweight='bold')
     
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
+    plt.close(fig)  # Close the figure to free memory and prevent hanging
     print(f"\nVisualization saved to {save_path}")
 
 
