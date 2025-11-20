@@ -10,13 +10,13 @@ import copy
 import torch
 import torch.nn as nn
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
 from typing import Optional, Tuple, Dict, List
 from collections import defaultdict
 
 from train_ddpm_1d import DDPM1D, DDPMConfig, SmallMLP
-
-
 
 
 class ConditionalMLP(nn.Module):
@@ -47,12 +47,15 @@ class ConditionalMLP(nn.Module):
         h = self.input_proj(inp)
         h = torch.relu(h)
         
-        # Use rest of base model network
+        # Use rest of base model network (skip first layer)
+        # Base model net: Linear(33, 64), SiLU, Linear(64, 64), SiLU, Linear(64, 1)
+        # We'll just use our own small network for simplicity
         h = self.base_model.net[2](h)  # Second Linear layer
         h = self.base_model.net[3](h)  # SiLU
         h = self.base_model.net[4](h)  # Output layer
         
         return h
+
 
 class DDMEC1D:
     """
@@ -108,6 +111,7 @@ class DDMEC1D:
                 setattr(cfg, k, v)
         
         ddpm = DDPM1D(cfg)
+        # Load the base unconditional model
         ddpm.model.load_state_dict(checkpoint["model_state_dict"])
         
         # Wrap with conditional wrapper
@@ -153,8 +157,8 @@ class DDMEC1D:
         noise = torch.randn_like(x1_batch)
         
         # Forward diffusion
-        alpha_bar = self.ddpm_1.alphas_cumprod[t].view(-1, 1)
-        x1_noisy = torch.sqrt(alpha_bar) * x1_batch + torch.sqrt(1 - alpha_bar) * noise
+        alphas_cumprod = self.ddpm_1.alphas_cumprod[t].view(-1, 1)
+        x1_noisy = torch.sqrt(alphas_cumprod) * x1_batch + torch.sqrt(1 - alphas_cumprod) * noise
         
         # Predict noise with conditioning on x2
         predicted_noise = self.ddpm_1.model(x1_noisy, t, x2_batch)
@@ -171,8 +175,8 @@ class DDMEC1D:
         t = torch.randint(0, self.config.timesteps, (x2_batch.shape[0],), device=self.device)
         noise = torch.randn_like(x2_batch)
         
-        alpha_bar = self.ddpm_2.alphas_cumprod[t].view(-1, 1)
-        x2_noisy = torch.sqrt(alpha_bar) * x2_batch + torch.sqrt(1 - alpha_bar) * noise
+        alphas_cumprod = self.ddpm_2.alphas_cumprod[t].view(-1, 1)
+        x2_noisy = torch.sqrt(alphas_cumprod) * x2_batch + torch.sqrt(1 - alphas_cumprod) * noise
         
         predicted_noise = self.ddpm_2.model(x2_noisy, t, x1_batch)
         loss_2 = nn.functional.mse_loss(predicted_noise, noise)
@@ -229,21 +233,21 @@ class DDMEC1D:
             
             # Get schedule values
             alpha_t = ddpm.alphas[t_cur]
-            alpha_bar_t = ddpm.alphas_cumprod[t_cur]
+            alphas_cumprod_t = ddpm.alphas_cumprod[t_cur]
             beta_t = ddpm.betas[t_cur]
             
             if t_next > 0:
-                alpha_bar_next = ddpm.alphas_cumprod[t_next]
+                alphas_cumprod_next = ddpm.alphas_cumprod[t_next]
             else:
-                alpha_bar_next = torch.tensor(1.0, device=self.device)
+                alphas_cumprod_next = torch.tensor(1.0, device=self.device)
             
             # DDIM sampling step
-            x0_pred = (x - torch.sqrt(1 - alpha_bar_t) * predicted_noise) / torch.sqrt(alpha_bar_t)
+            x0_pred = (x - torch.sqrt(1 - alphas_cumprod_t) * predicted_noise) / torch.sqrt(alphas_cumprod_t)
             
             # Compute mean
             if t_next > 0:
-                x_next = torch.sqrt(alpha_bar_next) * x0_pred + \
-                         torch.sqrt(1 - alpha_bar_next) * predicted_noise
+                x_next = torch.sqrt(alphas_cumprod_next) * x0_pred + \
+                         torch.sqrt(1 - alphas_cumprod_next) * predicted_noise
             else:
                 x_next = x0_pred
             
@@ -296,8 +300,8 @@ class DDMEC1D:
             
             # Add noise to condition
             noise = torch.randn_like(condition)
-            alpha_bar = reward_ddpm.alphas_cumprod[t].view(-1, 1)
-            condition_noisy = torch.sqrt(alpha_bar) * condition + torch.sqrt(1 - alpha_bar) * noise
+            alphas_cumprod = reward_ddpm.alphas_cumprod[t].view(-1, 1)
+            condition_noisy = torch.sqrt(alphas_cumprod) * condition + torch.sqrt(1 - alphas_cumprod) * noise
             
             # Predict noise conditioned on x_gen
             predicted_noise = reward_model(condition_noisy, t, x_gen)
@@ -369,7 +373,7 @@ class DDMEC1D:
             predicted_noise = gen_model(x_t, t_tensor, condition)
             
             # Recompute log prob
-            alpha_bar_t = self.ddpm_1.alphas_cumprod[t_idx]
+            alphas_cumprod_t = self.ddpm_1.alphas_cumprod[t_idx]
             beta_t = self.ddpm_1.betas[t_idx]
             
             # Simple approximation for log prob
@@ -441,8 +445,8 @@ class DDMEC1D:
             
             # Add noise to condition
             noise = torch.randn_like(condition)
-            alpha_bar = reward_ddpm.alphas_cumprod[t].view(-1, 1)
-            condition_noisy = torch.sqrt(alpha_bar) * condition + torch.sqrt(1 - alpha_bar) * noise
+            alphas_cumprod = reward_ddpm.alphas_cumprod[t].view(-1, 1)
+            condition_noisy = torch.sqrt(alphas_cumprod) * condition + torch.sqrt(1 - alphas_cumprod) * noise
             
             # Predict noise conditioned on generated x
             predicted_noise = reward_model(condition_noisy, t, x_gen.detach())
@@ -778,6 +782,7 @@ def main():
     plt.tight_layout()
     output_path = "ddmec_coupling_results.png"
     plt.savefig(output_path, dpi=150)
+    plt.close(fig)  # Close the figure to free memory
     print(f"Results saved to {output_path}")
     
     # Save trained models
