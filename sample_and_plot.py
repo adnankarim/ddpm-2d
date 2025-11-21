@@ -10,7 +10,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import torch
 
-from train_ddpm_1d import DDPM1D, DDPMConfig
+from train_ddpm_1d import DDPM1D, DDPMConfig, compute_kl_divergence, make_toy_dataset
 
 
 def load_model(model_path: str) -> DDPM1D:
@@ -50,15 +50,26 @@ def main(model_path: str = "ddpm_1d.pt", num_samples: int = 200):
 
     with torch.no_grad():
         print(f"[DEBUG] Sampling {num_samples} points from DDPM")
-        samples = ddpm.sample(num_samples=num_samples).cpu().numpy().flatten()
+        samples = ddpm.sample(num_samples=num_samples)
+        samples_np = samples.cpu().numpy().flatten()
+        
+        # Generate true data for comparison
+        true_data = make_toy_dataset(num_samples, offset=10.0)
+        
+        # Compute KL divergence
+        kl_div = compute_kl_divergence(samples, true_data)
+        print(f"[INFO] KL Divergence: {kl_div:.6f}")
+        print(f"[INFO] Generated samples - Mean: {samples.mean().item():.4f}, Std: {samples.std().item():.4f}")
+        print(f"[INFO] True data - Mean: {true_data.mean().item():.4f}, Std: {true_data.std().item():.4f}")
 
     print("[DEBUG] Creating plot")
     # Plot histogram of generated samples
-    plt.figure(figsize=(6, 4))
-    plt.hist(samples, bins=30, density=True, alpha=0.7, label="Generated")
+    plt.figure(figsize=(8, 5))
+    plt.hist(samples_np, bins=30, density=True, alpha=0.7, label="Generated")
+    plt.hist(true_data.numpy().flatten(), bins=30, density=True, alpha=0.5, label="True Data")
     # Dataset is 10 + U(0, 1), so center around 10.5 roughly
     plt.axvline(10.0, color="red", linestyle="--", label="Offset (10.0)")
-    plt.title("DDPM 1D Samples")
+    plt.title(f"DDPM 1D Samples (KL Div: {kl_div:.4f})")
     plt.xlabel("x")
     plt.ylabel("Density")
     plt.legend()

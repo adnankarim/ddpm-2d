@@ -1,0 +1,1 @@
+{"_step":1775,"epoch":100,"train/loss":0.04656818509101868,"eval/generated_std":0.2763068377971649,"_runtime":18.6281438,"_timestamp":1.7637482577472463e+09,"eval/true_mean":10.480849266052246,"eval/generated_mean":10.487460136413574,"train/step":1775,"eval/true_std":0.2905980050563812,"eval/kl_divergence":0.002718454031227599,"_wandb":{"runtime":18}}

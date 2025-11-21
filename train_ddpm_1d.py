@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
+import wandb
+import numpy as np
 
 
 @dataclass
@@ -22,6 +24,33 @@ class DDPMConfig:
 def make_beta_schedule(timesteps: int, beta_start: float, beta_end: float) -> torch.Tensor:
     """Linear beta schedule."""
     return torch.linspace(beta_start, beta_end, timesteps)
+
+
+def compute_kl_divergence(samples_generated: torch.Tensor, samples_true: torch.Tensor) -> float:
+    """
+    Compute KL divergence between two 1D distributions using Gaussian approximation.
+    KL(p_generated || p_true) where both are approximated as Gaussians.
+    
+    Formula: KL(N(μ₀, σ₀²) || N(μ₁, σ₁²)) = 
+        0.5 * [(σ₀/σ₁)² + (μ₁-μ₀)²/σ₁² - 1 + ln(σ₁²/σ₀²)]
+    """
+    # Compute statistics for generated samples
+    mu_gen = samples_generated.mean().item()
+    sigma_gen = samples_generated.std().item() + 1e-8  # Add epsilon for stability
+    
+    # Compute statistics for true samples
+    mu_true = samples_true.mean().item()
+    sigma_true = samples_true.std().item() + 1e-8
+    
+    # Compute KL divergence using the formula
+    kl = 0.5 * (
+        (sigma_gen / sigma_true) ** 2 +
+        ((mu_true - mu_gen) ** 2) / (sigma_true ** 2) -
+        1 +
+        np.log(sigma_true ** 2 / sigma_gen ** 2)
+    )
+    
+    return float(kl)
 
 
 class SmallMLP(nn.Module):
@@ -145,6 +174,31 @@ class DDPM1D:
         self.optimizer.step()
 
         return float(loss.item())
+    
+    @torch.no_grad()
+    def evaluate(self, true_data: torch.Tensor, num_samples: int = 1000) -> dict:
+        """
+        Evaluate the model by generating samples and computing metrics.
+        Returns a dictionary of metrics including KL divergence.
+        """
+        self.model.eval()
+        
+        # Generate samples from the model
+        generated_samples = self.sample(num_samples=num_samples)
+        
+        # Compute KL divergence
+        kl_div = compute_kl_divergence(generated_samples.cpu(), true_data.cpu())
+        
+        # Compute additional statistics
+        metrics = {
+            "kl_divergence": kl_div,
+            "generated_mean": generated_samples.mean().item(),
+            "generated_std": generated_samples.std().item(),
+            "true_mean": true_data.mean().item(),
+            "true_std": true_data.std().item(),
+        }
+        
+        return metrics
 
 
 def make_toy_dataset(n: int = 100, offset: float = 2.0) -> torch.Tensor:
@@ -159,23 +213,78 @@ def train():
     cfg = DDPMConfig()
     device = torch.device(cfg.device)
     print(f"Using device: {device}")
+    
+    # Initialize wandb
+    wandb.init(
+        project="ddpm-1d",
+        config={
+            "timesteps": cfg.timesteps,
+            "beta_start": cfg.beta_start,
+            "beta_end": cfg.beta_end,
+            "batch_size": cfg.batch_size,
+            "lr": cfg.lr,
+            "num_epochs": cfg.num_epochs,
+            "device": str(device),
+        }
+    )
 
     # Dataset: x = 10 + U(0, 1)
-    data = make_toy_dataset(100, offset=10.0)
+    data = make_toy_dataset(1000, offset=10.0)
     dataset = TensorDataset(data)
     loader = DataLoader(dataset, batch_size=cfg.batch_size, shuffle=True, drop_last=True)
 
     ddpm = DDPM1D(cfg)
 
     global_step = 0
+    eval_interval = 100  # Evaluate every 100 epochs
+    
     for epoch in range(cfg.num_epochs):
+        epoch_losses = []
+        
         for (x_batch,) in loader:
             x_batch = x_batch.to(device)
             loss = ddpm.train_step(x_batch)
+            epoch_losses.append(loss)
             global_step += 1
+            
+            # Log training loss to wandb
+            wandb.log({
+                "train/loss": loss,
+                "train/step": global_step,
+            }, step=global_step)
+        
+        # Compute average loss for the epoch
+        avg_loss = sum(epoch_losses) / len(epoch_losses)
 
-        if (epoch + 1) % 100 == 0 or epoch == 0:
-            print(f"Epoch {epoch + 1}/{cfg.num_epochs}, loss={loss:.6f}")
+        # Periodic evaluation
+        if (epoch + 1) % eval_interval == 0 or epoch == 0:
+            eval_metrics = ddpm.evaluate(data, num_samples=1000)
+            
+            # Log evaluation metrics to wandb
+            wandb.log({
+                "eval/kl_divergence": eval_metrics["kl_divergence"],
+                "eval/generated_mean": eval_metrics["generated_mean"],
+                "eval/generated_std": eval_metrics["generated_std"],
+                "eval/true_mean": eval_metrics["true_mean"],
+                "eval/true_std": eval_metrics["true_std"],
+                "epoch": epoch + 1,
+            }, step=global_step)
+            
+            print(f"Epoch {epoch + 1}/{cfg.num_epochs}, "
+                  f"loss={avg_loss:.6f}, "
+                  f"KL_div={eval_metrics['kl_divergence']:.6f}")
+        elif (epoch + 1) % 100 == 0:
+            print(f"Epoch {epoch + 1}/{cfg.num_epochs}, loss={avg_loss:.6f}")
+
+    # Final evaluation
+    final_metrics = ddpm.evaluate(data, num_samples=1000)
+    wandb.log({
+        "final/kl_divergence": final_metrics["kl_divergence"],
+        "final/generated_mean": final_metrics["generated_mean"],
+        "final/generated_std": final_metrics["generated_std"],
+    }, step=global_step)
+    
+    print(f"\nFinal KL Divergence: {final_metrics['kl_divergence']:.6f}")
 
     # Save model and config
     save_obj = {
@@ -184,6 +293,9 @@ def train():
     }
     torch.save(save_obj, cfg.model_path)
     print(f"Saved trained DDPM model to {cfg.model_path}")
+    
+    # Finish wandb run
+    wandb.finish()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+Epoch 1/4000, loss=0.983731, KL_div=90553.191457
+Epoch 100/4000, loss=0.142551, KL_div=0.002718
+Traceback (most recent call last):
+  File "C:\Users\dell\Music\RESPROj\ddpm-2d\train_ddpm_1d.py", line 302, in <module>
+    train()
+  File "C:\Users\dell\Music\RESPROj\ddpm-2d\train_ddpm_1d.py", line 246, in train
+    loss = ddpm.train_step(x_batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dell\Music\RESPROj\ddpm-2d\train_ddpm_1d.py", line 176, in train_step
+    return float(loss.item())
+                 ^^^^^^^^^^^
+KeyboardInterrupt

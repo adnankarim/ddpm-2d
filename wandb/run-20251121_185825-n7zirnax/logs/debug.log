@@ -1,0 +1,26 @@
+2025-11-21 18:58:25,061 INFO    MainThread:18172 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-21 18:58:25,061 INFO    MainThread:18172 [wandb_setup.py:_flush():80] Configure stats pid to 18172
+2025-11-21 18:58:25,061 INFO    MainThread:18172 [wandb_setup.py:_flush():80] Loading settings from C:\Users\dell\.config\wandb\settings
+2025-11-21 18:58:25,061 INFO    MainThread:18172 [wandb_setup.py:_flush():80] Loading settings from C:\Users\dell\Music\RESPROj\ddpm-2d\wandb\settings
+2025-11-21 18:58:25,061 INFO    MainThread:18172 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-21 18:58:25,061 INFO    MainThread:18172 [wandb_init.py:setup_run_log_directory():713] Logging user logs to C:\Users\dell\Music\RESPROj\ddpm-2d\wandb\run-20251121_185825-n7zirnax\logs\debug.log
+2025-11-21 18:58:25,074 INFO    MainThread:18172 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to C:\Users\dell\Music\RESPROj\ddpm-2d\wandb\run-20251121_185825-n7zirnax\logs\debug-internal.log
+2025-11-21 18:58:25,074 INFO    MainThread:18172 [wandb_init.py:init():840] calling init triggers
+2025-11-21 18:58:25,074 INFO    MainThread:18172 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'timesteps': 1000, 'beta_start': 0.0001, 'beta_end': 0.02, 'batch_size': 64, 'lr': 0.001, 'num_epochs': 4000, 'device': 'cuda', '_wandb': {}}
+2025-11-21 18:58:25,074 INFO    MainThread:18172 [wandb_init.py:init():888] starting backend
+2025-11-21 18:58:29,840 INFO    MainThread:18172 [wandb_init.py:init():891] sending inform_init request
+2025-11-21 18:58:29,909 INFO    MainThread:18172 [wandb_init.py:init():899] backend started and connected
+2025-11-21 18:58:29,933 INFO    MainThread:18172 [wandb_init.py:init():969] updated telemetry
+2025-11-21 18:58:29,994 INFO    MainThread:18172 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-21 18:58:30,952 INFO    MainThread:18172 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-21 18:58:31,411 INFO    MainThread:18172 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-21 18:58:31,411 INFO    MainThread:18172 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-21 18:58:31,412 INFO    MainThread:18172 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-21 18:58:31,412 INFO    MainThread:18172 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-21 18:58:31,449 INFO    MainThread:18172 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-21 18:59:58,328 INFO    MainThread:18172 [wandb_run.py:_finish():2270] finishing run adnankaremjs/ddpm-1d/n7zirnax
+2025-11-21 18:59:58,330 INFO    MainThread:18172 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2025-11-21 18:59:58,331 INFO    MainThread:18172 [wandb_run.py:_restore():2451] restore
+2025-11-21 18:59:58,331 INFO    MainThread:18172 [wandb_run.py:_restore():2457] restore done
+2025-11-21 18:59:59,984 INFO    MainThread:18172 [wandb_run.py:_footer_sync_info():3853] logging synced files

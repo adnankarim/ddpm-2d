@@ -1,0 +1,69 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            269d2f1a5bgmo21c8qrox5zm3x7hmhtr:
+                codePath: train_ddpm_1d.py
+                codePathLocal: train_ddpm_1d.py
+                cpu_count: 6
+                cpu_count_logical: 12
+                cudaVersion: "12.5"
+                disk:
+                    /:
+                        total: "341898686464"
+                        used: "301250285568"
+                email: adnankaremjs@gmail.com
+                executable: C:\Users\dell\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\python.exe
+                git:
+                    commit: 1b08864c8fcd7c02e4fde050e6f2fe6c71dfaf3a
+                    remote: https://github.com/adnankarim/ddpm-2d.git
+                gpu: NVIDIA GeForce RTX 3090
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 10496
+                      memoryTotal: "25769803776"
+                      name: NVIDIA GeForce RTX 3090
+                      uuid: GPU-52a0ace5-5c52-65b5-c262-b6023ee9285f
+                host: DESKTOP-LITA292
+                memory:
+                    total: "34266128384"
+                os: Windows-11-10.0.26200-SP0
+                program: C:\Users\dell\Music\RESPROj\ddpm-2d\train_ddpm_1d.py
+                python: CPython 3.12.10
+                root: C:\Users\dell\Music\RESPROj\ddpm-2d
+                startedAt: "2025-11-21T17:59:08.892793Z"
+                writerId: 269d2f1a5bgmo21c8qrox5zm3x7hmhtr
+        m: []
+        python_version: 3.12.10
+        t:
+            "1":
+                - 1
+                - 105
+            "2":
+                - 1
+                - 105
+            "3":
+                - 2
+                - 16
+                - 61
+            "4": 3.12.10
+            "5": 0.23.0
+            "8":
+                - 3
+            "12": 0.23.0
+            "13": windows-amd64
+batch_size:
+    value: 64
+beta_end:
+    value: 0.02
+beta_start:
+    value: 0.0001
+device:
+    value: cuda
+lr:
+    value: 0.001
+num_epochs:
+    value: 4000
+timesteps:
+    value: 1000
