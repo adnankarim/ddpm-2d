@@ -1,0 +1,228 @@
+
+✓ Weights & Biases initialized: good-sponge-2
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  Dashboard: https://wandb.ai/adnankaremjs/ddmec-1d/runs/0y5uj9ko
+
+Initializing DDMEC...
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+Creating coupled training data...
+X1: mean=1.99, std=1.01
+X2: mean=9.99, std=1.01
+Correlation: 1.000
+
+Training DDMEC...
+Phase 1: Warmup (supervised) - first 1000 steps
+Phase 2: Cooperative (RL-based) - remaining steps
+------------------------------------------------------------
+Training DDMEC for 50 epochs, 156 batches per epoch
+Setting up frozen priors for KL regularization
+Warmup complete. Starting cooperative DDMEC training.
+
+Epoch 10/50
+  Training Metrics:
+    1->2_pg_loss: 8.3750
+    1->2_kl_reg: 83.7499
+    1->2_reward_mean: -0.2768
+    1->2_reward_std: 0.3351
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 2.7690
+    2->1_kl_reg: 27.6896
+    2->1_reward_mean: -0.2716
+    2->1_reward_std: 0.3362
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0276
+    KL Divergence (X2): 0.0028
+    KL Divergence (Total): 0.0304
+    Entropy H(X): 1.2878
+    Entropy H(Y): 1.4679
+    Joint Entropy H(X,Y): 2.6348
+    Mutual Information I(X;Y): 0.1208
+    Conditional Entropy H(X|Y): 1.1670
+    Conditional Entropy H(Y|X): 1.3471
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0028
+    KL Divergence (X2): 0.0609
+    KL Divergence (Total): 0.0637
+    Mutual Information I(X;Y): 0.1377
+
+Epoch 20/50
+  Training Metrics:
+    1->2_pg_loss: 7.6958
+    1->2_kl_reg: 76.9577
+    1->2_reward_mean: -0.2303
+    1->2_reward_std: 0.2941
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 2.6110
+    2->1_kl_reg: 26.1095
+    2->1_reward_mean: -0.2409
+    2->1_reward_std: 0.2994
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1468
+    KL Divergence (X2): 0.0028
+    KL Divergence (Total): 0.1495
+    Entropy H(X): 1.4651
+    Entropy H(Y): 1.4679
+    Joint Entropy H(X,Y): 2.5778
+    Mutual Information I(X;Y): 0.3552
+    Conditional Entropy H(X|Y): 1.1099
+    Conditional Entropy H(Y|X): 1.1127
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0028
+    KL Divergence (X2): 0.0723
+    KL Divergence (Total): 0.0751
+    Mutual Information I(X;Y): 0.2593
+
+Epoch 30/50
+  Training Metrics:
+    1->2_pg_loss: 7.0009
+    1->2_kl_reg: 70.0090
+    1->2_reward_mean: -0.1682
+    1->2_reward_std: 0.2475
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 2.3252
+    2->1_kl_reg: 23.2521
+    2->1_reward_mean: -0.1797
+    2->1_reward_std: 0.2510
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.2003
+    KL Divergence (X2): 0.0028
+    KL Divergence (Total): 0.2031
+    Entropy H(X): 1.6316
+    Entropy H(Y): 1.4679
+    Joint Entropy H(X,Y): 2.5451
+    Mutual Information I(X;Y): 0.5544
+    Conditional Entropy H(X|Y): 1.0772
+    Conditional Entropy H(Y|X): 0.9135
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0028
+    KL Divergence (X2): 0.0908
+    KL Divergence (Total): 0.0936
+    Mutual Information I(X;Y): 0.7607
+
+Epoch 40/50
+  Training Metrics:
+    1->2_pg_loss: 6.5924
+    1->2_kl_reg: 65.9235
+    1->2_reward_mean: -0.1354
+    1->2_reward_std: 0.2197
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 2.1263
+    2->1_kl_reg: 21.2634
+    2->1_reward_mean: -0.1524
+    2->1_reward_std: 0.2296
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1658
+    KL Divergence (X2): 0.0028
+    KL Divergence (Total): 0.1686
+    Entropy H(X): 1.6106
+    Entropy H(Y): 1.4679
+    Joint Entropy H(X,Y): 1.9501
+    Mutual Information I(X;Y): 1.1283
+    Conditional Entropy H(X|Y): 0.4822
+    Conditional Entropy H(Y|X): 0.3395
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0028
+    KL Divergence (X2): 0.0871
+    KL Divergence (Total): 0.0899
+    Mutual Information I(X;Y): 1.0134
+
+Epoch 50/50
+  Training Metrics:
+    1->2_pg_loss: 6.1384
+    1->2_kl_reg: 61.3839
+    1->2_reward_mean: -0.1180
+    1->2_reward_std: 0.1979
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.9353
+    2->1_kl_reg: 19.3530
+    2->1_reward_mean: -0.1412
+    2->1_reward_std: 0.2239
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.6369
+    KL Divergence (X2): 0.0028
+    KL Divergence (Total): 0.6397
+    Entropy H(X): 1.7054
+    Entropy H(Y): 1.4679
+    Joint Entropy H(X,Y): 1.9117
+    Mutual Information I(X;Y): 1.2616
+    Conditional Entropy H(X|Y): 0.4438
+    Conditional Entropy H(Y|X): 0.2063
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0028
+    KL Divergence (X2): 0.3451
+    KL Divergence (Total): 0.3478
+    Mutual Information I(X;Y): 1.1868
+
+Training complete!
+
+============================================================
+Evaluating Learned Coupling
+============================================================
+
+Direction x2 -> x1:
+  Input x2: mean=10.01, std=1.02
+  Generated x1: mean=0.94, std=1.24
+  Expected x1: mean=2.00, std=1.00
+  Mean absolute offset error: 1.955
+
+Direction x1 -> x2:
+  Input x1: mean=2.03, std=0.99
+  Generated x2: mean=9.12, std=0.85
+  Expected x2: mean=10.00, std=1.00
+  Mean absolute offset error: 1.628
+
+Round-trip consistency (x2 -> x1 -> x2):
+  Reconstruction error: 0.304
+
+============================================================
+Information-Theoretic Metrics
+============================================================
+
+Direction x2 → x1:
+  KL Divergence D(p₁||q₁): 0.6123
+  KL Divergence D(p₂||q₂): 0.0004
+  Total KL Divergence: 0.6127
+  Entropy H(X₁): 1.6316 nats
+  Entropy H(X₂): 1.4393 nats
+  Joint Entropy H(X₁,X₂): 1.7666 nats
+  Mutual Information I(X₁;X₂): 1.3043 nats
+  Conditional Entropy H(X₁|X₂): 0.3273 nats
+  Conditional Entropy H(X₂|X₁): 0.1350 nats
+
+Direction x1 → x2:
+  KL Divergence D(p₁||q₁): 0.0004
+  KL Divergence D(p₂||q₂): 0.4113
+  Total KL Divergence: 0.4117
+  Mutual Information I(X₁;X₂): 1.1599 nats
+
+Theoretical Reference (Perfect Independent Coupling):
+  H(X₁) ≈ 1.4189 nats
+  H(X₂) ≈ 1.4189 nats
+  H(X₁,X₂) ≈ 2.8379 nats (if independent)
+  I(X₁;X₂) ≈ 0.0 nats (if independent)
+  Note: Minimum entropy coupling has I(X₁;X₂) → max
+
+Generating visualizations...
+
+Visualization saved to ddmec_results.png
+
+Logging results to Weights & Biases...
+Trained models saved to ddmec_trained.pt
+✓ All results logged to W&B: https://wandb.ai/adnankaremjs/ddmec-1d/runs/0y5uj9ko

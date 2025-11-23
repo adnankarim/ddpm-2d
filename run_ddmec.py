@@ -13,6 +13,8 @@ import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
 from ddmec_1d import DDMEC1D
+import wandb
+import os
 
 
 def create_coupled_data(num_samples: int = 10000):
@@ -78,11 +80,54 @@ def evaluate_coupling(ddmec: DDMEC1D, num_samples: int = 500):
         print(f"\nRound-trip consistency (x2 -> x1 -> x2):")
         print(f"  Reconstruction error: {reconstruction_error:.3f}")
         
+        # Compute information-theoretic metrics
+        print("\n" + "="*60)
+        print("Information-Theoretic Metrics")
+        print("="*60)
+        
+        info_metrics_1 = ddmec.compute_information_metrics(
+            x1_gen, x2_test,
+            true_mu_1=2.0, true_sigma_1=1.0,
+            true_mu_2=10.0, true_sigma_2=1.0
+        )
+        
+        info_metrics_2 = ddmec.compute_information_metrics(
+            x1_test, x2_gen,
+            true_mu_1=2.0, true_sigma_1=1.0,
+            true_mu_2=10.0, true_sigma_2=1.0
+        )
+        
+        print("\nDirection x2 → x1:")
+        print(f"  KL Divergence D(p₁||q₁): {info_metrics_1['kl_div_1']:.4f}")
+        print(f"  KL Divergence D(p₂||q₂): {info_metrics_1['kl_div_2']:.4f}")
+        print(f"  Total KL Divergence: {info_metrics_1['kl_div_total']:.4f}")
+        print(f"  Entropy H(X₁): {info_metrics_1['entropy_x']:.4f} nats")
+        print(f"  Entropy H(X₂): {info_metrics_1['entropy_y']:.4f} nats")
+        print(f"  Joint Entropy H(X₁,X₂): {info_metrics_1['joint_entropy']:.4f} nats")
+        print(f"  Mutual Information I(X₁;X₂): {info_metrics_1['mutual_information']:.4f} nats")
+        print(f"  Conditional Entropy H(X₁|X₂): {info_metrics_1['conditional_entropy_x_given_y']:.4f} nats")
+        print(f"  Conditional Entropy H(X₂|X₁): {info_metrics_1['conditional_entropy_y_given_x']:.4f} nats")
+        
+        print("\nDirection x1 → x2:")
+        print(f"  KL Divergence D(p₁||q₁): {info_metrics_2['kl_div_1']:.4f}")
+        print(f"  KL Divergence D(p₂||q₂): {info_metrics_2['kl_div_2']:.4f}")
+        print(f"  Total KL Divergence: {info_metrics_2['kl_div_total']:.4f}")
+        print(f"  Mutual Information I(X₁;X₂): {info_metrics_2['mutual_information']:.4f} nats")
+        
+        print("\nTheoretical Reference (Perfect Independent Coupling):")
+        print(f"  H(X₁) ≈ {0.5 * np.log(2 * np.pi * np.e):.4f} nats")
+        print(f"  H(X₂) ≈ {0.5 * np.log(2 * np.pi * np.e):.4f} nats")
+        print(f"  H(X₁,X₂) ≈ {np.log(2 * np.pi * np.e):.4f} nats (if independent)")
+        print(f"  I(X₁;X₂) ≈ 0.0 nats (if independent)")
+        print(f"  Note: Minimum entropy coupling has I(X₁;X₂) → max")
+        
         return {
             "x1_gen": x1_gen.cpu().numpy(),
             "x2_gen": x2_gen.cpu().numpy(),
             "x1_test": x1_test.cpu().numpy(),
             "x2_test": x2_test.cpu().numpy(),
+            "info_metrics_1": info_metrics_1,
+            "info_metrics_2": info_metrics_2,
         }
 
 
@@ -193,17 +238,39 @@ def visualize_results(results: dict, save_path: str = "ddmec_results.png"):
     print(f"\nVisualization saved to {save_path}")
 
 
-def main():
+def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     print("="*60)
     print("DDMEC: Minimum Entropy Coupling for 1D Gaussians")
     print("="*60)
     
+    # Initialize Weights & Biases
+    if use_wandb:
+        wandb.init(
+            project=wandb_project,
+            name=wandb_name,
+            config={
+                "architecture": "DDMEC",
+                "dataset": "1D Gaussians",
+                "dist_1": "N(2, 1)",
+                "dist_2": "N(10, 1)",
+                "num_train_samples": 10000,
+                "batch_size": 64,
+                "learning_rate": 1e-4,
+                "num_epochs": 100,
+                "warmup_epochs": 10,
+                "num_timesteps": 1000,
+            }
+        )
+        print(f"\n✓ Weights & Biases initialized: {wandb.run.name}")
+        print(f"  Dashboard: {wandb.run.get_url()}")
+    
     # Check if models exist
-    import os
     if not os.path.exists("ddpm_1d_2.pt") or not os.path.exists("ddpm_1d_10.pt"):
         print("\nERROR: Pre-trained models not found!")
         print("Please ensure ddpm_1d_2.pt and ddpm_1d_10.pt are in the current directory.")
         print("You can train them using train_ddpm_1d.py")
+        if use_wandb:
+            wandb.finish()
         return
     
     # Initialize DDMEC
@@ -211,6 +278,7 @@ def main():
     ddmec = DDMEC1D(
         model_path_1="ddpm_1d_2.pt",
         model_path_2="ddpm_1d_10.pt",
+        use_wandb=use_wandb,
     )
     
     # Create coupled training data
@@ -239,6 +307,38 @@ def main():
     print("\nGenerating visualizations...")
     visualize_results(results)
     
+    # Log final metrics and visualization to wandb
+    if use_wandb:
+        print("\nLogging results to Weights & Biases...")
+        
+        # Log final information-theoretic metrics
+        if "info_metrics_1" in results:
+            wandb.log({
+                "final/kl_div_1_forward": results["info_metrics_1"]["kl_div_1"],
+                "final/kl_div_2_forward": results["info_metrics_1"]["kl_div_2"],
+                "final/kl_div_total_forward": results["info_metrics_1"]["kl_div_total"],
+                "final/mutual_information_forward": results["info_metrics_1"]["mutual_information"],
+                "final/joint_entropy_forward": results["info_metrics_1"]["joint_entropy"],
+                "final/conditional_entropy_x_given_y": results["info_metrics_1"]["conditional_entropy_x_given_y"],
+            })
+        
+        if "info_metrics_2" in results:
+            wandb.log({
+                "final/kl_div_1_backward": results["info_metrics_2"]["kl_div_1"],
+                "final/kl_div_2_backward": results["info_metrics_2"]["kl_div_2"],
+                "final/kl_div_total_backward": results["info_metrics_2"]["kl_div_total"],
+                "final/mutual_information_backward": results["info_metrics_2"]["mutual_information"],
+            })
+        
+        # Log visualization
+        if os.path.exists("ddmec_results.png"):
+            wandb.log({"visualization": wandb.Image("ddmec_results.png")})
+        
+        # Save model as artifact
+        artifact = wandb.Artifact("ddmec-model", type="model")
+        artifact.add_file("ddmec_trained.pt")
+        wandb.log_artifact(artifact)
+    
     # Save trained model
     save_path = "ddmec_trained.pt"
     torch.save({
@@ -250,6 +350,10 @@ def main():
         "gen_step": ddmec.gen_step,
     }, save_path)
     print(f"Trained models saved to {save_path}")
+    
+    if use_wandb:
+        print(f"✓ All results logged to W&B: {wandb.run.get_url()}")
+        wandb.finish()
     
     print("\n" + "="*60)
     print("DDMEC Training Complete!")
@@ -263,12 +367,24 @@ def main():
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Train DDMEC on 1D Gaussian coupling")
+    parser.add_argument("--no-wandb", action="store_true", help="Disable Weights & Biases logging")
+    parser.add_argument("--wandb-project", type=str, default="ddmec-1d", help="W&B project name")
+    parser.add_argument("--wandb-name", type=str, default=None, help="W&B run name")
+    args = parser.parse_args()
+    
     try:
-        main()
+        main(use_wandb=not args.no_wandb, wandb_project=args.wandb_project, wandb_name=args.wandb_name)
     except KeyboardInterrupt:
         print("\n\nTraining interrupted by user.")
+        if wandb.run is not None:
+            wandb.finish()
     except Exception as e:
         print(f"\n\nError occurred: {e}")
         import traceback
         traceback.print_exc()
+        if wandb.run is not None:
+            wandb.finish()
 
