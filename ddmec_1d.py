@@ -18,6 +18,13 @@ from collections import defaultdict
 
 from train_ddpm_1d import DDPM1D, DDPMConfig, SmallMLP
 
+try:
+    import wandb
+    WANDB_AVAILABLE = True
+except ImportError:
+    WANDB_AVAILABLE = False
+    print("Warning: wandb not installed. Install with: pip install wandb")
+
 
 class ConditionalMLP(nn.Module):
     """Wrapper to make SmallMLP conditional by concatenating condition."""
@@ -70,14 +77,17 @@ class DDMEC1D:
         model_path_1: str,
         model_path_2: str,
         config: Optional[DDPMConfig] = None,
+        use_wandb: bool = False,
     ):
         """
         Args:
             model_path_1: Path to first pre-trained model
             model_path_2: Path to second pre-trained model
             config: Configuration (will be loaded from checkpoints if available)
+            use_wandb: Whether to log metrics to Weights & Biases
         """
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.use_wandb = use_wandb and WANDB_AVAILABLE
         
         # Load models
         print(f"Loading Model 1 from {model_path_1}")
@@ -578,6 +588,108 @@ class DDMEC1D:
         metrics["phase"] = "cooperative"
         return metrics
     
+    def compute_kl_divergence(self, mu_p: float, sigma_p: float, mu_q: float, sigma_q: float) -> float:
+        """
+        Compute KL divergence between two 1D Gaussians: KL(p||q)
+        KL(p||q) = 1/2 * [(μ_p-μ_q)²/σ_q² + σ_p²/σ_q² - 1 + ln(σ_q²/σ_p²)]
+        """
+        var_p = sigma_p ** 2
+        var_q = sigma_q ** 2
+        kl = 0.5 * (
+            ((mu_p - mu_q) ** 2) / var_q +
+            var_p / var_q -
+            1.0 +
+            np.log(var_q / var_p)
+        )
+        return kl
+    
+    def compute_entropy_gaussian(self, sigma: float) -> float:
+        """Compute entropy of 1D Gaussian: H(X) = 0.5 * ln(2πeσ²)"""
+        return 0.5 * np.log(2 * np.pi * np.e * (sigma ** 2))
+    
+    def compute_joint_entropy(self, samples_x: np.ndarray, samples_y: np.ndarray) -> float:
+        """Estimate joint entropy H(X,Y) using Gaussian approximation"""
+        # Stack samples
+        joint = np.stack([samples_x.flatten(), samples_y.flatten()], axis=1)
+        # Compute covariance matrix
+        cov = np.cov(joint.T)
+        # Joint entropy: H(X,Y) = 0.5 * ln((2πe)^2 * det(Σ))
+        det_cov = np.linalg.det(cov)
+        if det_cov <= 0:
+            det_cov = 1e-8  # Avoid log of negative/zero
+        joint_entropy = 0.5 * np.log((2 * np.pi * np.e) ** 2 * det_cov)
+        return joint_entropy
+    
+    def compute_mutual_information(
+        self, 
+        samples_x: np.ndarray, 
+        samples_y: np.ndarray,
+        sigma_x: float = 1.0,
+        sigma_y: float = 1.0
+    ) -> float:
+        """
+        Compute mutual information: I(X;Y) = H(X) + H(Y) - H(X,Y)
+        """
+        h_x = self.compute_entropy_gaussian(sigma_x)
+        h_y = self.compute_entropy_gaussian(sigma_y)
+        h_xy = self.compute_joint_entropy(samples_x, samples_y)
+        mi = h_x + h_y - h_xy
+        return mi
+    
+    def compute_information_metrics(
+        self,
+        samples_1: torch.Tensor,
+        samples_2: torch.Tensor,
+        true_mu_1: float = 2.0,
+        true_sigma_1: float = 1.0,
+        true_mu_2: float = 10.0,
+        true_sigma_2: float = 1.0,
+    ) -> dict:
+        """
+        Compute all information-theoretic metrics for the coupling.
+        """
+        # Convert to numpy
+        s1_np = samples_1.cpu().numpy().flatten()
+        s2_np = samples_2.cpu().numpy().flatten()
+        
+        # Compute learned statistics
+        mu_1 = s1_np.mean()
+        sigma_1 = s1_np.std()
+        mu_2 = s2_np.mean()
+        sigma_2 = s2_np.std()
+        
+        # KL divergences (learned || true)
+        kl_1 = self.compute_kl_divergence(mu_1, sigma_1, true_mu_1, true_sigma_1)
+        kl_2 = self.compute_kl_divergence(mu_2, sigma_2, true_mu_2, true_sigma_2)
+        
+        # Entropies
+        h_x = self.compute_entropy_gaussian(sigma_1)
+        h_y = self.compute_entropy_gaussian(sigma_2)
+        h_xy = self.compute_joint_entropy(s1_np, s2_np)
+        
+        # Mutual information
+        mi = h_x + h_y - h_xy
+        
+        # Conditional entropies
+        h_x_given_y = h_xy - h_y  # H(X|Y) = H(X,Y) - H(Y)
+        h_y_given_x = h_xy - h_x  # H(Y|X) = H(X,Y) - H(X)
+        
+        return {
+            "kl_div_1": kl_1,
+            "kl_div_2": kl_2,
+            "kl_div_total": kl_1 + kl_2,
+            "entropy_x": h_x,
+            "entropy_y": h_y,
+            "joint_entropy": h_xy,
+            "mutual_information": mi,
+            "conditional_entropy_x_given_y": h_x_given_y,
+            "conditional_entropy_y_given_x": h_y_given_x,
+            "learned_mu_1": mu_1,
+            "learned_sigma_1": sigma_1,
+            "learned_mu_2": mu_2,
+            "learned_sigma_2": sigma_2,
+        }
+    
     def train(
         self,
         dataset_1: torch.Tensor,
@@ -626,12 +738,87 @@ class DDMEC1D:
                     if isinstance(v, (int, float)):
                         epoch_metrics[k].append(v)
             
-            # Log epoch metrics
+            # Log epoch metrics and compute information-theoretic measures
             if (epoch + 1) % 10 == 0:
                 print(f"\nEpoch {epoch + 1}/{num_epochs}")
+                print("  Training Metrics:")
+                
+                # Prepare wandb logging dict
+                wandb_log = {"epoch": epoch + 1}
+                
                 for k, v in epoch_metrics.items():
                     if v:
-                        print(f"  {k}: {np.mean(v):.4f}")
+                        mean_val = np.mean(v)
+                        print(f"    {k}: {mean_val:.4f}")
+                        if self.use_wandb:
+                            wandb_log[f"train/{k}"] = mean_val
+                
+                # Compute information-theoretic metrics using a sample batch
+                with torch.no_grad():
+                    # Sample from learned coupling
+                    num_eval = min(500, num_samples)
+                    x2_eval = dataset_2[:num_eval].to(self.device)
+                    x1_eval = dataset_1[:num_eval].to(self.device)
+                    
+                    # Generate x1 from x2
+                    x1_generated = self.sample_coupled(x2_eval, direction="1->2", num_steps=50)
+                    x2_generated = self.sample_coupled(x1_eval, direction="2->1", num_steps=50)
+                    
+                    # Compute metrics for both directions
+                    info_metrics_1 = self.compute_information_metrics(
+                        x1_generated, x2_eval,
+                        true_mu_1=2.0, true_sigma_1=1.0,
+                        true_mu_2=10.0, true_sigma_2=1.0
+                    )
+                    
+                    info_metrics_2 = self.compute_information_metrics(
+                        x1_eval, x2_generated,
+                        true_mu_1=2.0, true_sigma_1=1.0,
+                        true_mu_2=10.0, true_sigma_2=1.0
+                    )
+                    
+                    print("\n  Information-Theoretic Metrics (x2→x1):")
+                    print(f"    KL Divergence (X1): {info_metrics_1['kl_div_1']:.4f}")
+                    print(f"    KL Divergence (X2): {info_metrics_1['kl_div_2']:.4f}")
+                    print(f"    KL Divergence (Total): {info_metrics_1['kl_div_total']:.4f}")
+                    print(f"    Entropy H(X): {info_metrics_1['entropy_x']:.4f}")
+                    print(f"    Entropy H(Y): {info_metrics_1['entropy_y']:.4f}")
+                    print(f"    Joint Entropy H(X,Y): {info_metrics_1['joint_entropy']:.4f}")
+                    print(f"    Mutual Information I(X;Y): {info_metrics_1['mutual_information']:.4f}")
+                    print(f"    Conditional Entropy H(X|Y): {info_metrics_1['conditional_entropy_x_given_y']:.4f}")
+                    print(f"    Conditional Entropy H(Y|X): {info_metrics_1['conditional_entropy_y_given_x']:.4f}")
+                    
+                    print("\n  Information-Theoretic Metrics (x1→x2):")
+                    print(f"    KL Divergence (X1): {info_metrics_2['kl_div_1']:.4f}")
+                    print(f"    KL Divergence (X2): {info_metrics_2['kl_div_2']:.4f}")
+                    print(f"    KL Divergence (Total): {info_metrics_2['kl_div_total']:.4f}")
+                    print(f"    Mutual Information I(X;Y): {info_metrics_2['mutual_information']:.4f}")
+                    
+                    # Log to wandb
+                    if self.use_wandb:
+                        # Forward direction (x2→x1)
+                        wandb_log.update({
+                            "info/kl_div_1_forward": info_metrics_1['kl_div_1'],
+                            "info/kl_div_2_forward": info_metrics_1['kl_div_2'],
+                            "info/kl_div_total_forward": info_metrics_1['kl_div_total'],
+                            "info/entropy_x_forward": info_metrics_1['entropy_x'],
+                            "info/entropy_y_forward": info_metrics_1['entropy_y'],
+                            "info/joint_entropy_forward": info_metrics_1['joint_entropy'],
+                            "info/mutual_information_forward": info_metrics_1['mutual_information'],
+                            "info/conditional_entropy_x_given_y": info_metrics_1['conditional_entropy_x_given_y'],
+                            "info/conditional_entropy_y_given_x": info_metrics_1['conditional_entropy_y_given_x'],
+                            # Backward direction (x1→x2)
+                            "info/kl_div_1_backward": info_metrics_2['kl_div_1'],
+                            "info/kl_div_2_backward": info_metrics_2['kl_div_2'],
+                            "info/kl_div_total_backward": info_metrics_2['kl_div_total'],
+                            "info/mutual_information_backward": info_metrics_2['mutual_information'],
+                            # Learned statistics
+                            "stats/learned_mu_1_forward": info_metrics_1['learned_mu_1'],
+                            "stats/learned_sigma_1_forward": info_metrics_1['learned_sigma_1'],
+                            "stats/learned_mu_2_forward": info_metrics_1['learned_mu_2'],
+                            "stats/learned_sigma_2_forward": info_metrics_1['learned_sigma_2'],
+                        })
+                        wandb.log(wandb_log)
         
         print("\nTraining complete!")
     

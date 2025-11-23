@@ -161,7 +161,7 @@ def train():
     print(f"Using device: {device}")
 
     # Dataset: x = 10 + U(0, 1)
-    data = make_toy_dataset(100, offset=10.0)
+    data = make_toy_dataset(1000, offset=10.0)
     dataset = TensorDataset(data)
     loader = DataLoader(dataset, batch_size=cfg.batch_size, shuffle=True, drop_last=True)
 
