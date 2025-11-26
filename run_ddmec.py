@@ -283,7 +283,7 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     
     # Create coupled training data
     print("\nCreating coupled training data...")
-    num_train = 10000
+    num_train = 100000
     x1_train, x2_train = create_coupled_data(num_train)
     
     # Train DDMEC
@@ -301,7 +301,7 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     )
     
     # Evaluate
-    results = evaluate_coupling(ddmec, num_samples=1000)
+    results = evaluate_coupling(ddmec, num_samples=10000)
     
     # Visualize
     print("\nGenerating visualizations...")
