@@ -1,0 +1,248 @@
+
+✓ Weights & Biases initialized: dark-plasma-4
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  Dashboard: https://wandb.ai/adnankaremjs/ddmec-1d/runs/y4zoobb1
+
+Initializing DDMEC...
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+Creating coupled training data...
+X1: mean=1.99, std=1.00
+X2: mean=9.99, std=1.00
+Correlation: 1.000
+
+Training DDMEC...
+Phase 1: Warmup (supervised) - first 1000 steps
+Phase 2: Cooperative (RL-based) - remaining steps
+------------------------------------------------------------
+Training DDMEC for 50 epochs, 1562 batches per epoch
+Setting up frozen priors for KL regularization
+Warmup complete. Starting cooperative DDMEC training.
+
+Epoch 10/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Entropy H(X): 1.4189
+    Entropy H(Y): 1.4189
+    Joint Entropy H(X,Y): 2.8379
+    Mutual Information I(X;Y): 0.0000
+    Conditional Entropy H(X|Y): 1.4189
+    Conditional Entropy H(Y|X): 1.4189
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Mutual Information I(X;Y): 0.0000
+
+Epoch 20/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Entropy H(X): 1.4189
+    Entropy H(Y): 1.4189
+    Joint Entropy H(X,Y): 2.8379
+    Mutual Information I(X;Y): 0.0000
+    Conditional Entropy H(X|Y): 1.4189
+    Conditional Entropy H(Y|X): 1.4189
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Mutual Information I(X;Y): 0.0000
+
+Epoch 30/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Entropy H(X): 1.4189
+    Entropy H(Y): 1.4189
+    Joint Entropy H(X,Y): 2.8379
+    Mutual Information I(X;Y): 0.0000
+    Conditional Entropy H(X|Y): 1.4189
+    Conditional Entropy H(Y|X): 1.4189
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Mutual Information I(X;Y): 0.0000
+
+Epoch 40/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Entropy H(X): 1.4189
+    Entropy H(Y): 1.4189
+    Joint Entropy H(X,Y): 2.8379
+    Mutual Information I(X;Y): 0.0000
+    Conditional Entropy H(X|Y): 1.4189
+    Conditional Entropy H(Y|X): 1.4189
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Mutual Information I(X;Y): 0.0000
+
+Epoch 50/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Entropy H(X): 1.4189
+    Entropy H(Y): 1.4189
+    Joint Entropy H(X,Y): 2.8379
+    Mutual Information I(X;Y): 0.0000
+    Conditional Entropy H(X|Y): 1.4189
+    Conditional Entropy H(Y|X): 1.4189
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0000
+    KL Divergence (X2): 0.0000
+    KL Divergence (Total): 0.0000
+    Mutual Information I(X;Y): 0.0000
+
+Training complete!
+
+============================================================
+Evaluating Learned Coupling
+============================================================
+
+Direction x2 -> x1:
+  Input x2: mean=10.01, std=1.00
+  Generated x1: mean=nan, std=nan
+  Expected x1: mean=2.00, std=1.00
+  Mean absolute offset error: nan
+
+Direction x1 -> x2:
+  Input x1: mean=1.99, std=1.02
+  Generated x2: mean=nan, std=nan
+  Expected x2: mean=10.00, std=1.00
+  Mean absolute offset error: nan
+
+Round-trip consistency (x2 -> x1 -> x2):
+  Reconstruction error: nan
+
+============================================================
+Information-Theoretic Metrics
+============================================================
+
+Direction x2 → x1:
+  KL Divergence D(p₁||q₁): 0.0000
+  KL Divergence D(p₂||q₂): 0.0000
+  Total KL Divergence: 0.0000
+  Entropy H(X₁): 1.4189 nats
+  Entropy H(X₂): 1.4189 nats
+  Joint Entropy H(X₁,X₂): 2.8379 nats
+  Mutual Information I(X₁;X₂): 0.0000 nats
+  Conditional Entropy H(X₁|X₂): 1.4189 nats
+  Conditional Entropy H(X₂|X₁): 1.4189 nats
+
+Direction x1 → x2:
+  KL Divergence D(p₁||q₁): 0.0000
+  KL Divergence D(p₂||q₂): 0.0000
+  Total KL Divergence: 0.0000
+  Mutual Information I(X₁;X₂): 0.0000 nats
+
+Theoretical Reference (Perfect Independent Coupling):
+  H(X₁) ≈ 1.4189 nats
+  H(X₂) ≈ 1.4189 nats
+  H(X₁,X₂) ≈ 2.8379 nats (if independent)
+  I(X₁;X₂) ≈ 0.0 nats (if independent)
+  Note: Minimum entropy coupling has I(X₁;X₂) → max
+
+Generating visualizations...
+
+
+Error occurred: autodetected range of [nan, nan] is not finite
+Traceback (most recent call last):
+  File "C:\Users\dell\Music\resd\run_ddmec.py", line 379, in <module>
+    main(use_wandb=not args.no_wandb, wandb_project=args.wandb_project, wandb_name=args.wandb_name)
+  File "C:\Users\dell\Music\resd\run_ddmec.py", line 308, in main
+    visualize_results(results)
+  File "C:\Users\dell\Music\resd\run_ddmec.py", line 161, in visualize_results
+    h = ax3.hist2d(results["x2_test"].flatten(), results["x1_gen"].flatten(),
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\matplotlib\__init__.py", line 1486, in inner
+    return func(
+           ^^^^^
+  File "C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\matplotlib\axes\_axes.py", line 7341, in hist2d
+    h, xedges, yedges = np.histogram2d(x, y, bins=bins, range=range,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\numpy\lib\twodim_base.py", line 808, in histogram2d
+    hist, edges = histogramdd([x, y], bins, range, density, weights)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\numpy\lib\histograms.py", line 1003, in histogramdd
+    smin, smax = _get_outer_edges(sample[:,i], range[i])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\numpy\lib\histograms.py", line 323, in _get_outer_edges
+    raise ValueError(
+ValueError: autodetected range of [nan, nan] is not finite

@@ -140,20 +140,16 @@ def visualize_results(results: dict, save_path: str = "ddmec_results.png"):
     # Row 1: Coupling scatter plots
     ax1 = fig.add_subplot(gs[0, 0])
     ax1.scatter(results["x2_test"], results["x1_gen"], alpha=0.3, s=10)
-    ax1.plot([8, 12], [-6, -2], 'r--', label='Ideal coupling (slope=1)')
     ax1.set_xlabel("x2 (condition)")
     ax1.set_ylabel("x1 (generated)")
     ax1.set_title("Learned Coupling: x2 → x1")
-    ax1.legend()
     ax1.grid(True, alpha=0.3)
     
     ax2 = fig.add_subplot(gs[0, 1])
     ax2.scatter(results["x1_test"], results["x2_gen"], alpha=0.3, s=10)
-    ax2.plot([0, 4], [8, 12], 'r--', label='Ideal coupling (slope=1)')
     ax2.set_xlabel("x1 (condition)")
     ax2.set_ylabel("x2 (generated)")
     ax2.set_title("Learned Coupling: x1 → x2")
-    ax2.legend()
     ax2.grid(True, alpha=0.3)
     
     # Joint distribution
@@ -238,27 +234,47 @@ def visualize_results(results: dict, save_path: str = "ddmec_results.png"):
     print(f"\nVisualization saved to {save_path}")
 
 
+def count_parameters(model):
+    """Count trainable and total parameters in a model."""
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    total = sum(p.numel() for p in model.parameters())
+    return trainable, total
+
+
 def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     print("="*60)
     print("DDMEC: Minimum Entropy Coupling for 1D Gaussians")
     print("="*60)
     
+    # Create run directory
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    if wandb_name:
+        run_name = f"{wandb_name}_{timestamp}"
+    else:
+        run_name = f"ddmec_{timestamp}"
+    
+    run_dir = os.path.join("runs", run_name)
+    os.makedirs(run_dir, exist_ok=True)
+    print(f"\nRun directory: {run_dir}")
+    
     # Initialize Weights & Biases
     if use_wandb:
         wandb.init(
             project=wandb_project,
-            name=wandb_name,
+            name=run_name,
             config={
                 "architecture": "DDMEC",
                 "dataset": "1D Gaussians",
                 "dist_1": "N(2, 1)",
                 "dist_2": "N(10, 1)",
-                "num_train_samples": 10000,
+                "num_train_samples": 100000,
                 "batch_size": 64,
                 "learning_rate": 1e-4,
-                "num_epochs": 100,
+                "num_epochs": 50,
                 "warmup_epochs": 10,
                 "num_timesteps": 1000,
+                "run_dir": run_dir,
             }
         )
         print(f"\n✓ Weights & Biases initialized: {wandb.run.name}")
@@ -268,7 +284,7 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     if not os.path.exists("ddpm_1d_2.pt") or not os.path.exists("ddpm_1d_10.pt"):
         print("\nERROR: Pre-trained models not found!")
         print("Please ensure ddpm_1d_2.pt and ddpm_1d_10.pt are in the current directory.")
-        print("You can train them using train_ddpm_1d.py")
+        print("You can train them using train_both_ddpm.py")
         if use_wandb:
             wandb.finish()
         return
@@ -280,6 +296,37 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
         model_path_2="ddpm_1d_10.pt",
         use_wandb=use_wandb,
     )
+    
+    # Log parameter counts
+    print("\n" + "="*60)
+    print("Model Architecture")
+    print("="*60)
+    
+    trainable_1, total_1 = count_parameters(ddmec.ddpm_1.model)
+    trainable_2, total_2 = count_parameters(ddmec.ddpm_2.model)
+    
+    print(f"\nDDPM Model 1 (N(2,1)):")
+    print(f"  Trainable parameters: {trainable_1:,}")
+    print(f"  Total parameters:     {total_1:,}")
+    
+    print(f"\nDDPM Model 2 (N(10,1)):")
+    print(f"  Trainable parameters: {trainable_2:,}")
+    print(f"  Total parameters:     {total_2:,}")
+    
+    print(f"\nDDMEC Overall:")
+    print(f"  Trainable parameters: {trainable_1 + trainable_2:,}")
+    print(f"  Total parameters:     {total_1 + total_2:,}")
+    print("="*60)
+    
+    if use_wandb:
+        wandb.config.update({
+            "model_1_trainable_params": trainable_1,
+            "model_1_total_params": total_1,
+            "model_2_trainable_params": trainable_2,
+            "model_2_total_params": total_2,
+            "ddmec_trainable_params": trainable_1 + trainable_2,
+            "ddmec_total_params": total_1 + total_2,
+        })
     
     # Create coupled training data
     print("\nCreating coupled training data...")
@@ -298,6 +345,7 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
         num_epochs=50,
         batch_size=64,
         lr=1e-4,
+        run_dir=run_dir,
     )
     
     # Evaluate

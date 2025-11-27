@@ -1,0 +1,88 @@
+
+✓ Weights & Biases initialized: icy-energy-3
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  Dashboard: https://wandb.ai/adnankaremjs/ddmec-1d/runs/ju7jijd9
+
+Initializing DDMEC...
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+Creating coupled training data...
+X1: mean=2.00, std=1.00
+X2: mean=10.00, std=1.00
+Correlation: 1.000
+
+Training DDMEC...
+Phase 1: Warmup (supervised) - first 1000 steps
+Phase 2: Cooperative (RL-based) - remaining steps
+------------------------------------------------------------
+Training DDMEC for 50 epochs, 1562 batches per epoch
+Setting up frozen priors for KL regularization
+Warmup complete. Starting cooperative DDMEC training.
+
+Epoch 10/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\numpy\linalg\linalg.py:2180: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): nan
+    KL Divergence (X2): 0.0037
+    KL Divergence (Total): nan
+    Entropy H(X): nan
+    Entropy H(Y): 1.3615
+    Joint Entropy H(X,Y): nan
+    Mutual Information I(X;Y): nan
+    Conditional Entropy H(X|Y): nan
+    Conditional Entropy H(Y|X): nan
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0037
+    KL Divergence (X2): nan
+    KL Divergence (Total): nan
+    Mutual Information I(X;Y): nan
+
+Epoch 20/50
+  Training Metrics:
+    1->2_pg_loss: nan
+    1->2_kl_reg: nan
+    1->2_reward_mean: nan
+    1->2_reward_std: nan
+    1->2_advantage_mean: nan
+    2->1_pg_loss: nan
+    2->1_kl_reg: nan
+    2->1_reward_mean: nan
+    2->1_reward_std: nan
+    2->1_advantage_mean: nan
+C:\Users\dell\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\numpy\linalg\linalg.py:2180: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): nan
+    KL Divergence (X2): 0.0037
+    KL Divergence (Total): nan
+    Entropy H(X): nan
+    Entropy H(Y): 1.3615
+    Joint Entropy H(X,Y): nan
+    Mutual Information I(X;Y): nan
+    Conditional Entropy H(X|Y): nan
+    Conditional Entropy H(Y|X): nan
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0037
+    KL Divergence (X2): nan
+    KL Divergence (Total): nan
+    Mutual Information I(X;Y): nan
+
+
+Training interrupted by user.
