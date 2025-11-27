@@ -32,8 +32,19 @@ class ConditionalMLP(nn.Module):
     def __init__(self, base_model: SmallMLP):
         super().__init__()
         self.base_model = base_model
-        # New input layer that takes [x, condition, time_emb]
-        self.input_proj = nn.Linear(2 + 32, 64)  # 2 inputs + 32 time_emb -> 64
+        # Build a new conditional network using similar architecture
+        # Input: [x, condition] -> concat with time_emb -> predict noise
+        hidden_dim = 64
+        time_embed_dim = 32
+        
+        # Input projection for [x, condition, time_emb] -> hidden
+        self.input_proj = nn.Sequential(
+            nn.Linear(2 + time_embed_dim, hidden_dim),
+            nn.SiLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.SiLU(),
+            nn.Linear(hidden_dim, 1)
+        )
         
     def forward(self, x: torch.Tensor, t: torch.Tensor, condition: torch.Tensor = None) -> torch.Tensor:
         """
@@ -46,22 +57,13 @@ class ConditionalMLP(nn.Module):
         t_emb = self.base_model.time_embed(t_norm)
         
         if condition is None:
-            # Unconditional: use zeros
-            condition = torch.zeros_like(x)
+            # Unconditional: just use the base model
+            inp = torch.cat([x, t_emb], dim=-1)
+            return self.base_model.net(inp)
         
-        # Concatenate x and condition, then with time embedding
+        # Concatenate x, condition, and time embedding
         inp = torch.cat([x, condition, t_emb], dim=-1)
-        h = self.input_proj(inp)
-        h = torch.relu(h)
-        
-        # Use rest of base model network (skip first layer)
-        # Base model net: Linear(33, 64), SiLU, Linear(64, 64), SiLU, Linear(64, 1)
-        # We'll just use our own small network for simplicity
-        h = self.base_model.net[2](h)  # Second Linear layer
-        h = self.base_model.net[3](h)  # SiLU
-        h = self.base_model.net[4](h)  # Output layer
-        
-        return h
+        return self.input_proj(inp)
 
 
 class DDMEC1D:
@@ -225,6 +227,16 @@ class DDMEC1D:
         # Start from noise
         x = torch.randn(batch_size, 1, device=self.device)
         
+        # Ensure initial noise is not NaN
+        if torch.isnan(x).any():
+            print("Warning: NaN in initial noise, regenerating...")
+            x = torch.randn(batch_size, 1, device=self.device)
+        
+        # Ensure condition is not NaN
+        if torch.isnan(condition).any():
+            print("Warning: NaN in condition input")
+            condition = torch.nan_to_num(condition, nan=0.0)
+        
         trajectory = [x.clone()]
         log_probs = []
         timesteps_list = []
@@ -241,6 +253,11 @@ class DDMEC1D:
             # Predict noise
             predicted_noise = model(x, t_tensor, condition)
             
+            # Check for NaN in predicted noise
+            if torch.isnan(predicted_noise).any():
+                print(f"Warning: NaN detected in predicted_noise at timestep {t_cur}")
+                predicted_noise = torch.nan_to_num(predicted_noise, nan=0.0)
+            
             # Get schedule values
             alpha_t = ddpm.alphas[t_cur]
             alphas_cumprod_t = ddpm.alphas_cumprod[t_cur]
@@ -251,20 +268,34 @@ class DDMEC1D:
             else:
                 alphas_cumprod_next = torch.tensor(1.0, device=self.device)
             
-            # DDIM sampling step
-            x0_pred = (x - torch.sqrt(1 - alphas_cumprod_t) * predicted_noise) / torch.sqrt(alphas_cumprod_t)
+            # Add epsilon for numerical stability
+            eps = 1e-8
+            sqrt_alphas_cumprod_t = torch.sqrt(alphas_cumprod_t + eps)
+            sqrt_one_minus_alphas_cumprod_t = torch.sqrt(1 - alphas_cumprod_t + eps)
+            
+            # DDIM sampling step with numerical stability
+            x0_pred = (x - sqrt_one_minus_alphas_cumprod_t * predicted_noise) / sqrt_alphas_cumprod_t
+            
+            # Clamp x0_pred to reasonable range to prevent extreme values
+            x0_pred = torch.clamp(x0_pred, -50.0, 50.0)
             
             # Compute mean
             if t_next > 0:
-                x_next = torch.sqrt(alphas_cumprod_next) * x0_pred + \
-                         torch.sqrt(1 - alphas_cumprod_next) * predicted_noise
+                sqrt_alphas_cumprod_next = torch.sqrt(alphas_cumprod_next + eps)
+                sqrt_one_minus_alphas_cumprod_next = torch.sqrt(1 - alphas_cumprod_next + eps)
+                x_next = sqrt_alphas_cumprod_next * x0_pred + sqrt_one_minus_alphas_cumprod_next * predicted_noise
             else:
                 x_next = x0_pred
             
+            # Check for NaN in x_next
+            if torch.isnan(x_next).any():
+                print(f"Warning: NaN detected in x_next at timestep {t_cur}")
+                x_next = torch.nan_to_num(x_next, nan=0.0)
+            
             # Compute log prob (approximation for DDIM)
             # log p(x_next | x, condition) ≈ -||x_next - mean||^2 / (2 * variance)
-            variance = beta_t
-            log_prob = -0.5 * ((x_next - x) ** 2).sum(dim=1) / (variance + 1e-8)
+            variance = beta_t + eps
+            log_prob = -0.5 * ((x_next - x) ** 2).sum(dim=1) / variance
             
             x = x_next
             trajectory.append(x.clone())
@@ -593,31 +624,59 @@ class DDMEC1D:
         Compute KL divergence between two 1D Gaussians: KL(p||q)
         KL(p||q) = 1/2 * [(μ_p-μ_q)²/σ_q² + σ_p²/σ_q² - 1 + ln(σ_q²/σ_p²)]
         """
+        # Add epsilon to avoid numerical issues
+        eps = 1e-8
+        sigma_p = max(sigma_p, eps)
+        sigma_q = max(sigma_q, eps)
+        
         var_p = sigma_p ** 2
         var_q = sigma_q ** 2
+        
+        # Clamp the log ratio to avoid overflow/underflow
+        log_ratio = np.log(np.clip(var_q / var_p, 1e-10, 1e10))
+        
         kl = 0.5 * (
             ((mu_p - mu_q) ** 2) / var_q +
             var_p / var_q -
             1.0 +
-            np.log(var_q / var_p)
+            log_ratio
         )
-        return kl
+        return max(kl, 0.0)  # KL should always be non-negative
     
     def compute_entropy_gaussian(self, sigma: float) -> float:
         """Compute entropy of 1D Gaussian: H(X) = 0.5 * ln(2πeσ²)"""
-        return 0.5 * np.log(2 * np.pi * np.e * (sigma ** 2))
+        # Add epsilon to avoid log(0)
+        eps = 1e-8
+        sigma = max(sigma, eps)
+        variance = sigma ** 2
+        return 0.5 * np.log(2 * np.pi * np.e * variance)
     
     def compute_joint_entropy(self, samples_x: np.ndarray, samples_y: np.ndarray) -> float:
         """Estimate joint entropy H(X,Y) using Gaussian approximation"""
+        eps = 1e-8
+        
         # Stack samples
         joint = np.stack([samples_x.flatten(), samples_y.flatten()], axis=1)
-        # Compute covariance matrix
+        
+        # Compute covariance matrix with regularization
         cov = np.cov(joint.T)
-        # Joint entropy: H(X,Y) = 0.5 * ln((2πe)^2 * det(Σ))
-        det_cov = np.linalg.det(cov)
-        if det_cov <= 0:
-            det_cov = 1e-8  # Avoid log of negative/zero
-        joint_entropy = 0.5 * np.log((2 * np.pi * np.e) ** 2 * det_cov)
+        
+        # Add small regularization to diagonal for numerical stability
+        cov = cov + eps * np.eye(cov.shape[0])
+        
+        # Compute determinant
+        try:
+            det_cov = np.linalg.det(cov)
+            # Ensure determinant is positive
+            det_cov = max(det_cov, eps)
+        except np.linalg.LinAlgError:
+            # If computation fails, use product of variances as fallback
+            det_cov = cov[0, 0] * cov[1, 1]
+            det_cov = max(det_cov, eps)
+        
+        # Joint entropy: H(X,Y) = 0.5 * ln((2πe)^2 * det(Σ)) = ln(2πe) + 0.5 * ln(det(Σ))
+        joint_entropy = np.log(2 * np.pi * np.e) + 0.5 * np.log(det_cov)
+        
         return joint_entropy
     
     def compute_mutual_information(
@@ -648,15 +707,36 @@ class DDMEC1D:
         """
         Compute all information-theoretic metrics for the coupling.
         """
+        eps = 1e-8
+        
         # Convert to numpy
         s1_np = samples_1.cpu().numpy().flatten()
         s2_np = samples_2.cpu().numpy().flatten()
         
-        # Compute learned statistics
-        mu_1 = s1_np.mean()
-        sigma_1 = s1_np.std()
-        mu_2 = s2_np.mean()
-        sigma_2 = s2_np.std()
+        # Compute learned statistics with numerical stability
+        mu_1 = float(s1_np.mean())
+        sigma_1 = float(s1_np.std() + eps)  # Add epsilon to avoid zero std
+        mu_2 = float(s2_np.mean())
+        sigma_2 = float(s2_np.std() + eps)  # Add epsilon to avoid zero std
+        
+        # Check for NaN or Inf in computed statistics
+        if not (np.isfinite(mu_1) and np.isfinite(sigma_1) and np.isfinite(mu_2) and np.isfinite(sigma_2)):
+            # Return safe fallback values
+            return {
+                "kl_div_1": 0.0,
+                "kl_div_2": 0.0,
+                "kl_div_total": 0.0,
+                "entropy_x": self.compute_entropy_gaussian(true_sigma_1),
+                "entropy_y": self.compute_entropy_gaussian(true_sigma_2),
+                "joint_entropy": self.compute_entropy_gaussian(true_sigma_1) + self.compute_entropy_gaussian(true_sigma_2),
+                "mutual_information": 0.0,
+                "conditional_entropy_x_given_y": self.compute_entropy_gaussian(true_sigma_1),
+                "conditional_entropy_y_given_x": self.compute_entropy_gaussian(true_sigma_2),
+                "learned_mu_1": mu_1 if np.isfinite(mu_1) else true_mu_1,
+                "learned_sigma_1": sigma_1 if np.isfinite(sigma_1) else true_sigma_1,
+                "learned_mu_2": mu_2 if np.isfinite(mu_2) else true_mu_2,
+                "learned_sigma_2": sigma_2 if np.isfinite(sigma_2) else true_sigma_2,
+            }
         
         # KL divergences (learned || true)
         kl_1 = self.compute_kl_divergence(mu_1, sigma_1, true_mu_1, true_sigma_1)
@@ -667,12 +747,12 @@ class DDMEC1D:
         h_y = self.compute_entropy_gaussian(sigma_2)
         h_xy = self.compute_joint_entropy(s1_np, s2_np)
         
-        # Mutual information
-        mi = h_x + h_y - h_xy
+        # Mutual information (clamp to non-negative)
+        mi = max(h_x + h_y - h_xy, 0.0)
         
-        # Conditional entropies
-        h_x_given_y = h_xy - h_y  # H(X|Y) = H(X,Y) - H(Y)
-        h_y_given_x = h_xy - h_x  # H(Y|X) = H(X,Y) - H(X)
+        # Conditional entropies (ensure they are non-negative)
+        h_x_given_y = max(h_xy - h_y, 0.0)  # H(X|Y) = H(X,Y) - H(Y)
+        h_y_given_x = max(h_xy - h_x, 0.0)  # H(Y|X) = H(X,Y) - H(X)
         
         return {
             "kl_div_1": kl_1,
@@ -690,6 +770,74 @@ class DDMEC1D:
             "learned_sigma_2": sigma_2,
         }
     
+    def generate_epoch_plot(
+        self,
+        x1_gen: np.ndarray,
+        x2_gen: np.ndarray,
+        x1_test: np.ndarray,
+        x2_test: np.ndarray,
+        epoch: int,
+        save_path: str,
+    ):
+        """Generate visualization for current epoch."""
+        fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+        
+        # Row 1: Coupling scatter plots
+        axes[0, 0].scatter(x2_test, x1_gen, alpha=0.3, s=10)
+        axes[0, 0].set_xlabel("x2 (condition)")
+        axes[0, 0].set_ylabel("x1 (generated)")
+        axes[0, 0].set_title(f"Coupling: x2→x1 (Epoch {epoch})")
+        axes[0, 0].grid(True, alpha=0.3)
+        
+        axes[0, 1].scatter(x1_test, x2_gen, alpha=0.3, s=10)
+        axes[0, 1].set_xlabel("x1 (condition)")
+        axes[0, 1].set_ylabel("x2 (generated)")
+        axes[0, 1].set_title(f"Coupling: x1→x2 (Epoch {epoch})")
+        axes[0, 1].grid(True, alpha=0.3)
+        
+        # Correlation
+        corr_1 = np.corrcoef(x2_test.flatten(), x1_gen.flatten())[0, 1]
+        corr_2 = np.corrcoef(x1_test.flatten(), x2_gen.flatten())[0, 1]
+        axes[0, 2].bar(['x2→x1', 'x1→x2'], [corr_1, corr_2], alpha=0.7)
+        axes[0, 2].axhline(1.0, color='red', linestyle='--', label='Perfect')
+        axes[0, 2].set_ylabel("Correlation")
+        axes[0, 2].set_title("Coupling Strength")
+        axes[0, 2].set_ylim([0, 1.1])
+        axes[0, 2].legend()
+        axes[0, 2].grid(True, alpha=0.3, axis='y')
+        
+        # Row 2: Marginal distributions
+        axes[1, 0].hist(x1_gen, bins=30, density=True, alpha=0.7, label='Generated')
+        axes[1, 0].axvline(2.0, color='red', linestyle='--', linewidth=2, label='Target mean')
+        axes[1, 0].set_xlabel("x1")
+        axes[1, 0].set_ylabel("Density")
+        axes[1, 0].set_title(f"Marginal: x1 (μ={x1_gen.mean():.2f}, σ={x1_gen.std():.2f})")
+        axes[1, 0].legend()
+        axes[1, 0].grid(True, alpha=0.3)
+        
+        axes[1, 1].hist(x2_gen, bins=30, density=True, alpha=0.7, label='Generated', color='orange')
+        axes[1, 1].axvline(10.0, color='red', linestyle='--', linewidth=2, label='Target mean')
+        axes[1, 1].set_xlabel("x2")
+        axes[1, 1].set_ylabel("Density")
+        axes[1, 1].set_title(f"Marginal: x2 (μ={x2_gen.mean():.2f}, σ={x2_gen.std():.2f})")
+        axes[1, 1].legend()
+        axes[1, 1].grid(True, alpha=0.3)
+        
+        # Coupling errors
+        error_1 = x1_gen - (x2_test - 8.0)
+        error_2 = x2_gen - (x1_test + 8.0)
+        mae_1 = np.abs(error_1).mean()
+        mae_2 = np.abs(error_2).mean()
+        axes[1, 2].bar(['x2→x1', 'x1→x2'], [mae_1, mae_2], alpha=0.7, color=['blue', 'orange'])
+        axes[1, 2].set_ylabel("Mean Absolute Error")
+        axes[1, 2].set_title("Coupling Error")
+        axes[1, 2].grid(True, alpha=0.3, axis='y')
+        
+        plt.suptitle(f'DDMEC Training - Epoch {epoch}', fontsize=14, fontweight='bold')
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=100, bbox_inches='tight')
+        plt.close(fig)
+    
     def train(
         self,
         dataset_1: torch.Tensor,
@@ -697,6 +845,7 @@ class DDMEC1D:
         num_epochs: int = 100,
         batch_size: int = 64,
         lr: float = 1e-4,
+        run_dir: str = "runs/default",
     ):
         """
         Main training loop for DDMEC.
@@ -707,7 +856,15 @@ class DDMEC1D:
             num_epochs: Number of training epochs
             batch_size: Batch size
             lr: Learning rate
+            run_dir: Directory to save checkpoints and plots
         """
+        import os
+        os.makedirs(run_dir, exist_ok=True)
+        checkpoints_dir = os.path.join(run_dir, "checkpoints")
+        plots_dir = os.path.join(run_dir, "plots")
+        os.makedirs(checkpoints_dir, exist_ok=True)
+        os.makedirs(plots_dir, exist_ok=True)
+        
         # Setup optimizers
         optimizer_1 = torch.optim.Adam(self.ddpm_1.model.parameters(), lr=lr)
         optimizer_2 = torch.optim.Adam(self.ddpm_2.model.parameters(), lr=lr)
@@ -715,7 +872,13 @@ class DDMEC1D:
         num_samples = min(len(dataset_1), len(dataset_2))
         num_batches = num_samples // batch_size
         
+        # Track best model
+        best_kl_total = float('inf')
+        best_epoch = 0
+        
         print(f"Training DDMEC for {num_epochs} epochs, {num_batches} batches per epoch")
+        print(f"Saving checkpoints to: {checkpoints_dir}")
+        print(f"Saving plots to: {plots_dir}")
         
         for epoch in range(num_epochs):
             # Shuffle datasets
@@ -738,89 +901,143 @@ class DDMEC1D:
                     if isinstance(v, (int, float)):
                         epoch_metrics[k].append(v)
             
-            # Log epoch metrics and compute information-theoretic measures
-            if (epoch + 1) % 10 == 0:
-                print(f"\nEpoch {epoch + 1}/{num_epochs}")
-                print("  Training Metrics:")
-                
-                # Prepare wandb logging dict
-                wandb_log = {"epoch": epoch + 1}
-                
-                for k, v in epoch_metrics.items():
-                    if v:
-                        mean_val = np.mean(v)
-                        print(f"    {k}: {mean_val:.4f}")
-                        if self.use_wandb:
-                            wandb_log[f"train/{k}"] = mean_val
-                
-                # Compute information-theoretic metrics using a sample batch
-                with torch.no_grad():
-                    # Sample from learned coupling
-                    num_eval = min(500, num_samples)
-                    x2_eval = dataset_2[:num_eval].to(self.device)
-                    x1_eval = dataset_1[:num_eval].to(self.device)
-                    
-                    # Generate x1 from x2
-                    x1_generated = self.sample_coupled(x2_eval, direction="1->2", num_steps=50)
-                    x2_generated = self.sample_coupled(x1_eval, direction="2->1", num_steps=50)
-                    
-                    # Compute metrics for both directions
-                    info_metrics_1 = self.compute_information_metrics(
-                        x1_generated, x2_eval,
-                        true_mu_1=2.0, true_sigma_1=1.0,
-                        true_mu_2=10.0, true_sigma_2=1.0
-                    )
-                    
-                    info_metrics_2 = self.compute_information_metrics(
-                        x1_eval, x2_generated,
-                        true_mu_1=2.0, true_sigma_1=1.0,
-                        true_mu_2=10.0, true_sigma_2=1.0
-                    )
-                    
-                    print("\n  Information-Theoretic Metrics (x2→x1):")
-                    print(f"    KL Divergence (X1): {info_metrics_1['kl_div_1']:.4f}")
-                    print(f"    KL Divergence (X2): {info_metrics_1['kl_div_2']:.4f}")
-                    print(f"    KL Divergence (Total): {info_metrics_1['kl_div_total']:.4f}")
-                    print(f"    Entropy H(X): {info_metrics_1['entropy_x']:.4f}")
-                    print(f"    Entropy H(Y): {info_metrics_1['entropy_y']:.4f}")
-                    print(f"    Joint Entropy H(X,Y): {info_metrics_1['joint_entropy']:.4f}")
-                    print(f"    Mutual Information I(X;Y): {info_metrics_1['mutual_information']:.4f}")
-                    print(f"    Conditional Entropy H(X|Y): {info_metrics_1['conditional_entropy_x_given_y']:.4f}")
-                    print(f"    Conditional Entropy H(Y|X): {info_metrics_1['conditional_entropy_y_given_x']:.4f}")
-                    
-                    print("\n  Information-Theoretic Metrics (x1→x2):")
-                    print(f"    KL Divergence (X1): {info_metrics_2['kl_div_1']:.4f}")
-                    print(f"    KL Divergence (X2): {info_metrics_2['kl_div_2']:.4f}")
-                    print(f"    KL Divergence (Total): {info_metrics_2['kl_div_total']:.4f}")
-                    print(f"    Mutual Information I(X;Y): {info_metrics_2['mutual_information']:.4f}")
-                    
-                    # Log to wandb
+            # Log epoch metrics and compute information-theoretic measures every epoch
+            print(f"\nEpoch {epoch + 1}/{num_epochs}")
+            print("  Training Metrics:")
+            
+            # Prepare wandb logging dict
+            wandb_log = {"epoch": epoch + 1}
+            
+            for k, v in epoch_metrics.items():
+                if v:
+                    mean_val = np.mean(v)
+                    print(f"    {k}: {mean_val:.4f}")
                     if self.use_wandb:
-                        # Forward direction (x2→x1)
-                        wandb_log.update({
-                            "info/kl_div_1_forward": info_metrics_1['kl_div_1'],
-                            "info/kl_div_2_forward": info_metrics_1['kl_div_2'],
-                            "info/kl_div_total_forward": info_metrics_1['kl_div_total'],
-                            "info/entropy_x_forward": info_metrics_1['entropy_x'],
-                            "info/entropy_y_forward": info_metrics_1['entropy_y'],
-                            "info/joint_entropy_forward": info_metrics_1['joint_entropy'],
-                            "info/mutual_information_forward": info_metrics_1['mutual_information'],
-                            "info/conditional_entropy_x_given_y": info_metrics_1['conditional_entropy_x_given_y'],
-                            "info/conditional_entropy_y_given_x": info_metrics_1['conditional_entropy_y_given_x'],
-                            # Backward direction (x1→x2)
-                            "info/kl_div_1_backward": info_metrics_2['kl_div_1'],
-                            "info/kl_div_2_backward": info_metrics_2['kl_div_2'],
-                            "info/kl_div_total_backward": info_metrics_2['kl_div_total'],
-                            "info/mutual_information_backward": info_metrics_2['mutual_information'],
-                            # Learned statistics
-                            "stats/learned_mu_1_forward": info_metrics_1['learned_mu_1'],
-                            "stats/learned_sigma_1_forward": info_metrics_1['learned_sigma_1'],
-                            "stats/learned_mu_2_forward": info_metrics_1['learned_mu_2'],
-                            "stats/learned_sigma_2_forward": info_metrics_1['learned_sigma_2'],
-                        })
-                        wandb.log(wandb_log)
+                        wandb_log[f"train/{k}"] = mean_val
+            
+            # Compute information-theoretic metrics and generate plot every epoch
+            with torch.no_grad():
+                # Sample from learned coupling
+                num_eval = min(1000, num_samples)
+                x2_eval = dataset_2[:num_eval].to(self.device)
+                x1_eval = dataset_1[:num_eval].to(self.device)
+                
+                # Generate x1 from x2
+                x1_generated = self.sample_coupled(x2_eval, direction="1->2", num_steps=50)
+                x2_generated = self.sample_coupled(x1_eval, direction="2->1", num_steps=50)
+                
+                # Compute metrics for both directions
+                info_metrics_1 = self.compute_information_metrics(
+                    x1_generated, x2_eval,
+                    true_mu_1=2.0, true_sigma_1=1.0,
+                    true_mu_2=10.0, true_sigma_2=1.0
+                )
+                
+                info_metrics_2 = self.compute_information_metrics(
+                    x1_eval, x2_generated,
+                    true_mu_1=2.0, true_sigma_1=1.0,
+                    true_mu_2=10.0, true_sigma_2=1.0
+                )
+                
+                print("\n  Information-Theoretic Metrics (x2→x1):")
+                print(f"    KL Divergence (X1): {info_metrics_1['kl_div_1']:.4f}")
+                print(f"    KL Divergence (X2): {info_metrics_1['kl_div_2']:.4f}")
+                print(f"    KL Divergence (Total): {info_metrics_1['kl_div_total']:.4f}")
+                print(f"    Mutual Information I(X;Y): {info_metrics_1['mutual_information']:.4f}")
+                
+                print("\n  Information-Theoretic Metrics (x1→x2):")
+                print(f"    KL Divergence (X1): {info_metrics_2['kl_div_1']:.4f}")
+                print(f"    KL Divergence (X2): {info_metrics_2['kl_div_2']:.4f}")
+                print(f"    KL Divergence (Total): {info_metrics_2['kl_div_total']:.4f}")
+                print(f"    Mutual Information I(X;Y): {info_metrics_2['mutual_information']:.4f}")
+                
+                # Generate plot for this epoch
+                plot_path = os.path.join(plots_dir, f"epoch_{epoch+1:04d}.png")
+                self.generate_epoch_plot(
+                    x1_generated.cpu().numpy(),
+                    x2_generated.cpu().numpy(),
+                    x1_eval.cpu().numpy(),
+                    x2_eval.cpu().numpy(),
+                    epoch + 1,
+                    plot_path
+                )
+                print(f"  Plot saved: {plot_path}")
+                
+                # Save checkpoint every epoch
+                checkpoint_path = os.path.join(checkpoints_dir, f"epoch_{epoch+1:04d}.pt")
+                torch.save({
+                    "epoch": epoch + 1,
+                    "model_1_state_dict": self.ddpm_1.model.state_dict(),
+                    "model_2_state_dict": self.ddpm_2.model.state_dict(),
+                    "optimizer_1_state_dict": optimizer_1.state_dict(),
+                    "optimizer_2_state_dict": optimizer_2.state_dict(),
+                    "config": vars(self.config),
+                    "gen_step": self.gen_step,
+                    "info_metrics_1": info_metrics_1,
+                    "info_metrics_2": info_metrics_2,
+                }, checkpoint_path)
+                
+                # Check if this is the best model
+                avg_kl_total = (info_metrics_1['kl_div_total'] + info_metrics_2['kl_div_total']) / 2
+                if avg_kl_total < best_kl_total:
+                    best_kl_total = avg_kl_total
+                    best_epoch = epoch + 1
+                    # Save best model
+                    best_path = os.path.join(checkpoints_dir, "best_model.pt")
+                    torch.save({
+                        "epoch": epoch + 1,
+                        "model_1_state_dict": self.ddpm_1.model.state_dict(),
+                        "model_2_state_dict": self.ddpm_2.model.state_dict(),
+                        "config": vars(self.config),
+                        "gen_step": self.gen_step,
+                        "info_metrics_1": info_metrics_1,
+                        "info_metrics_2": info_metrics_2,
+                        "best_kl_total": best_kl_total,
+                    }, best_path)
+                    print(f"  ★ New best model! (KL Total: {best_kl_total:.4f})")
+                
+                # Log to wandb
+                if self.use_wandb:
+                    # Forward direction (x2→x1)
+                    wandb_log.update({
+                        "info/kl_div_1_forward": info_metrics_1['kl_div_1'],
+                        "info/kl_div_2_forward": info_metrics_1['kl_div_2'],
+                        "info/kl_div_total_forward": info_metrics_1['kl_div_total'],
+                        "info/entropy_x_forward": info_metrics_1['entropy_x'],
+                        "info/entropy_y_forward": info_metrics_1['entropy_y'],
+                        "info/joint_entropy_forward": info_metrics_1['joint_entropy'],
+                        "info/mutual_information_forward": info_metrics_1['mutual_information'],
+                        "info/conditional_entropy_x_given_y": info_metrics_1['conditional_entropy_x_given_y'],
+                        "info/conditional_entropy_y_given_x": info_metrics_1['conditional_entropy_y_given_x'],
+                        # Backward direction (x1→x2)
+                        "info/kl_div_1_backward": info_metrics_2['kl_div_1'],
+                        "info/kl_div_2_backward": info_metrics_2['kl_div_2'],
+                        "info/kl_div_total_backward": info_metrics_2['kl_div_total'],
+                        "info/mutual_information_backward": info_metrics_2['mutual_information'],
+                        # Learned statistics
+                        "stats/learned_mu_1_forward": info_metrics_1['learned_mu_1'],
+                        "stats/learned_sigma_1_forward": info_metrics_1['learned_sigma_1'],
+                        "stats/learned_mu_2_forward": info_metrics_1['learned_mu_2'],
+                        "stats/learned_sigma_2_forward": info_metrics_1['learned_sigma_2'],
+                        # Best tracking
+                        "best/kl_total": best_kl_total,
+                        "best/epoch": best_epoch,
+                        # Average KL
+                        "info/avg_kl_total": avg_kl_total,
+                    })
+                    # Log plot as image
+                    wandb_log["plots/epoch_visualization"] = wandb.Image(plot_path)
+                    wandb.log(wandb_log)
         
-        print("\nTraining complete!")
+        print("\n" + "="*60)
+        print("Training Complete!")
+        print("="*60)
+        print(f"Best epoch: {best_epoch}")
+        print(f"Best KL Total: {best_kl_total:.4f}")
+        print(f"\nCheckpoints saved to: {checkpoints_dir}")
+        print(f"Plots saved to: {plots_dir}")
+        print(f"Best model saved to: {os.path.join(checkpoints_dir, 'best_model.pt')}")
+        print("="*60)
     
     @torch.no_grad()
     def sample_coupled(
