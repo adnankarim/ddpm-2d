@@ -1,0 +1,27 @@
+2025-11-29 21:24:21,674 INFO    MainThread:1784 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-29 21:24:21,675 INFO    MainThread:1784 [wandb_setup.py:_flush():80] Configure stats pid to 1784
+2025-11-29 21:24:21,675 INFO    MainThread:1784 [wandb_setup.py:_flush():80] Loading settings from C:\Users\dell\.config\wandb\settings
+2025-11-29 21:24:21,675 INFO    MainThread:1784 [wandb_setup.py:_flush():80] Loading settings from C:\Users\dell\Music\resd\wandb\settings
+2025-11-29 21:24:21,675 INFO    MainThread:1784 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-29 21:24:21,675 INFO    MainThread:1784 [wandb_init.py:setup_run_log_directory():713] Logging user logs to C:\Users\dell\Music\resd\wandb\run-20251129_212421-m5as980i\logs\debug.log
+2025-11-29 21:24:21,681 INFO    MainThread:1784 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to C:\Users\dell\Music\resd\wandb\run-20251129_212421-m5as980i\logs\debug-internal.log
+2025-11-29 21:24:21,682 INFO    MainThread:1784 [wandb_init.py:init():840] calling init triggers
+2025-11-29 21:24:21,682 INFO    MainThread:1784 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'architecture': 'DDMEC', 'dataset': '1D Gaussians', 'dist_1': 'N(2, 1)', 'dist_2': 'N(10, 1)', 'num_train_samples': 100000, 'batch_size': 64, 'learning_rate': 0.0001, 'num_epochs': 20, 'warmup_epochs': 10, 'num_timesteps': 1000, 'run_dir': 'runs\\ablation_kl0.1_clip0.1_lr1e-04_20251129_212416_20251129_212420', 'kl_weight': 0.1, 'ppo_clip': 0.1, 'rl_lr_scale': 0.1, '_wandb': {}}
+2025-11-29 21:24:21,682 INFO    MainThread:1784 [wandb_init.py:init():888] starting backend
+2025-11-29 21:24:24,302 INFO    MainThread:1784 [wandb_init.py:init():891] sending inform_init request
+2025-11-29 21:24:24,391 INFO    MainThread:1784 [wandb_init.py:init():899] backend started and connected
+2025-11-29 21:24:24,416 INFO    MainThread:1784 [wandb_init.py:init():969] updated telemetry
+2025-11-29 21:24:24,469 INFO    MainThread:1784 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-29 21:24:25,007 INFO    MainThread:1784 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-29 21:24:25,553 INFO    MainThread:1784 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-29 21:24:25,554 INFO    MainThread:1784 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-29 21:24:25,554 INFO    MainThread:1784 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-29 21:24:25,555 INFO    MainThread:1784 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-29 21:24:25,559 INFO    MainThread:1784 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-29 21:24:28,246 INFO    MainThread:1784 [wandb_run.py:_config_callback():1385] config_cb None None {'model_1_trainable_params': 9761, 'model_1_total_params': 9761, 'model_2_trainable_params': 9761, 'model_2_total_params': 9761, 'ddmec_trainable_params': 19522, 'ddmec_total_params': 19522}
+2025-11-30 00:35:57,547 INFO    MainThread:1784 [wandb_run.py:_finish():2270] finishing run adnankaremjs/ddmec-ablation-kl/m5as980i
+2025-11-30 00:35:57,549 INFO    MainThread:1784 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2025-11-30 00:35:57,549 INFO    MainThread:1784 [wandb_run.py:_restore():2451] restore
+2025-11-30 00:35:57,549 INFO    MainThread:1784 [wandb_run.py:_restore():2457] restore done
+2025-11-30 01:40:27,318 INFO    MainThread:1784 [wandb_run.py:_footer_sync_info():3853] logging synced files

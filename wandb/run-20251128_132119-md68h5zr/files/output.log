@@ -1,0 +1,779 @@
+
+✓ Weights & Biases initialized: ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  Dashboard: https://wandb.ai/adnankaremjs/ddmec-ablation-kl/runs/md68h5zr
+
+Initializing DDMEC...
+RL Hyperparameters:
+  KL Weight: 0.1
+  PPO Clip: 0.1
+  Warmup Epochs: 10
+  RL LR Scale: 0.1
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+============================================================
+Model Architecture
+============================================================
+
+DDPM Model 1 (N(2,1)):
+  Trainable parameters: 9,761
+  Total parameters:     9,761
+
+DDPM Model 2 (N(10,1)):
+  Trainable parameters: 9,761
+  Total parameters:     9,761
+
+DDMEC Overall:
+  Trainable parameters: 19,522
+  Total parameters:     19,522
+============================================================
+
+Creating coupled training data...
+X1: mean=2.00, std=1.00
+X2: mean=10.00, std=1.00
+Correlation: 1.000
+
+Training DDMEC...
+Phase 1: Warmup (supervised) - first 10 epochs
+Phase 2: Cooperative (RL-based) - remaining epochs
+------------------------------------------------------------
+Warmup: 10 epochs = 15620 steps
+Starting with warmup LR: 1.00e-05
+After warmup: supervised LR=1.00e-04, RL LR=1.00e-05
+Training DDMEC for 20 epochs, 1562 batches per epoch
+Saving checkpoints to: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\checkpoints
+Saving plots to: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots
+
+Epoch 1/20
+  Training Metrics:
+    loss_1: 5.6412
+    loss_2: 1.0358
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1400.6566
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 1400.6572
+    Mutual Information I(X;Y): 0.0095
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 492.9502
+    KL Divergence (Total): 492.9507
+    Mutual Information I(X;Y): 0.0013
+
+  Coupling Metrics:
+    Correlation x2→x1: -0.1441
+    Correlation x1→x2: 0.0682
+    MAE x2→x1: 38.4630
+    MAE x1→x2: 19.3959
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0001.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  ★ New best model! (KL Total: 946.8040)
+
+Epoch 2/20
+  Training Metrics:
+    loss_1: 0.3822
+    loss_2: 0.3764
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0130
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0136
+    Mutual Information I(X;Y): 0.0810
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.4303
+    KL Divergence (Total): 0.4309
+    Mutual Information I(X;Y): 0.1786
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.3890
+    Correlation x1→x2: 0.5493
+    MAE x2→x1: 0.8067
+    MAE x1→x2: 0.7237
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0002.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  ★ New best model! (KL Total: 0.2222)
+
+Epoch 3/20
+  Training Metrics:
+    loss_1: 0.2258
+    loss_2: 0.2030
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0101
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0106
+    Mutual Information I(X;Y): 0.3540
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0819
+    KL Divergence (Total): 0.0825
+    Mutual Information I(X;Y): 0.3161
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.7130
+    Correlation x1→x2: 0.6853
+    MAE x2→x1: 0.5386
+    MAE x1→x2: 0.4454
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0003.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  ★ New best model! (KL Total: 0.0465)
+
+Epoch 4/20
+  Training Metrics:
+    loss_1: 0.1834
+    loss_2: 0.1172
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0059
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0065
+    Mutual Information I(X;Y): 0.7495
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0234
+    KL Divergence (Total): 0.0239
+    Mutual Information I(X;Y): 0.6921
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.8815
+    Correlation x1→x2: 0.8660
+    MAE x2→x1: 0.3913
+    MAE x1→x2: 0.2762
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0004.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  ★ New best model! (KL Total: 0.0152)
+
+Epoch 5/20
+  Training Metrics:
+    loss_1: 0.1458
+    loss_2: 0.0735
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0017
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0022
+    Mutual Information I(X;Y): 0.8389
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0013
+    KL Divergence (Total): 0.0018
+    Mutual Information I(X;Y): 1.1328
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9020
+    Correlation x1→x2: 0.9468
+    MAE x2→x1: 0.3203
+    MAE x1→x2: 0.1915
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0005.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  ★ New best model! (KL Total: 0.0020)
+
+Epoch 6/20
+  Training Metrics:
+    loss_1: 0.1100
+    loss_2: 0.0551
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0025
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0030
+    Mutual Information I(X;Y): 1.1561
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0239
+    KL Divergence (Total): 0.0244
+    Mutual Information I(X;Y): 0.6597
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9493
+    Correlation x1→x2: 0.8563
+    MAE x2→x1: 0.2510
+    MAE x1→x2: 0.1603
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0006.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 7/20
+  Training Metrics:
+    loss_1: 0.0873
+    loss_2: 0.0462
+WARNING: Negative H(X|Y) = -0.201150
+WARNING: Negative H(Y|X) = -0.196405
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0016
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0021
+    Mutual Information I(X;Y): 1.2665
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0017
+    KL Divergence (Total): 0.0022
+    Mutual Information I(X;Y): 1.5967
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9596
+    Correlation x1→x2: 0.9793
+    MAE x2→x1: 0.2249
+    MAE x1→x2: 0.1152
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0007.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 8/20
+  Training Metrics:
+    loss_1: 0.0710
+    loss_2: 0.0398
+WARNING: Negative H(X|Y) = -0.137155
+WARNING: Negative H(Y|X) = -0.107343
+WARNING: Negative H(X|Y) = -0.438293
+WARNING: Negative H(Y|X) = -0.427891
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0028
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0033
+    Mutual Information I(X;Y): 1.5029
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0007
+    KL Divergence (Total): 0.0012
+    Mutual Information I(X;Y): 1.8339
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9750
+    Correlation x1→x2: 0.9872
+    MAE x2→x1: 0.1677
+    MAE x1→x2: 0.0934
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0008.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 9/20
+  Training Metrics:
+    loss_1: 0.0615
+    loss_2: 0.0357
+WARNING: Negative H(X|Y) = -0.205131
+WARNING: Negative H(Y|X) = -0.201665
+WARNING: Negative H(X|Y) = -0.711517
+WARNING: Negative H(Y|X) = -0.715208
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0024
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0029
+    Mutual Information I(X;Y): 1.5972
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0028
+    KL Divergence (Total): 0.0033
+    Mutual Information I(X;Y): 2.1071
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9793
+    Correlation x1→x2: 0.9926
+    MAE x2→x1: 0.1580
+    MAE x1→x2: 0.1025
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0009.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+Setting up frozen priors for KL regularization
+
+============================================================
+Warmup complete! Starting cooperative DDMEC training
+============================================================
+  RL Learning Rate: 1.00e-05 (scaled by 0.1)
+  KL Weight: 0.1
+  PPO Clip: 0.1
+============================================================
+
+
+Epoch 10/20
+  Training Metrics:
+    loss_1: 0.0539
+    loss_2: 0.0324
+    1->2_pg_loss: 9.3950
+    1->2_kl_reg: 93.9497
+    1->2_reward_mean: -0.0604
+    1->2_reward_std: 0.1015
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 41.4075
+    2->1_kl_reg: 414.0734
+    2->1_reward_mean: -0.0403
+    2->1_reward_std: 0.0629
+    2->1_advantage_mean: 0.0000
+WARNING: Negative H(X|Y) = -0.371126
+WARNING: Negative H(Y|X) = -0.354800
+WARNING: Negative H(X|Y) = -0.889871
+WARNING: Negative H(Y|X) = -0.896583
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0016
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.0022
+    Mutual Information I(X;Y): 1.7504
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.0026
+    KL Divergence (Total): 0.0032
+    Mutual Information I(X;Y): 2.2854
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9848
+    Correlation x1→x2: 0.9948
+    MAE x2→x1: 0.1307
+    MAE x1→x2: 0.0868
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0010.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 11/20
+  Training Metrics:
+    1->2_pg_loss: 9.8152
+    1->2_kl_reg: 98.1515
+    1->2_reward_mean: -0.0835
+    1->2_reward_std: 0.1787
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 30.9480
+    2->1_kl_reg: 309.4786
+    2->1_reward_mean: -0.0716
+    2->1_reward_std: 0.1406
+    2->1_advantage_mean: 0.0000
+WARNING: Negative H(X|Y) = -0.266022
+WARNING: Negative H(Y|X) = -0.340173
+WARNING: Negative H(X|Y) = -0.474934
+WARNING: Negative H(Y|X) = -0.558809
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1690
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.1695
+    Mutual Information I(X;Y): 1.7357
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.1855
+    KL Divergence (Total): 0.1860
+    Mutual Information I(X;Y): 1.8705
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9844
+    Correlation x1→x2: 0.9881
+    MAE x2→x1: 0.5792
+    MAE x1→x2: 0.5887
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0011.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 12/20
+  Training Metrics:
+    1->2_pg_loss: 9.6765
+    1->2_kl_reg: 96.7647
+    1->2_reward_mean: -0.0767
+    1->2_reward_std: 0.1623
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 24.2556
+    2->1_kl_reg: 242.5556
+    2->1_reward_mean: -0.0773
+    2->1_reward_std: 0.1550
+    2->1_advantage_mean: 0.0000
+WARNING: Negative H(X|Y) = -0.272819
+WARNING: Negative H(Y|X) = -0.375800
+WARNING: Negative H(X|Y) = -0.488748
+WARNING: Negative H(Y|X) = -0.588034
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.2295
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.2301
+    Mutual Information I(X;Y): 1.7714
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2330
+    KL Divergence (Total): 0.2336
+    Mutual Information I(X;Y): 1.8843
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9855
+    Correlation x1→x2: 0.9884
+    MAE x2→x1: 0.6701
+    MAE x1→x2: 0.6595
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0012.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 13/20
+  Training Metrics:
+    1->2_pg_loss: 9.5664
+    1->2_kl_reg: 95.6634
+    1->2_reward_mean: -0.0706
+    1->2_reward_std: 0.1488
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 21.4155
+    2->1_kl_reg: 214.1544
+    2->1_reward_mean: -0.0769
+    2->1_reward_std: 0.1534
+    2->1_advantage_mean: 0.0000
+WARNING: Negative H(X|Y) = -0.309500
+WARNING: Negative H(Y|X) = -0.404958
+WARNING: Negative H(X|Y) = -0.202256
+WARNING: Negative H(Y|X) = -0.290426
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.2390
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.2395
+    Mutual Information I(X;Y): 1.8005
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2555
+    KL Divergence (Total): 0.2561
+    Mutual Information I(X;Y): 1.5978
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9863
+    Correlation x1→x2: 0.9794
+    MAE x2→x1: 0.6860
+    MAE x1→x2: 0.6960
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0013.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 14/20
+  Training Metrics:
+    1->2_pg_loss: 9.7399
+    1->2_kl_reg: 97.3986
+    1->2_reward_mean: -0.0726
+    1->2_reward_std: 0.1536
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 24.5983
+    2->1_kl_reg: 245.9823
+    2->1_reward_mean: -0.0761
+    2->1_reward_std: 0.1521
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(X|Y) = -0.270573
+WARNING: Negative H(Y|X) = -0.351281
+WARNING: Negative H(X|Y) = -0.480143
+WARNING: Negative H(Y|X) = -0.570641
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1950
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.1956
+    Mutual Information I(X;Y): 1.7469
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2204
+    KL Divergence (Total): 0.2209
+    Mutual Information I(X;Y): 1.8757
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9847
+    Correlation x1→x2: 0.9882
+    MAE x2→x1: 0.6215
+    MAE x1→x2: 0.6430
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0014.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 15/20
+  Training Metrics:
+    1->2_pg_loss: 9.6905
+    1->2_kl_reg: 96.9047
+    1->2_reward_mean: -0.0709
+    1->2_reward_std: 0.1495
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 23.0110
+    2->1_kl_reg: 230.1088
+    2->1_reward_mean: -0.0769
+    2->1_reward_std: 0.1565
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(X|Y) = -0.362817
+WARNING: Negative H(Y|X) = -0.467112
+WARNING: Negative H(X|Y) = -0.411938
+WARNING: Negative H(Y|X) = -0.505007
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.2655
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.2660
+    Mutual Information I(X;Y): 1.8627
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2718
+    KL Divergence (Total): 0.2723
+    Mutual Information I(X;Y): 1.8075
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9879
+    Correlation x1→x2: 0.9865
+    MAE x2→x1: 0.7217
+    MAE x1→x2: 0.7175
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0015.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 16/20
+  Training Metrics:
+    1->2_pg_loss: 9.6855
+    1->2_kl_reg: 96.8544
+    1->2_reward_mean: -0.0703
+    1->2_reward_std: 0.1491
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 21.9057
+    2->1_kl_reg: 219.0561
+    2->1_reward_mean: -0.0767
+    2->1_reward_std: 0.1588
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(X|Y) = -0.382482
+WARNING: Negative H(Y|X) = -0.458882
+WARNING: Negative H(X|Y) = -0.479911
+WARNING: Negative H(Y|X) = -0.551008
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.2417
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.2423
+    Mutual Information I(X;Y): 1.8545
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2439
+    KL Divergence (Total): 0.2444
+    Mutual Information I(X;Y): 1.8755
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9877
+    Correlation x1→x2: 0.9882
+    MAE x2→x1: 0.6936
+    MAE x1→x2: 0.6838
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0016.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 17/20
+  Training Metrics:
+    1->2_pg_loss: 9.6681
+    1->2_kl_reg: 96.6807
+    1->2_reward_mean: -0.0692
+    1->2_reward_std: 0.1466
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 22.2342
+    2->1_kl_reg: 222.3413
+    2->1_reward_mean: -0.0759
+    2->1_reward_std: 0.1539
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(X|Y) = -0.303741
+WARNING: Negative H(Y|X) = -0.394104
+WARNING: Negative H(X|Y) = -0.414911
+WARNING: Negative H(Y|X) = -0.503142
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.2290
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.2296
+    Mutual Information I(X;Y): 1.7897
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2758
+    KL Divergence (Total): 0.2764
+    Mutual Information I(X;Y): 1.8105
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9860
+    Correlation x1→x2: 0.9866
+    MAE x2→x1: 0.6723
+    MAE x1→x2: 0.7245
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0017.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 18/20
+  Training Metrics:
+    1->2_pg_loss: 9.7028
+    1->2_kl_reg: 97.0282
+    1->2_reward_mean: -0.0692
+    1->2_reward_std: 0.1466
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 22.8797
+    2->1_kl_reg: 228.7959
+    2->1_reward_mean: -0.0754
+    2->1_reward_std: 0.1550
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(X|Y) = -0.353209
+WARNING: Negative H(Y|X) = -0.419998
+WARNING: Negative H(X|Y) = -0.452102
+WARNING: Negative H(Y|X) = -0.506853
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1436
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.1442
+    Mutual Information I(X;Y): 1.8156
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.1678
+    KL Divergence (Total): 0.1683
+    Mutual Information I(X;Y): 1.8477
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9867
+    Correlation x1→x2: 0.9875
+    MAE x2→x1: 0.5349
+    MAE x1→x2: 0.5667
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0018.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 19/20
+  Training Metrics:
+    1->2_pg_loss: 9.7277
+    1->2_kl_reg: 97.2771
+    1->2_reward_mean: -0.0706
+    1->2_reward_std: 0.1493
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 24.4084
+    2->1_kl_reg: 244.0829
+    2->1_reward_mean: -0.0749
+    2->1_reward_std: 0.1518
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(X|Y) = -0.354931
+WARNING: Negative H(Y|X) = -0.415163
+WARNING: Negative H(X|Y) = -0.525845
+WARNING: Negative H(Y|X) = -0.592496
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1398
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.1403
+    Mutual Information I(X;Y): 1.8107
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.1542
+    KL Divergence (Total): 0.1547
+    Mutual Information I(X;Y): 1.9214
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9866
+    Correlation x1→x2: 0.9892
+    MAE x2→x1: 0.5287
+    MAE x1→x2: 0.5389
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0019.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+
+Epoch 20/20
+  Training Metrics:
+    1->2_pg_loss: 9.7518
+    1->2_kl_reg: 97.5181
+    1->2_reward_mean: -0.0697
+    1->2_reward_std: 0.1474
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 23.1752
+    2->1_kl_reg: 231.7513
+    2->1_reward_mean: -0.0752
+    2->1_reward_std: 0.1528
+    2->1_advantage_mean: 0.0000
+WARNING: Negative H(X|Y) = -0.351179
+WARNING: Negative H(Y|X) = -0.417871
+WARNING: Negative H(X|Y) = -0.360699
+WARNING: Negative H(Y|X) = -0.422858
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1949
+    KL Divergence (X2): 0.0005
+    KL Divergence (Total): 0.1954
+    Mutual Information I(X;Y): 1.8134
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0005
+    KL Divergence (X2): 0.2159
+    KL Divergence (Total): 0.2164
+    Mutual Information I(X;Y): 1.7563
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9866
+    Correlation x1→x2: 0.9850
+    MAE x2→x1: 0.6237
+    MAE x1→x2: 0.6440
+  Plot saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots\epoch_0020.png
+  Table saved: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  LaTeX table generated: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\results_table.tex
+
+============================================================
+Training Complete!
+============================================================
+Best epoch: 5
+Best KL Total: 0.0020
+
+Checkpoints saved to: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\checkpoints
+Plots saved to: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\plots
+Tables saved to: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables
+  - CSV: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\epoch_metrics.csv
+  - LaTeX: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\tables\results_table.tex
+Best model saved to: runs\ablation_kl0.1_clip0.1_lr1e-04_20251128_132054_20251128_132117\checkpoints\best_model.pt
+============================================================
+
+============================================================
+Evaluating Learned Coupling
+============================================================
+
+Direction x2 -> x1:
+  Input x2: mean=9.99, std=1.01
+  Generated x1: mean=2.62, std=1.08
+  Expected x1: mean=2.00, std=1.00
+  Mean absolute offset error: 0.626
+
+Direction x1 -> x2:
+  Input x1: mean=2.00, std=1.00
+  Generated x2: mean=9.37, std=0.93
+  Expected x2: mean=10.00, std=1.00
+  Mean absolute offset error: 0.638
+
+Round-trip consistency (x2 -> x1 -> x2):
+  Reconstruction error: 0.173
+
+============================================================
+Information-Theoretic Metrics
+============================================================
+WARNING: Negative H(X|Y) = -0.354550
+WARNING: Negative H(Y|X) = -0.421169
+WARNING: Negative H(X|Y) = -0.432100
+WARNING: Negative H(Y|X) = -0.500800
+
+Direction x2 → x1:
+  KL Divergence D(p₁||q₁): 0.1999
+  KL Divergence D(p₂||q₂): 0.0002
+  Total KL Divergence: 0.2001
+  Entropy H(X₁): 1.5001 nats
+  Entropy H(X₂): 1.4335 nats
+  Joint Entropy H(X₁,X₂): 1.0790 nats
+  Mutual Information I(X₁;X₂): 1.8547 nats
+  Conditional Entropy H(X₁|X₂): -0.3546 nats
+  Conditional Entropy H(X₂|X₁): -0.4212 nats
+
+Direction x1 → x2:
+  KL Divergence D(p₁||q₁): 0.0000
+  KL Divergence D(p₂||q₂): 0.2051
+  Total KL Divergence: 0.2051
+  Mutual Information I(X₁;X₂): 1.8507 nats
+
+Theoretical Reference (Perfect Independent Coupling):
+  H(X₁) ≈ 1.4189 nats
+  H(X₂) ≈ 1.4189 nats
+  H(X₁,X₂) ≈ 2.8379 nats (if independent)
+  I(X₁;X₂) ≈ 0.0 nats (if independent)
+  Note: Minimum entropy coupling has I(X₁;X₂) → max
+
+Generating visualizations...
+
+Visualization saved to ddmec_results.png
+
+Logging results to Weights & Biases...
+Trained models saved to ddmec_trained.pt
+✓ All results logged to W&B: https://wandb.ai/adnankaremjs/ddmec-ablation-kl/runs/md68h5zr

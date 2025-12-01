@@ -1,0 +1,985 @@
+
+✓ Weights & Biases initialized: ddmec_20251128_015248
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  Dashboard: https://wandb.ai/adnankaremjs/ddmec-1d/runs/jrm9zyoe
+
+Initializing DDMEC...
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+============================================================
+Model Architecture
+============================================================
+
+DDPM Model 1 (N(2,1)):
+  Trainable parameters: 9,761
+  Total parameters:     9,761
+
+DDPM Model 2 (N(10,1)):
+  Trainable parameters: 9,761
+  Total parameters:     9,761
+
+DDMEC Overall:
+  Trainable parameters: 19,522
+  Total parameters:     19,522
+============================================================
+
+Creating coupled training data...
+X1: mean=1.99, std=1.00
+X2: mean=9.99, std=1.00
+Correlation: 1.000
+
+Training DDMEC...
+Phase 1: Warmup (supervised) - first 1000 steps
+Phase 2: Cooperative (RL-based) - remaining steps
+------------------------------------------------------------
+Starting with warmup LR: 1.00e-05, will increase to 1.00e-04
+Training DDMEC for 50 epochs, 1562 batches per epoch
+Saving checkpoints to: runs\ddmec_20251128_015248\checkpoints
+Saving plots to: runs\ddmec_20251128_015248\plots
+Setting up frozen priors for KL regularization
+Warmup complete. Starting cooperative DDMEC training with LR=0.0001
+
+Epoch 1/50
+  Training Metrics:
+    loss_1: 0.7899
+    loss_2: 0.7457
+    1->2_pg_loss: 14.8194
+    1->2_kl_reg: 148.1933
+    1->2_reward_mean: -0.3055
+    1->2_reward_std: 0.3714
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.5864
+    2->1_kl_reg: 15.8635
+    2->1_reward_mean: -0.2823
+    2->1_reward_std: 0.3348
+    2->1_advantage_mean: -0.0000
+WARNING: Negative mutual information (-0.000665). This suggests numerical instability.
+  H(X)=1.390724, H(Y)=1.444162, H(X,Y)=2.835552
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0675
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.0684
+    Mutual Information I(X;Y): 0.0039
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.0086
+    KL Divergence (Total): 0.0095
+    Mutual Information I(X;Y): -0.0007
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0001.png
+  ★ New best model! (KL Total: 0.0390)
+
+Epoch 2/50
+  Training Metrics:
+    1->2_pg_loss: 14.8304
+    1->2_kl_reg: 148.3036
+    1->2_reward_mean: -0.2550
+    1->2_reward_std: 0.3176
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.6811
+    2->1_kl_reg: 16.8113
+    2->1_reward_mean: -0.2565
+    2->1_reward_std: 0.3096
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0007
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.0016
+    Mutual Information I(X;Y): 0.4698
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.0019
+    KL Divergence (Total): 0.0028
+    Mutual Information I(X;Y): 0.4115
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0002.png
+  ★ New best model! (KL Total: 0.0022)
+
+Epoch 3/50
+  Training Metrics:
+    1->2_pg_loss: 14.7361
+    1->2_kl_reg: 147.3607
+    1->2_reward_mean: -0.2052
+    1->2_reward_std: 0.2793
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.8022
+    2->1_kl_reg: 18.0220
+    2->1_reward_mean: -0.2131
+    2->1_reward_std: 0.2813
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.7410
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.7419
+    Mutual Information I(X;Y): 0.5382
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.5082
+    KL Divergence (Total): 0.5091
+    Mutual Information I(X;Y): 0.5423
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0003.png
+
+Epoch 4/50
+  Training Metrics:
+    1->2_pg_loss: 14.6855
+    1->2_kl_reg: 146.8545
+    1->2_reward_mean: -0.1781
+    1->2_reward_std: 0.2554
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.8336
+    2->1_kl_reg: 18.3361
+    2->1_reward_mean: -0.1889
+    2->1_reward_std: 0.2618
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0126
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.0135
+    Mutual Information I(X;Y): 0.8376
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.0439
+    KL Divergence (Total): 0.0448
+    Mutual Information I(X;Y): 0.7809
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0004.png
+
+Epoch 5/50
+  Training Metrics:
+    1->2_pg_loss: 14.5270
+    1->2_kl_reg: 145.2702
+    1->2_reward_mean: -0.1511
+    1->2_reward_std: 0.2287
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.8016
+    2->1_kl_reg: 18.0159
+    2->1_reward_mean: -0.1678
+    2->1_reward_std: 0.2462
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1091
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.1100
+    Mutual Information I(X;Y): 1.0930
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.1170
+    KL Divergence (Total): 0.1179
+    Mutual Information I(X;Y): 0.9431
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0005.png
+
+Epoch 6/50
+  Training Metrics:
+    1->2_pg_loss: 14.4617
+    1->2_kl_reg: 144.6173
+    1->2_reward_mean: -0.1307
+    1->2_reward_std: 0.2079
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.8220
+    2->1_kl_reg: 18.2204
+    2->1_reward_mean: -0.1483
+    2->1_reward_std: 0.2275
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.0077
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.0086
+    Mutual Information I(X;Y): 1.1564
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.0381
+    KL Divergence (Total): 0.0390
+    Mutual Information I(X;Y): 1.0687
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0006.png
+
+Epoch 7/50
+  Training Metrics:
+    1->2_pg_loss: 14.3378
+    1->2_kl_reg: 143.3783
+    1->2_reward_mean: -0.1167
+    1->2_reward_std: 0.1964
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.7125
+    2->1_kl_reg: 17.1252
+    2->1_reward_mean: -0.1366
+    2->1_reward_std: 0.2164
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.3018
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.3027
+    Mutual Information I(X;Y): 1.2515
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.2236
+    KL Divergence (Total): 0.2245
+    Mutual Information I(X;Y): 0.9760
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0007.png
+
+Epoch 8/50
+  Training Metrics:
+    1->2_pg_loss: 14.1564
+    1->2_kl_reg: 141.5636
+    1->2_reward_mean: -0.1091
+    1->2_reward_std: 0.1896
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.6591
+    2->1_kl_reg: 16.5904
+    2->1_reward_mean: -0.1329
+    2->1_reward_std: 0.2139
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.1707
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.1716
+    Mutual Information I(X;Y): 1.2460
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.1639
+    KL Divergence (Total): 0.1648
+    Mutual Information I(X;Y): 1.2201
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0008.png
+
+Epoch 9/50
+  Training Metrics:
+    1->2_pg_loss: 14.0101
+    1->2_kl_reg: 140.1006
+    1->2_reward_mean: -0.1046
+    1->2_reward_std: 0.1891
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.6527
+    2->1_kl_reg: 16.5270
+    2->1_reward_mean: -0.1280
+    2->1_reward_std: 0.2089
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1.3372
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 1.3381
+    Mutual Information I(X;Y): 0.9318
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.6377
+    KL Divergence (Total): 0.6386
+    Mutual Information I(X;Y): 1.0957
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0009.png
+
+Epoch 10/50
+  Training Metrics:
+    1->2_pg_loss: 13.9652
+    1->2_kl_reg: 139.6519
+    1->2_reward_mean: -0.0995
+    1->2_reward_std: 0.1813
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.6184
+    2->1_kl_reg: 16.1837
+    2->1_reward_mean: -0.1236
+    2->1_reward_std: 0.2040
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.5829
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.5838
+    Mutual Information I(X;Y): 1.1845
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.3073
+    KL Divergence (Total): 0.3081
+    Mutual Information I(X;Y): 1.0291
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0010.png
+
+Epoch 11/50
+  Training Metrics:
+    1->2_pg_loss: 13.9388
+    1->2_kl_reg: 139.3877
+    1->2_reward_mean: -0.0997
+    1->2_reward_std: 0.1822
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.6121
+    2->1_kl_reg: 16.1210
+    2->1_reward_mean: -0.1233
+    2->1_reward_std: 0.2043
+    2->1_advantage_mean: -0.0000
+WARNING: Negative H(Y|X) = -0.098875
+WARNING: Negative H(Y|X) = -0.028179
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.9330
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.9339
+    Mutual Information I(X;Y): 1.4896
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.5673
+    KL Divergence (Total): 0.5682
+    Mutual Information I(X;Y): 1.2396
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0011.png
+
+Epoch 12/50
+  Training Metrics:
+    1->2_pg_loss: 13.6781
+    1->2_kl_reg: 136.7808
+    1->2_reward_mean: -0.0966
+    1->2_reward_std: 0.1776
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.4940
+    2->1_kl_reg: 14.9401
+    2->1_reward_mean: -0.1254
+    2->1_reward_std: 0.2075
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.7174
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.7183
+    Mutual Information I(X;Y): 1.2997
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.4923
+    KL Divergence (Total): 0.4932
+    Mutual Information I(X;Y): 1.2024
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0012.png
+
+Epoch 13/50
+  Training Metrics:
+    1->2_pg_loss: 13.5892
+    1->2_kl_reg: 135.8915
+    1->2_reward_mean: -0.0973
+    1->2_reward_std: 0.1781
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.4441
+    2->1_kl_reg: 14.4413
+    2->1_reward_mean: -0.1277
+    2->1_reward_std: 0.2098
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1.8252
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 1.8261
+    Mutual Information I(X;Y): 0.3336
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.4072
+    KL Divergence (Total): 0.4081
+    Mutual Information I(X;Y): 1.0037
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0013.png
+
+Epoch 14/50
+  Training Metrics:
+    1->2_pg_loss: 13.5577
+    1->2_kl_reg: 135.5771
+    1->2_reward_mean: -0.0999
+    1->2_reward_std: 0.1807
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.4628
+    2->1_kl_reg: 14.6279
+    2->1_reward_mean: -0.1342
+    2->1_reward_std: 0.2172
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 2.5124
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 2.5133
+    Mutual Information I(X;Y): 0.6117
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 1.0050
+    KL Divergence (Total): 1.0059
+    Mutual Information I(X;Y): 0.9831
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0014.png
+
+Epoch 15/50
+  Training Metrics:
+    1->2_pg_loss: 13.7011
+    1->2_kl_reg: 137.0107
+    1->2_reward_mean: -0.1051
+    1->2_reward_std: 0.1859
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.4604
+    2->1_kl_reg: 14.6034
+    2->1_reward_mean: -0.1350
+    2->1_reward_std: 0.2160
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 0.4311
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 0.4319
+    Mutual Information I(X;Y): 1.2891
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.2641
+    KL Divergence (Total): 0.2650
+    Mutual Information I(X;Y): 1.1366
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0015.png
+
+Epoch 16/50
+  Training Metrics:
+    1->2_pg_loss: 13.5213
+    1->2_kl_reg: 135.2125
+    1->2_reward_mean: -0.1046
+    1->2_reward_std: 0.1868
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3918
+    2->1_kl_reg: 13.9182
+    2->1_reward_mean: -0.1391
+    2->1_reward_std: 0.2200
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 2.8085
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 2.8094
+    Mutual Information I(X;Y): 0.7066
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.8216
+    KL Divergence (Total): 0.8225
+    Mutual Information I(X;Y): 1.0219
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0016.png
+
+Epoch 17/50
+  Training Metrics:
+    1->2_pg_loss: 13.6115
+    1->2_kl_reg: 136.1147
+    1->2_reward_mean: -0.1090
+    1->2_reward_std: 0.1918
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.4004
+    2->1_kl_reg: 14.0035
+    2->1_reward_mean: -0.1442
+    2->1_reward_std: 0.2259
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 3.5436
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 3.5445
+    Mutual Information I(X;Y): 0.4238
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.4650
+    KL Divergence (Total): 0.4659
+    Mutual Information I(X;Y): 0.7912
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0017.png
+
+Epoch 18/50
+  Training Metrics:
+    1->2_pg_loss: 13.6421
+    1->2_kl_reg: 136.4207
+    1->2_reward_mean: -0.1096
+    1->2_reward_std: 0.1918
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.4266
+    2->1_kl_reg: 14.2655
+    2->1_reward_mean: -0.1439
+    2->1_reward_std: 0.2247
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1.7108
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 1.7117
+    Mutual Information I(X;Y): 0.8150
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.8414
+    KL Divergence (Total): 0.8423
+    Mutual Information I(X;Y): 0.9668
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0018.png
+
+Epoch 19/50
+  Training Metrics:
+    1->2_pg_loss: 13.4832
+    1->2_kl_reg: 134.8323
+    1->2_reward_mean: -0.1072
+    1->2_reward_std: 0.1888
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3649
+    2->1_kl_reg: 13.6488
+    2->1_reward_mean: -0.1453
+    2->1_reward_std: 0.2258
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1.7625
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 1.7634
+    Mutual Information I(X;Y): 0.7790
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.5350
+    KL Divergence (Total): 0.5359
+    Mutual Information I(X;Y): 0.7479
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0019.png
+
+Epoch 20/50
+  Training Metrics:
+    1->2_pg_loss: 13.5630
+    1->2_kl_reg: 135.6300
+    1->2_reward_mean: -0.1112
+    1->2_reward_std: 0.1948
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3951
+    2->1_kl_reg: 13.9513
+    2->1_reward_mean: -0.1466
+    2->1_reward_std: 0.2285
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1.5595
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 1.5604
+    Mutual Information I(X;Y): 0.8292
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.6045
+    KL Divergence (Total): 0.6054
+    Mutual Information I(X;Y): 0.8368
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0020.png
+
+Epoch 21/50
+  Training Metrics:
+    1->2_pg_loss: 13.4623
+    1->2_kl_reg: 134.6229
+    1->2_reward_mean: -0.1113
+    1->2_reward_std: 0.1927
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3750
+    2->1_kl_reg: 13.7497
+    2->1_reward_mean: -0.1495
+    2->1_reward_std: 0.2299
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 3.9941
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 3.9950
+    Mutual Information I(X;Y): 0.6534
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.8369
+    KL Divergence (Total): 0.8378
+    Mutual Information I(X;Y): 0.8649
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0021.png
+
+Epoch 22/50
+  Training Metrics:
+    1->2_pg_loss: 13.3647
+    1->2_kl_reg: 133.6463
+    1->2_reward_mean: -0.1105
+    1->2_reward_std: 0.1926
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3408
+    2->1_kl_reg: 13.4083
+    2->1_reward_mean: -0.1508
+    2->1_reward_std: 0.2320
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 2.9266
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 2.9275
+    Mutual Information I(X;Y): 0.5227
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.5156
+    KL Divergence (Total): 0.5164
+    Mutual Information I(X;Y): 0.8664
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0022.png
+
+Epoch 23/50
+  Training Metrics:
+    1->2_pg_loss: 13.3402
+    1->2_kl_reg: 133.4020
+    1->2_reward_mean: -0.1150
+    1->2_reward_std: 0.1964
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3206
+    2->1_kl_reg: 13.2057
+    2->1_reward_mean: -0.1570
+    2->1_reward_std: 0.2343
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 1.5256
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 1.5264
+    Mutual Information I(X;Y): 0.7003
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.4013
+    KL Divergence (Total): 0.4022
+    Mutual Information I(X;Y): 0.8399
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0023.png
+
+Epoch 24/50
+  Training Metrics:
+    1->2_pg_loss: 13.2494
+    1->2_kl_reg: 132.4935
+    1->2_reward_mean: -0.1167
+    1->2_reward_std: 0.2009
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3069
+    2->1_kl_reg: 13.0694
+    2->1_reward_mean: -0.1619
+    2->1_reward_std: 0.2429
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 6.9307
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 6.9316
+    Mutual Information I(X;Y): 0.4209
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.4759
+    KL Divergence (Total): 0.4768
+    Mutual Information I(X;Y): 0.7004
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0024.png
+
+Epoch 25/50
+  Training Metrics:
+    1->2_pg_loss: 13.3065
+    1->2_kl_reg: 133.0643
+    1->2_reward_mean: -0.1243
+    1->2_reward_std: 0.2088
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3632
+    2->1_kl_reg: 13.6316
+    2->1_reward_mean: -0.1687
+    2->1_reward_std: 0.2474
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 3.3924
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 3.3933
+    Mutual Information I(X;Y): 0.3136
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.2868
+    KL Divergence (Total): 0.2877
+    Mutual Information I(X;Y): 0.7708
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0025.png
+
+Epoch 26/50
+  Training Metrics:
+    1->2_pg_loss: 13.3188
+    1->2_kl_reg: 133.1866
+    1->2_reward_mean: -0.1268
+    1->2_reward_std: 0.2122
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3696
+    2->1_kl_reg: 13.6961
+    2->1_reward_mean: -0.1658
+    2->1_reward_std: 0.2456
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 18.5420
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 18.5429
+    Mutual Information I(X;Y): 0.2692
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.5612
+    KL Divergence (Total): 0.5620
+    Mutual Information I(X;Y): 0.7368
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0026.png
+
+Epoch 27/50
+  Training Metrics:
+    1->2_pg_loss: 13.1603
+    1->2_kl_reg: 131.6018
+    1->2_reward_mean: -0.1224
+    1->2_reward_std: 0.2049
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3697
+    2->1_kl_reg: 13.6971
+    2->1_reward_mean: -0.1619
+    2->1_reward_std: 0.2408
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 17.2260
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 17.2269
+    Mutual Information I(X;Y): 0.3389
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.6324
+    KL Divergence (Total): 0.6333
+    Mutual Information I(X;Y): 0.6870
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0027.png
+
+Epoch 28/50
+  Training Metrics:
+    1->2_pg_loss: 13.0837
+    1->2_kl_reg: 130.8358
+    1->2_reward_mean: -0.1269
+    1->2_reward_std: 0.2118
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.3579
+    2->1_kl_reg: 13.5788
+    2->1_reward_mean: -0.1668
+    2->1_reward_std: 0.2469
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 44.7323
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 44.7332
+    Mutual Information I(X;Y): 0.2969
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.7062
+    KL Divergence (Total): 0.7071
+    Mutual Information I(X;Y): 0.6757
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0028.png
+
+Epoch 29/50
+  Training Metrics:
+    1->2_pg_loss: 13.0887
+    1->2_kl_reg: 130.8848
+    1->2_reward_mean: -0.1247
+    1->2_reward_std: 0.2082
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.3720
+    2->1_kl_reg: 13.7195
+    2->1_reward_mean: -0.1647
+    2->1_reward_std: 0.2433
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 38.5188
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 38.5197
+    Mutual Information I(X;Y): 0.2262
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.6819
+    KL Divergence (Total): 0.6828
+    Mutual Information I(X;Y): 0.6093
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0029.png
+
+Epoch 30/50
+  Training Metrics:
+    1->2_pg_loss: 13.0957
+    1->2_kl_reg: 130.9548
+    1->2_reward_mean: -0.1276
+    1->2_reward_std: 0.2111
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3632
+    2->1_kl_reg: 13.6319
+    2->1_reward_mean: -0.1669
+    2->1_reward_std: 0.2461
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 12.5225
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 12.5234
+    Mutual Information I(X;Y): 0.2913
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.4920
+    KL Divergence (Total): 0.4929
+    Mutual Information I(X;Y): 0.6566
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0030.png
+
+Epoch 31/50
+  Training Metrics:
+    1->2_pg_loss: 12.7740
+    1->2_kl_reg: 127.7379
+    1->2_reward_mean: -0.1231
+    1->2_reward_std: 0.2081
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3047
+    2->1_kl_reg: 13.0473
+    2->1_reward_mean: -0.1646
+    2->1_reward_std: 0.2448
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 37.8081
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 37.8090
+    Mutual Information I(X;Y): 0.2271
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.8923
+    KL Divergence (Total): 0.8931
+    Mutual Information I(X;Y): 0.6365
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0031.png
+
+Epoch 32/50
+  Training Metrics:
+    1->2_pg_loss: 12.8269
+    1->2_kl_reg: 128.2665
+    1->2_reward_mean: -0.1282
+    1->2_reward_std: 0.2128
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3255
+    2->1_kl_reg: 13.2551
+    2->1_reward_mean: -0.1695
+    2->1_reward_std: 0.2471
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 10.5732
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 10.5741
+    Mutual Information I(X;Y): 0.1331
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.3043
+    KL Divergence (Total): 0.3052
+    Mutual Information I(X;Y): 0.7379
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0032.png
+
+Epoch 33/50
+  Training Metrics:
+    1->2_pg_loss: 12.9821
+    1->2_kl_reg: 129.8190
+    1->2_reward_mean: -0.1305
+    1->2_reward_std: 0.2140
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3355
+    2->1_kl_reg: 13.3551
+    2->1_reward_mean: -0.1749
+    2->1_reward_std: 0.2542
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 10.3463
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 10.3472
+    Mutual Information I(X;Y): 0.1360
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.1948
+    KL Divergence (Total): 0.1957
+    Mutual Information I(X;Y): 0.6846
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0033.png
+
+Epoch 34/50
+  Training Metrics:
+    1->2_pg_loss: 12.8412
+    1->2_kl_reg: 128.4091
+    1->2_reward_mean: -0.1292
+    1->2_reward_std: 0.2152
+    1->2_advantage_mean: -0.0000
+    2->1_pg_loss: 1.3313
+    2->1_kl_reg: 13.3129
+    2->1_reward_mean: -0.1742
+    2->1_reward_std: 0.2555
+    2->1_advantage_mean: -0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 26.8882
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 26.8891
+    Mutual Information I(X;Y): 0.1504
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.2763
+    KL Divergence (Total): 0.2771
+    Mutual Information I(X;Y): 0.5929
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0034.png
+
+Epoch 35/50
+  Training Metrics:
+    1->2_pg_loss: 12.8906
+    1->2_kl_reg: 128.9028
+    1->2_reward_mean: -0.1337
+    1->2_reward_std: 0.2173
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.3461
+    2->1_kl_reg: 13.4608
+    2->1_reward_mean: -0.1791
+    2->1_reward_std: 0.2579
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 31.2634
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 31.2643
+    Mutual Information I(X;Y): 0.1836
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.3684
+    KL Divergence (Total): 0.3693
+    Mutual Information I(X;Y): 0.5283
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0035.png
+
+Epoch 36/50
+  Training Metrics:
+    1->2_pg_loss: 12.7881
+    1->2_kl_reg: 127.8777
+    1->2_reward_mean: -0.1352
+    1->2_reward_std: 0.2202
+    1->2_advantage_mean: 0.0000
+    2->1_pg_loss: 1.2895
+    2->1_kl_reg: 12.8951
+    2->1_reward_mean: -0.1840
+    2->1_reward_std: 0.2609
+    2->1_advantage_mean: 0.0000
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 20.0590
+    KL Divergence (X2): 0.0009
+    KL Divergence (Total): 20.0599
+    Mutual Information I(X;Y): 0.1804
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0009
+    KL Divergence (X2): 0.3113
+    KL Divergence (Total): 0.3122
+    Mutual Information I(X;Y): 0.5354
+  Plot saved: runs\ddmec_20251128_015248\plots\epoch_0036.png

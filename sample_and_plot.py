@@ -82,4 +82,3 @@ if __name__ == "__main__":
         print("[ERROR] Exception while running sample_and_plot.py:")
         traceback.print_exc()
 
-

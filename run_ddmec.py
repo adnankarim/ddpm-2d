@@ -140,16 +140,20 @@ def visualize_results(results: dict, save_path: str = "ddmec_results.png"):
     # Row 1: Coupling scatter plots
     ax1 = fig.add_subplot(gs[0, 0])
     ax1.scatter(results["x2_test"], results["x1_gen"], alpha=0.3, s=10)
+    ax1.plot([8, 12], [-6, -2], 'r--', label='Ideal coupling (slope=1)')
     ax1.set_xlabel("x2 (condition)")
     ax1.set_ylabel("x1 (generated)")
     ax1.set_title("Learned Coupling: x2 → x1")
+    ax1.legend()
     ax1.grid(True, alpha=0.3)
     
     ax2 = fig.add_subplot(gs[0, 1])
     ax2.scatter(results["x1_test"], results["x2_gen"], alpha=0.3, s=10)
+    ax2.plot([0, 4], [8, 12], 'r--', label='Ideal coupling (slope=1)')
     ax2.set_xlabel("x1 (condition)")
     ax2.set_ylabel("x2 (generated)")
     ax2.set_title("Learned Coupling: x1 → x2")
+    ax2.legend()
     ax2.grid(True, alpha=0.3)
     
     # Joint distribution
@@ -241,22 +245,37 @@ def count_parameters(model):
     return trainable, total
 
 
-def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
+def main(use_wandb=True, use_tensorboard=True, wandb_project="ddmec-1d", wandb_name=None,
+         kl_weight=0.5, ppo_clip=0.1, lr=1e-4, warmup_epochs=10, rl_lr_scale=0.1,
+         num_epochs=50, batch_size=64):
     print("="*60)
     print("DDMEC: Minimum Entropy Coupling for 1D Gaussians")
     print("="*60)
     
-    # Create run directory
+    # Create run directory with hyperparams in name for ablation studies
     import datetime
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if wandb_name:
         run_name = f"{wandb_name}_{timestamp}"
     else:
-        run_name = f"ddmec_{timestamp}"
+        run_name = f"ddmec_kl{kl_weight}_clip{ppo_clip}_lr{lr:.0e}_{timestamp}"
     
     run_dir = os.path.join("runs", run_name)
     os.makedirs(run_dir, exist_ok=True)
     print(f"\nRun directory: {run_dir}")
+    
+    # Print hyperparameters
+    print("\n" + "-"*60)
+    print("Hyperparameters:")
+    print("-"*60)
+    print(f"  KL Weight:      {kl_weight}")
+    print(f"  PPO Clip:       {ppo_clip}")
+    print(f"  Learning Rate:  {lr}")
+    print(f"  Warmup Epochs:  {warmup_epochs}")
+    print(f"  RL LR Scale:    {rl_lr_scale}")
+    print(f"  Num Epochs:     {num_epochs}")
+    print(f"  Batch Size:     {batch_size}")
+    print("-"*60)
     
     # Initialize Weights & Biases
     if use_wandb:
@@ -269,15 +288,19 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
                 "dist_1": "N(2, 1)",
                 "dist_2": "N(10, 1)",
                 "num_train_samples": 100000,
-                "batch_size": 64,
-                "learning_rate": 1e-4,
-                "num_epochs": 50,
-                "warmup_epochs": 10,
+                "batch_size": batch_size,
+                "learning_rate": lr,
+                "num_epochs": num_epochs,
+                "warmup_epochs": warmup_epochs,
                 "num_timesteps": 1000,
                 "run_dir": run_dir,
+                # RL hyperparameters
+                "kl_weight": kl_weight,
+                "ppo_clip": ppo_clip,
+                "rl_lr_scale": rl_lr_scale,
             }
         )
-        print(f"\n✓ Weights & Biases initialized: {wandb.run.name}")
+        print(f"\n[OK] Weights & Biases initialized: {wandb.run.name}")
         print(f"  Dashboard: {wandb.run.get_url()}")
     
     # Check if models exist
@@ -289,12 +312,17 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
             wandb.finish()
         return
     
-    # Initialize DDMEC
+    # Initialize DDMEC with hyperparameters
     print("\nInitializing DDMEC...")
     ddmec = DDMEC1D(
         model_path_1="ddpm_1d_2.pt",
         model_path_2="ddpm_1d_10.pt",
         use_wandb=use_wandb,
+        use_tensorboard=use_tensorboard,
+        kl_weight=kl_weight,
+        ppo_clip=ppo_clip,
+        warmup_epochs=warmup_epochs,
+        rl_lr_scale=rl_lr_scale,
     )
     
     # Log parameter counts
@@ -335,16 +363,16 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     
     # Train DDMEC
     print("\nTraining DDMEC...")
-    print("Phase 1: Warmup (supervised) - first 1000 steps")
-    print("Phase 2: Cooperative (RL-based) - remaining steps")
+    print(f"Phase 1: Warmup (supervised) - first {warmup_epochs} epochs")
+    print("Phase 2: Cooperative (RL-based) - remaining epochs")
     print("-" * 60)
     
     ddmec.train(
         dataset_1=x1_train,
         dataset_2=x2_train,
-        num_epochs=50,
-        batch_size=64,
-        lr=1e-4,
+        num_epochs=num_epochs,
+        batch_size=batch_size,
+        lr=lr,
         run_dir=run_dir,
     )
     
@@ -380,14 +408,12 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
         
         # Log visualization
         if os.path.exists("ddmec_results.png"):
-            wandb.log({"visualization": wandb.Image("ddmec_results.png")})
-        
-        # Save model as artifact
-        artifact = wandb.Artifact("ddmec-model", type="model")
-        artifact.add_file("ddmec_trained.pt")
-        wandb.log_artifact(artifact)
+            try:
+                wandb.log({"visualization": wandb.Image("ddmec_results.png")})
+            except Exception as e:
+                print(f"Warning: Failed to log visualization to W&B: {e}")
     
-    # Save trained model
+    # Save trained model FIRST (before artifact logging which may fail)
     save_path = "ddmec_trained.pt"
     torch.save({
         "model_1_state_dict": ddmec.ddpm_1.model.state_dict(),
@@ -399,9 +425,22 @@ def main(use_wandb=True, wandb_project="ddmec-1d", wandb_name=None):
     }, save_path)
     print(f"Trained models saved to {save_path}")
     
+    # Try to log artifact to wandb (may fail due to network issues)
     if use_wandb:
-        print(f"✓ All results logged to W&B: {wandb.run.get_url()}")
-        wandb.finish()
+        try:
+            artifact = wandb.Artifact("ddmec-model", type="model")
+            artifact.add_file(save_path)
+            wandb.log_artifact(artifact)
+            print(f"[OK] Model artifact logged to W&B")
+        except Exception as e:
+            print(f"Warning: Failed to log model artifact to W&B: {e}")
+            print("  (Model was saved locally - this is just a W&B connectivity issue)")
+        
+        try:
+            print(f"[OK] Results logged to W&B: {wandb.run.get_url()}")
+            wandb.finish()
+        except Exception as e:
+            print(f"Warning: Error finishing W&B run: {e}")
     
     print("\n" + "="*60)
     print("DDMEC Training Complete!")
@@ -419,12 +458,42 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Train DDMEC on 1D Gaussian coupling")
     parser.add_argument("--no-wandb", action="store_true", help="Disable Weights & Biases logging")
+    parser.add_argument("--no-tensorboard", action="store_true", help="Disable TensorBoard logging")
     parser.add_argument("--wandb-project", type=str, default="ddmec-1d", help="W&B project name")
     parser.add_argument("--wandb-name", type=str, default=None, help="W&B run name")
+    
+    # RL Hyperparameters for ablation studies
+    parser.add_argument("--kl-weight", type=float, default=0.5,
+                        help="KL regularization weight (Adnan used 0.1, we recommend 0.5 for stability)")
+    parser.add_argument("--ppo-clip", type=float, default=0.1,
+                        help="PPO clipping range (Adnan used 0.2, we recommend 0.1 for stability)")
+    parser.add_argument("--lr", type=float, default=1e-4,
+                        help="Learning rate")
+    parser.add_argument("--warmup-epochs", type=int, default=10,
+                        help="Number of warmup epochs with supervised training only")
+    parser.add_argument("--rl-lr-scale", type=float, default=0.1,
+                        help="Learning rate scale factor during RL phase (lower = more stable)")
+    parser.add_argument("--num-epochs", type=int, default=50,
+                        help="Total number of training epochs")
+    parser.add_argument("--batch-size", type=int, default=64,
+                        help="Batch size for training")
+    
     args = parser.parse_args()
     
     try:
-        main(use_wandb=not args.no_wandb, wandb_project=args.wandb_project, wandb_name=args.wandb_name)
+        main(
+            use_wandb=not args.no_wandb,
+            use_tensorboard=not args.no_tensorboard,
+            wandb_project=args.wandb_project,
+            wandb_name=args.wandb_name,
+            kl_weight=args.kl_weight,
+            ppo_clip=args.ppo_clip,
+            lr=args.lr,
+            warmup_epochs=args.warmup_epochs,
+            rl_lr_scale=args.rl_lr_scale,
+            num_epochs=args.num_epochs,
+            batch_size=args.batch_size,
+        )
     except KeyboardInterrupt:
         print("\n\nTraining interrupted by user.")
         if wandb.run is not None:

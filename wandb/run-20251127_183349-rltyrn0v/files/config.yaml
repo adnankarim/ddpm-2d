@@ -1,0 +1,91 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            zb76d35dr0jq30pqsq5e8z24fxnzkcr0:
+                codePath: run_ddmec.py
+                codePathLocal: run_ddmec.py
+                cpu_count: 6
+                cpu_count_logical: 12
+                cudaVersion: "12.5"
+                disk:
+                    /:
+                        total: "341898686464"
+                        used: "315419041792"
+                email: adnankaremjs@gmail.com
+                executable: C:\Users\dell\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\python.exe
+                git:
+                    commit: decd2f0c264484e9adea88d6db7e14246a1a3590
+                    remote: https://github.com/adnankarim/ddpm-2d.git
+                gpu: NVIDIA GeForce RTX 3090
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 10496
+                      memoryTotal: "25769803776"
+                      name: NVIDIA GeForce RTX 3090
+                      uuid: GPU-52a0ace5-5c52-65b5-c262-b6023ee9285f
+                host: DESKTOP-LITA292
+                memory:
+                    total: "34266128384"
+                os: Windows-11-10.0.26200-SP0
+                program: C:\Users\dell\Music\resd\run_ddmec.py
+                python: CPython 3.12.10
+                root: C:\Users\dell\Music\resd
+                startedAt: "2025-11-27T17:33:49.793183Z"
+                writerId: zb76d35dr0jq30pqsq5e8z24fxnzkcr0
+        m: []
+        python_version: 3.12.10
+        t:
+            "1":
+                - 1
+                - 105
+            "2":
+                - 1
+                - 105
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.10
+            "5": 0.23.0
+            "8":
+                - 3
+            "10":
+                - 21
+            "12": 0.23.0
+            "13": windows-amd64
+architecture:
+    value: DDMEC
+batch_size:
+    value: 64
+dataset:
+    value: 1D Gaussians
+ddmec_total_params:
+    value: 27972
+ddmec_trainable_params:
+    value: 27972
+dist_1:
+    value: N(2, 1)
+dist_2:
+    value: N(10, 1)
+learning_rate:
+    value: 0.0001
+model_1_total_params:
+    value: 13986
+model_1_trainable_params:
+    value: 13986
+model_2_total_params:
+    value: 13986
+model_2_trainable_params:
+    value: 13986
+num_epochs:
+    value: 50
+num_timesteps:
+    value: 1000
+num_train_samples:
+    value: 100000
+run_dir:
+    value: runs\ddmec_20251127_183346
+warmup_epochs:
+    value: 10

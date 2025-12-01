@@ -1,0 +1,40 @@
+% Auto-generated LaTeX table from DDMEC training
+% Copy this into your research paper
+
+\begin{table}[htbp]
+\centering
+\caption{DDMEC Training Progress: Information-Theoretic Metrics}
+\label{tab:ddmec_training}
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+Epoch & Phase & $D_{KL}^{fwd}$ & $D_{KL}^{bwd}$ & $I(X;Y)^{fwd}$ & $\rho_{x2\to x1}$ & $\rho_{x1\to x2}$ & MAE$_{x2\to x1}$ & MAE$_{x1\to x2}$ \\
+\midrule
+1 & warm & 251.741 & 1091.157 & 0.002 & -0.083 & 0.134 & 14.428 & 26.688 \\
+5 & warm & 0.020 & 0.002 & 0.880 & 0.910 & 0.985 & 0.365 & 0.135 \\
+\textbf{7} & \textbf{warm} & \textbf{0.001} & \textbf{0.001} & \textbf{1.236} & \textbf{0.957} & \textbf{0.993} & \textbf{0.224} & \textbf{0.093} \\
+10 & coop & 0.002 & 0.001 & 1.744 & 0.985 & 0.997 & 0.133 & 0.061 \\
+15 & coop & 0.438 & 0.496 & 1.913 & 0.989 & 0.991 & 0.948 & 0.981 \\
+20 & coop & 0.360 & 0.450 & 1.998 & 0.991 & 0.992 & 0.859 & 0.935 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{DDMEC Learned Distribution Statistics}
+\label{tab:ddmec_stats}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Epoch & $\mu_1^{fwd}$ & $\sigma_1^{fwd}$ & $\mu_2^{fwd}$ & $\sigma_2^{fwd}$ & $H(X)$ & $H(Y)$ & $H(X,Y)$ \\
+\midrule
+Target & 2.00 & 1.00 & 10.00 & 1.00 & 1.42 & 1.42 & 1.42 \\
+\midrule
+1 & 6.29 & 22.19 & 9.99 & 0.98 & 4.52 & 1.40 & 5.91 \\
+5 & 1.97 & 1.14 & 9.99 & 0.98 & 1.55 & 1.40 & 2.07 \\
+\textbf{7} & \textbf{2.00} & \textbf{0.98} & \textbf{9.99} & \textbf{0.98} & \textbf{1.39} & \textbf{1.40} & \textbf{1.56} \\
+10 & 1.97 & 0.97 & 9.99 & 0.98 & 1.38 & 1.40 & 1.04 \\
+15 & 2.93 & 0.99 & 9.99 & 0.98 & 1.41 & 1.40 & 0.89 \\
+20 & 2.85 & 0.95 & 9.99 & 0.98 & 1.37 & 1.40 & 0.77 \\
+\bottomrule
+\end{tabular}
+\end{table}

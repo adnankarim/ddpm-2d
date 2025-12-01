@@ -1,0 +1,4 @@
+# Ignore all .cursor files
+*.cursor
+__pycache__/
+*.pyc

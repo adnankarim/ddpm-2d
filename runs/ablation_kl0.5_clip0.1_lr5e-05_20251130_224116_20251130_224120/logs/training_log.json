@@ -1,0 +1,1087 @@
+{
+  "experiment_name": "ablation_kl0.5_clip0.1_lr5e-05_20251130_224116_20251130_224120",
+  "run_dir": "runs\\ablation_kl0.5_clip0.1_lr5e-05_20251130_224116_20251130_224120",
+  "config": {
+    "kl_weight": 0.5,
+    "ppo_clip": 0.1,
+    "warmup_epochs": 10,
+    "rl_lr_scale": 0.1,
+    "learning_rate": 5e-05,
+    "batch_size": 64,
+    "num_epochs": 20
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "phase": "warmup",
+      "learning_rate": 9.321382842509604e-06,
+      "timestamp": "2025-11-30T22:41:41.417919",
+      "info_metrics_forward": {
+        "kl_div_1": 2484.507008141031,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 2484.508082998043,
+        "entropy_x": 5.66312501507244,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 7.057629257444498,
+        "mutual_information": -0.0003795783675606401,
+        "conditional_entropy_x_given_y": 5.663504593440001,
+        "conditional_entropy_y_given_x": 1.394504242372058,
+        "learned_mu_1": -8.979381561279297,
+        "learned_sigma_1": 69.69903564453125,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 2494.1068044461063,
+        "kl_div_total": 2494.1078793177253,
+        "mutual_information": 0.0010857603712119968,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 36.47382354736328,
+        "learned_sigma_2": 65.5493392944336
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": -0.0352299133288938,
+        "corr_x1_to_x2": 0.06452800511694433,
+        "mae_x2_to_x1": 49.37632751464844,
+        "mae_x1_to_x2": 50.1483268737793
+      },
+      "best": {
+        "kl_total": Infinity,
+        "epoch": 0
+      },
+      "avg_kl_total": 2489.307981157884
+    },
+    {
+      "epoch": 2,
+      "phase": "warmup",
+      "learning_rate": 1.3930857874519849e-05,
+      "timestamp": "2025-11-30T22:42:00.760345",
+      "info_metrics_forward": {
+        "kl_div_1": 0.44245993404461803,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.44353479105662197,
+        "entropy_x": 1.962628932709515,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 3.315623339591961,
+        "mutual_information": 0.041130257122051095,
+        "conditional_entropy_x_given_y": 1.921498675587464,
+        "conditional_entropy_y_given_x": 1.3529944068824462,
+        "learned_mu_1": 2.0762012004852295,
+        "learned_sigma_1": 1.722351312637329,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 57.6167589541389,
+        "kl_div_total": 57.61783382575796,
+        "mutual_information": 0.08365415762586537,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 11.874358177185059,
+        "learned_sigma_2": 10.83912467956543
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.28426964422086565,
+        "corr_x1_to_x2": 0.39465475745844747,
+        "mae_x2_to_x1": 1.273263931274414,
+        "mae_x1_to_x2": 6.604843616485596
+      },
+      "best": {
+        "kl_total": 2489.307981157884,
+        "epoch": 1
+      },
+      "avg_kl_total": 29.03068430840729
+    },
+    {
+      "epoch": 3,
+      "phase": "warmup",
+      "learning_rate": 1.825224071702945e-05,
+      "timestamp": "2025-11-30T22:42:21.026317",
+      "info_metrics_forward": {
+        "kl_div_1": 0.008513580483299824,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.009588437495303775,
+        "entropy_x": 1.3546940184238885,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 2.3908233463306816,
+        "mutual_information": 0.3579953360977042,
+        "conditional_entropy_x_given_y": 0.9966986823261843,
+        "conditional_entropy_y_given_x": 1.0361293279067931,
+        "learned_mu_1": 2.0954720973968506,
+        "learned_sigma_1": 0.9377756714820862,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.27599566465487696,
+        "kl_div_total": 0.27707053627393424,
+        "mutual_information": 0.3168249645868997,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.924810409545898,
+        "learned_sigma_2": 1.5611467361450195
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.7157298528181666,
+        "corr_x1_to_x2": 0.6858639578982096,
+        "mae_x2_to_x1": 0.5392886996269226,
+        "mae_x1_to_x2": 0.8390523195266724
+      },
+      "best": {
+        "kl_total": 29.03068430840729,
+        "epoch": 2
+      },
+      "avg_kl_total": 0.143329486884619
+    },
+    {
+      "epoch": 4,
+      "phase": "warmup",
+      "learning_rate": 2.286171574903969e-05,
+      "timestamp": "2025-11-30T22:42:41.713331",
+      "info_metrics_forward": {
+        "kl_div_1": 0.00516157264599601,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.006236429657999962,
+        "entropy_x": 1.4874835543300673,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 2.2400414997818148,
+        "mutual_information": 0.6415667185527498,
+        "conditional_entropy_x_given_y": 0.8459168357773175,
+        "conditional_entropy_y_given_x": 0.7525579454517475,
+        "learned_mu_1": 1.978050708770752,
+        "learned_sigma_1": 1.070948839187622,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.044906560880802526,
+        "kl_div_total": 0.04598143249985982,
+        "mutual_information": 0.44178772632202357,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.856138229370117,
+        "learned_sigma_2": 1.1913163661956787
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.8505213512158979,
+        "corr_x1_to_x2": 0.7665009283380918,
+        "mae_x2_to_x1": 0.4527668356895447,
+        "mae_x1_to_x2": 0.49678555130958557
+      },
+      "best": {
+        "kl_total": 0.143329486884619,
+        "epoch": 3
+      },
+      "avg_kl_total": 0.026108931078929892
+    },
+    {
+      "epoch": 5,
+      "phase": "warmup",
+      "learning_rate": 2.747119078104994e-05,
+      "timestamp": "2025-11-30T22:43:02.225439",
+      "info_metrics_forward": {
+        "kl_div_1": 0.01723587695595287,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.01831073396795682,
+        "entropy_x": 1.5429259603454606,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 2.184257758575539,
+        "mutual_information": 0.7527928657744187,
+        "conditional_entropy_x_given_y": 0.7901330945710416,
+        "conditional_entropy_y_given_x": 0.6413317982300784,
+        "learned_mu_1": 2.0319201946258545,
+        "learned_sigma_1": 1.1320016384124756,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.00011655990913475318,
+        "kl_div_total": 0.0011914315281920497,
+        "mutual_information": 0.9938197111813869,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.985321998596191,
+        "learned_sigma_2": 0.9970285892486572
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.882358361551598,
+        "corr_x1_to_x2": 0.929115398056704,
+        "mae_x2_to_x1": 0.4151148796081543,
+        "mae_x1_to_x2": 0.28384509682655334
+      },
+      "best": {
+        "kl_total": 0.026108931078929892,
+        "epoch": 4
+      },
+      "avg_kl_total": 0.009751082748074435
+    },
+    {
+      "epoch": 6,
+      "phase": "warmup",
+      "learning_rate": 3.179257362355954e-05,
+      "timestamp": "2025-11-30T22:43:23.166303",
+      "info_metrics_forward": {
+        "kl_div_1": 0.011938526145167855,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.013013383157171807,
+        "entropy_x": 1.5198755916022753,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 2.010636632521722,
+        "mutual_information": 0.9033636230850508,
+        "conditional_entropy_x_given_y": 0.6165119685172247,
+        "conditional_entropy_y_given_x": 0.4907610409194467,
+        "learned_mu_1": 2.045356512069702,
+        "learned_sigma_1": 1.106207013130188,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 9.505042782849155e-05,
+        "kl_div_total": 0.0011699220468857881,
+        "mutual_information": 1.2043458480169793,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.987342834472656,
+        "learned_sigma_2": 1.003868818283081
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9144056180670881,
+        "corr_x1_to_x2": 0.9540686026027574,
+        "mae_x2_to_x1": 0.34642815589904785,
+        "mae_x1_to_x2": 0.21613134443759918
+      },
+      "best": {
+        "kl_total": 0.009751082748074435,
+        "epoch": 5
+      },
+      "avg_kl_total": 0.007091652602028797
+    },
+    {
+      "epoch": 7,
+      "phase": "warmup",
+      "learning_rate": 3.640204865556979e-05,
+      "timestamp": "2025-11-30T22:43:43.743498",
+      "info_metrics_forward": {
+        "kl_div_1": 0.0009346225565142821,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.002009479568518234,
+        "entropy_x": 1.4491009263101076,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.8047226730940684,
+        "mutual_information": 1.0385029172205362,
+        "conditional_entropy_x_given_y": 0.4105980090895711,
+        "conditional_entropy_y_given_x": 0.35562174678396086,
+        "learned_mu_1": 2.0035438537597656,
+        "learned_sigma_1": 1.030621886253357,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.00035513815483317196,
+        "kl_div_total": 0.0014300097738904685,
+        "mutual_information": 1.6361235340023659,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 10.020498275756836,
+        "learned_sigma_2": 0.9879806637763977
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9353852865444947,
+        "corr_x1_to_x2": 0.98089484011134,
+        "mae_x2_to_x1": 0.28956422209739685,
+        "mae_x1_to_x2": 0.14370062947273254
+      },
+      "best": {
+        "kl_total": 0.007091652602028797,
+        "epoch": 6
+      },
+      "avg_kl_total": 0.0017197446712043513
+    },
+    {
+      "epoch": 8,
+      "phase": "warmup",
+      "learning_rate": 4.072343149807938e-05,
+      "timestamp": "2025-11-30T22:44:04.259186",
+      "info_metrics_forward": {
+        "kl_div_1": 5.6366931743362554e-05,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.0011312239437473144,
+        "entropy_x": 1.4130850074897068,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.691517448291186,
+        "mutual_information": 1.115692223203018,
+        "conditional_entropy_x_given_y": 0.2973927842866888,
+        "conditional_entropy_y_given_x": 0.27843244080147933,
+        "learned_mu_1": 2.00666880607605,
+        "learned_sigma_1": 0.9941635727882385,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.001951856776968134,
+        "kl_div_total": 0.0030267283960254306,
+        "mutual_information": 1.846079398985737,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 10.060697555541992,
+        "learned_sigma_2": 0.9895417094230652
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.944899460080178,
+        "corr_x1_to_x2": 0.9874875511339014,
+        "mae_x2_to_x1": 0.2591714560985565,
+        "mae_x1_to_x2": 0.12622511386871338
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.0020789761698863725
+    },
+    {
+      "epoch": 9,
+      "phase": "warmup",
+      "learning_rate": 4.533290653008963e-05,
+      "timestamp": "2025-11-30T22:44:24.883841",
+      "info_metrics_forward": {
+        "kl_div_1": 0.0033854561975298555,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.0044603132095338074,
+        "entropy_x": 1.3798845274989269,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.5097906125063174,
+        "mutual_information": 1.2642185789971068,
+        "conditional_entropy_x_given_y": 0.1156659485018201,
+        "conditional_entropy_y_given_x": 0.12990608500739054,
+        "learned_mu_1": 2.061630964279175,
+        "learned_sigma_1": 0.9616987705230713,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.000571855328394752,
+        "kl_div_total": 0.0016467269474520485,
+        "mutual_information": 1.9851314589329259,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 10.008912086486816,
+        "learned_sigma_2": 0.9770211577415466
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9593622238248716,
+        "corr_x1_to_x2": 0.9905398766954352,
+        "mae_x2_to_x1": 0.2150854468345642,
+        "mae_x1_to_x2": 0.10639030486345291
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.003053520078492928
+    },
+    {
+      "epoch": 10,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-11-30T22:44:46.215353",
+      "info_metrics_forward": {
+        "kl_div_1": 0.0018944216766785399,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.002969278688682492,
+        "entropy_x": 1.3826044701683275,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.3225535894419647,
+        "mutual_information": 1.4541755447308602,
+        "conditional_entropy_x_given_y": -0.07157107456253264,
+        "conditional_entropy_y_given_x": -0.06005088072636289,
+        "learned_mu_1": 2.034804105758667,
+        "learned_sigma_1": 0.9643180966377258,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.00021556617444899728,
+        "kl_div_total": 0.0012904377935062938,
+        "mutual_information": 2.209909925226189,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 10.0051851272583,
+        "learned_sigma_2": 0.9858168363571167
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.972390583320119,
+        "corr_x1_to_x2": 0.9939756840683891,
+        "mae_x2_to_x1": 0.1777951866388321,
+        "mae_x1_to_x2": 0.08640217781066895
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.002129858241094393
+    },
+    {
+      "epoch": 11,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-11-30T23:01:36.520616",
+      "info_metrics_forward": {
+        "kl_div_1": 0.014209023239930674,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.015283880251934626,
+        "entropy_x": 1.4423190762644928,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.436699648637691,
+        "mutual_information": 1.399744091631299,
+        "conditional_entropy_x_given_y": 0.04257498463319376,
+        "conditional_entropy_y_given_x": -0.005619427626801787,
+        "learned_mu_1": 2.165249824523926,
+        "learned_sigma_1": 1.0236560106277466,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.01929742610647063,
+        "kl_div_total": 0.020372297725527927,
+        "mutual_information": 1.658926880598314,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.840062141418457,
+        "learned_sigma_2": 0.92044597864151
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9691648128661209,
+        "corr_x1_to_x2": 0.9817545094903398,
+        "mae_x2_to_x1": 0.22442178428173065,
+        "mae_x1_to_x2": 0.21257458627223969
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.017828088988731276
+    },
+    {
+      "epoch": 12,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-11-30T23:18:55.541242",
+      "info_metrics_forward": {
+        "kl_div_1": 0.08042192017354813,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.08149677718555208,
+        "entropy_x": 1.4734227619968434,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.4593018892677936,
+        "mutual_information": 1.4082455367335474,
+        "conditional_entropy_x_given_y": 0.06517722526329628,
+        "conditional_entropy_y_given_x": -0.014120872729049827,
+        "learned_mu_1": 2.3933002948760986,
+        "learned_sigma_1": 1.0559958219528198,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.0868537433066292,
+        "kl_div_total": 0.0879286149256865,
+        "mutual_information": 1.5958331512773472,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.6165771484375,
+        "learned_sigma_2": 0.8867822289466858
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9696927900339022,
+        "corr_x1_to_x2": 0.9792746522159181,
+        "mae_x2_to_x1": 0.37865203619003296,
+        "mae_x1_to_x2": 0.41434407234191895
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.08471269605561929
+    },
+    {
+      "epoch": 13,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-11-30T23:35:45.482070",
+      "info_metrics_forward": {
+        "kl_div_1": 0.06782452458625311,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.06889938159825706,
+        "entropy_x": 1.4705710992757828,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.4530880548272764,
+        "mutual_information": 1.4116077084530037,
+        "conditional_entropy_x_given_y": 0.05896339082277913,
+        "conditional_entropy_y_given_x": -0.017483044448506346,
+        "learned_mu_1": 2.3607337474823,
+        "learned_sigma_1": 1.0529887676239014,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.0698266308566501,
+        "kl_div_total": 0.0709015024757074,
+        "mutual_information": 1.4812421504171758,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.658313751220703,
+        "learned_sigma_2": 0.8949648141860962
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9698990582866172,
+        "corr_x1_to_x2": 0.9738649731724615,
+        "mae_x2_to_x1": 0.34643474221229553,
+        "mae_x1_to_x2": 0.37632885575294495
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.06990044203698223
+    },
+    {
+      "epoch": 14,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-11-30T23:53:02.703546",
+      "info_metrics_forward": {
+        "kl_div_1": 0.08111311432816887,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.08218797134017282,
+        "entropy_x": 1.4907538858912357,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.403672184026161,
+        "mutual_information": 1.481206365869572,
+        "conditional_entropy_x_given_y": 0.009547520021663702,
+        "conditional_entropy_y_given_x": -0.08708170186507469,
+        "learned_mu_1": 2.3891005516052246,
+        "learned_sigma_1": 1.0744569301605225,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.08029754946148737,
+        "kl_div_total": 0.08137242108054467,
+        "mutual_information": 1.4426587276875522,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.624334335327148,
+        "learned_sigma_2": 0.9030098915100098
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9738630799025981,
+        "corr_x1_to_x2": 0.9717379067064875,
+        "mae_x2_to_x1": 0.3750213086605072,
+        "mae_x1_to_x2": 0.40949979424476624
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.08178019621035874
+    },
+    {
+      "epoch": 15,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-12-01T00:10:33.699890",
+      "info_metrics_forward": {
+        "kl_div_1": 0.10098501008443218,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.10205986709643614,
+        "entropy_x": 1.4878774093730227,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.435581256867117,
+        "mutual_information": 1.446420816510403,
+        "conditional_entropy_x_given_y": 0.0414565928626196,
+        "conditional_entropy_y_given_x": -0.0522961525059058,
+        "learned_mu_1": 2.438192367553711,
+        "learned_sigma_1": 1.0713707208633423,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.09040845962474178,
+        "kl_div_total": 0.09148333124379908,
+        "mutual_information": 1.4738353514433151,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.601755142211914,
+        "learned_sigma_2": 0.896518886089325
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9719528116345839,
+        "corr_x1_to_x2": 0.9734696234506732,
+        "mae_x2_to_x1": 0.4180418848991394,
+        "mae_x1_to_x2": 0.43034839630126953
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.0967715991701176
+    },
+    {
+      "epoch": 16,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-12-01T00:28:03.027168",
+      "info_metrics_forward": {
+        "kl_div_1": 0.07463309215757152,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.07570794916957548,
+        "entropy_x": 1.4853378330579863,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.3875400298575264,
+        "mutual_information": 1.4919224672049574,
+        "conditional_entropy_x_given_y": -0.006584634146970858,
+        "conditional_entropy_y_given_x": -0.09779780320045983,
+        "learned_mu_1": 2.374225616455078,
+        "learned_sigma_1": 1.0686533451080322,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.07908884420904976,
+        "kl_div_total": 0.08016371582810705,
+        "mutual_information": 1.5124946561100578,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.635531425476074,
+        "learned_sigma_2": 0.8896309733390808
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9744245664606387,
+        "corr_x1_to_x2": 0.9754684676444646,
+        "mae_x2_to_x1": 0.3623105585575104,
+        "mae_x1_to_x2": 0.398276686668396
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.07793583249884126
+    },
+    {
+      "epoch": 17,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-12-01T00:45:42.682343",
+      "info_metrics_forward": {
+        "kl_div_1": 0.19932021915471593,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.20039507616671987,
+        "entropy_x": 1.504817317244051,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.3537906508319157,
+        "mutual_information": 1.5451513304166327,
+        "conditional_entropy_x_given_y": -0.04033401317258156,
+        "conditional_entropy_y_given_x": -0.15102666641213536,
+        "learned_mu_1": 2.6188764572143555,
+        "learned_sigma_1": 1.0896742343902588,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.17076018538746038,
+        "kl_div_total": 0.1718350570065177,
+        "mutual_information": 1.5367705432784475,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.434611320495605,
+        "learned_sigma_2": 0.8973491191864014
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9770377425803094,
+        "corr_x1_to_x2": 0.9766449738096179,
+        "mae_x2_to_x1": 0.5906515121459961,
+        "mae_x1_to_x2": 0.5960221886634827
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.18611506658661878
+    },
+    {
+      "epoch": 18,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-12-01T01:03:14.327277",
+      "info_metrics_forward": {
+        "kl_div_1": 0.12833157131323392,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.12940642832523785,
+        "entropy_x": 1.4859306621188864,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.3358103184039842,
+        "mutual_information": 1.5442450077193997,
+        "conditional_entropy_x_given_y": -0.05831434560051307,
+        "conditional_entropy_y_given_x": -0.15012034371490213,
+        "learned_mu_1": 2.497265100479126,
+        "learned_sigma_1": 1.0692870616912842,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.11881102253729789,
+        "kl_div_total": 0.11988589415635519,
+        "mutual_information": 1.5042757933130007,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.54401969909668,
+        "learned_sigma_2": 0.880709707736969
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9769955901523582,
+        "corr_x1_to_x2": 0.9750566900659092,
+        "mae_x2_to_x1": 0.4700773358345032,
+        "mae_x1_to_x2": 0.4869988262653351
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.12464616124079653
+    },
+    {
+      "epoch": 19,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-12-01T01:20:49.357939",
+      "info_metrics_forward": {
+        "kl_div_1": 0.08758991880937764,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.08866477582138159,
+        "entropy_x": 1.4806410112816757,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.4044174782296865,
+        "mutual_information": 1.4703481970564862,
+        "conditional_entropy_x_given_y": 0.01029281422518924,
+        "conditional_entropy_y_given_x": -0.07622353305198915,
+        "learned_mu_1": 2.4089527130126953,
+        "learned_sigma_1": 1.063645839691162,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.07757964596359987,
+        "kl_div_total": 0.07865451758265717,
+        "mutual_information": 1.497982763969746,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.627431869506836,
+        "learned_sigma_2": 0.9109825491905212
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9732813960647757,
+        "corr_x1_to_x2": 0.974736674206104,
+        "mae_x2_to_x1": 0.3920890986919403,
+        "mae_x1_to_x2": 0.4072473645210266
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.08365964670201938
+    },
+    {
+      "epoch": 20,
+      "phase": "cooperative",
+      "learning_rate": 5e-06,
+      "timestamp": "2025-12-01T01:38:15.165062",
+      "info_metrics_forward": {
+        "kl_div_1": 0.13797056842977434,
+        "kl_div_2": 0.001074857012003952,
+        "kl_div_total": 0.13904542544177828,
+        "entropy_x": 1.4986089451631093,
+        "entropy_y": 1.3941246640044973,
+        "joint_entropy": 1.402405692065134,
+        "mutual_information": 1.4903279171024728,
+        "conditional_entropy_x_given_y": 0.008281028060636686,
+        "conditional_entropy_y_given_x": -0.09620325309797528,
+        "learned_mu_1": 2.5123908519744873,
+        "learned_sigma_1": 1.082930088043213,
+        "learned_mu_2": 10.030632972717285,
+        "learned_sigma_2": 0.975491464138031
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 0.0010748716190572966,
+        "kl_div_2": 0.12728311916764412,
+        "kl_div_total": 0.1283579907867014,
+        "mutual_information": 1.4765218612130302,
+        "learned_mu_1": 2.0306334495544434,
+        "learned_sigma_1": 0.975491464138031,
+        "learned_mu_2": 9.518221855163574,
+        "learned_sigma_2": 0.8959765434265137
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9743417937737815,
+        "corr_x1_to_x2": 0.9736137140739972,
+        "mae_x2_to_x1": 0.48764488101005554,
+        "mae_x1_to_x2": 0.5128346085548401
+      },
+      "best": {
+        "kl_total": 0.0017197446712043513,
+        "epoch": 7
+      },
+      "avg_kl_total": 0.13370170811423984
+    }
+  ],
+  "training_metrics": [
+    {
+      "epoch": 1,
+      "metrics": {
+        "loss_1": 0.9861476513892221,
+        "loss_2": 1.1469863797615494
+      }
+    },
+    {
+      "epoch": 2,
+      "metrics": {
+        "loss_1": 0.4693694502334665,
+        "loss_2": 0.6201192706479917
+      }
+    },
+    {
+      "epoch": 3,
+      "metrics": {
+        "loss_1": 0.24333472467873069,
+        "loss_2": 0.34870103134674696
+      }
+    },
+    {
+      "epoch": 4,
+      "metrics": {
+        "loss_1": 0.199336912478207,
+        "loss_2": 0.22114131517860938
+      }
+    },
+    {
+      "epoch": 5,
+      "metrics": {
+        "loss_1": 0.17813244548348398,
+        "loss_2": 0.14215403446324273
+      }
+    },
+    {
+      "epoch": 6,
+      "metrics": {
+        "loss_1": 0.15136332667066635,
+        "loss_2": 0.0966096337677174
+      }
+    },
+    {
+      "epoch": 7,
+      "metrics": {
+        "loss_1": 0.1256538627635826,
+        "loss_2": 0.07156847271813073
+      }
+    },
+    {
+      "epoch": 8,
+      "metrics": {
+        "loss_1": 0.10622630567527191,
+        "loss_2": 0.05340592487519619
+      }
+    },
+    {
+      "epoch": 9,
+      "metrics": {
+        "loss_1": 0.08645333758186878,
+        "loss_2": 0.04382263242155874
+      }
+    },
+    {
+      "epoch": 10,
+      "metrics": {
+        "loss_1": 0.07347570252971704,
+        "loss_2": 0.03673312405202166,
+        "1->2_pg_loss": 74.40018463134766,
+        "1->2_kl_reg": 148.80025377869606,
+        "1->2_reward_mean": -0.14654293656349182,
+        "1->2_reward_std": 0.3927776515483856,
+        "1->2_advantage_mean": 0.0,
+        "2->1_pg_loss": 186.60830688476562,
+        "2->1_kl_reg": 373.21661363728344,
+        "2->1_reward_mean": -0.06557085365056992,
+        "2->1_reward_std": 0.13007387518882751,
+        "2->1_advantage_mean": 1.4901161193847656e-08
+      }
+    },
+    {
+      "epoch": 11,
+      "metrics": {
+        "1->2_pg_loss": 71.08805263729315,
+        "1->2_kl_reg": 142.17604426513503,
+        "1->2_reward_mean": -0.12265931398019901,
+        "1->2_reward_std": 0.2502394031385072,
+        "1->2_advantage_mean": -1.8367088291312301e-09,
+        "2->1_pg_loss": 158.63261456556722,
+        "2->1_kl_reg": 317.2650908021869,
+        "2->1_reward_mean": -0.08813491622498795,
+        "2->1_reward_std": 0.1625475277349105,
+        "2->1_advantage_mean": 2.632387430811356e-10
+      }
+    },
+    {
+      "epoch": 12,
+      "metrics": {
+        "1->2_pg_loss": 74.95937195996468,
+        "1->2_kl_reg": 149.9186909581116,
+        "1->2_reward_mean": -0.11289840378821202,
+        "1->2_reward_std": 0.2211707222720229,
+        "1->2_advantage_mean": -1.0195656866789168e-09,
+        "2->1_pg_loss": 132.67564082908874,
+        "2->1_kl_reg": 265.35112942590376,
+        "2->1_reward_mean": -0.09858334641164304,
+        "2->1_reward_std": 0.17694874831431195,
+        "2->1_advantage_mean": 1.5531980197652507e-10
+      }
+    },
+    {
+      "epoch": 13,
+      "metrics": {
+        "1->2_pg_loss": 76.18145852082823,
+        "1->2_kl_reg": 152.36287055628688,
+        "1->2_reward_mean": -0.1052694384476096,
+        "1->2_reward_std": 0.198902620534471,
+        "1->2_advantage_mean": -2.4475538852730726e-10,
+        "2->1_pg_loss": 126.05936100724107,
+        "2->1_kl_reg": 252.1185518565519,
+        "2->1_reward_mean": -0.10250604106649928,
+        "2->1_reward_std": 0.18507696136774998,
+        "2->1_advantage_mean": 1.234211094400794e-10
+      }
+    },
+    {
+      "epoch": 14,
+      "metrics": {
+        "1->2_pg_loss": 76.00499114306422,
+        "1->2_kl_reg": 152.00993621851129,
+        "1->2_reward_mean": -0.10385639402686252,
+        "1->2_reward_std": 0.19493729463288328,
+        "1->2_advantage_mean": -1.2079766556792314e-09,
+        "2->1_pg_loss": 127.65411412120629,
+        "2->1_kl_reg": 255.30806484250454,
+        "2->1_reward_mean": -0.10458674993981319,
+        "2->1_reward_std": 0.18825783009107835,
+        "2->1_advantage_mean": 1.3296090533882951e-10
+      }
+    },
+    {
+      "epoch": 15,
+      "metrics": {
+        "1->2_pg_loss": 76.54154843221706,
+        "1->2_kl_reg": 153.08305173626266,
+        "1->2_reward_mean": -0.10212645040068981,
+        "1->2_reward_std": 0.19384086080296167,
+        "1->2_advantage_mean": -4.531403051906298e-11,
+        "2->1_pg_loss": 125.33168468402076,
+        "2->1_kl_reg": 250.66320946169125,
+        "2->1_reward_mean": -0.10447561503811316,
+        "2->1_reward_std": 0.18795722422265138,
+        "2->1_advantage_mean": -7.950823644364536e-10
+      }
+    },
+    {
+      "epoch": 16,
+      "metrics": {
+        "1->2_pg_loss": 77.08607774018937,
+        "1->2_kl_reg": 154.1721134103558,
+        "1->2_reward_mean": -0.09933821661171245,
+        "1->2_reward_std": 0.18536467555190095,
+        "1->2_advantage_mean": -2.3134005054468992e-10,
+        "2->1_pg_loss": 124.12253933954177,
+        "2->1_kl_reg": 248.2449348450845,
+        "2->1_reward_mean": -0.1025312707262178,
+        "2->1_reward_std": 0.18351655992918986,
+        "2->1_advantage_mean": -1.9973947663008023e-10
+      }
+    },
+    {
+      "epoch": 17,
+      "metrics": {
+        "1->2_pg_loss": 78.03046247748499,
+        "1->2_kl_reg": 156.06088046389948,
+        "1->2_reward_mean": -0.09925990769217476,
+        "1->2_reward_std": 0.18981104916755812,
+        "1->2_advantage_mean": -1.952676973025411e-10,
+        "2->1_pg_loss": 118.41911252909524,
+        "2->1_kl_reg": 236.8380922915285,
+        "2->1_reward_mean": -0.10080441987087113,
+        "2->1_reward_std": 0.17999950470820203,
+        "2->1_advantage_mean": -4.877220653235989e-10
+      }
+    },
+    {
+      "epoch": 18,
+      "metrics": {
+        "1->2_pg_loss": 78.5617264712208,
+        "1->2_kl_reg": 157.1234083124669,
+        "1->2_reward_mean": -0.09913251526348493,
+        "1->2_reward_std": 0.19639525122740203,
+        "1->2_advantage_mean": 5.917654643443422e-10,
+        "2->1_pg_loss": 117.14084381025366,
+        "2->1_kl_reg": 234.28156085757144,
+        "2->1_reward_mean": -0.10113190336775382,
+        "2->1_reward_std": 0.18101916096331827,
+        "2->1_advantage_mean": -1.621765302787517e-10
+      }
+    },
+    {
+      "epoch": 19,
+      "metrics": {
+        "1->2_pg_loss": 77.28377267737395,
+        "1->2_kl_reg": 154.5675009809978,
+        "1->2_reward_mean": -0.09650102530328244,
+        "1->2_reward_std": 0.18148197930559,
+        "1->2_advantage_mean": -3.0497535013816727e-10,
+        "2->1_pg_loss": 124.09406957492023,
+        "2->1_kl_reg": 248.18801084703097,
+        "2->1_reward_mean": -0.09993495339010192,
+        "2->1_reward_std": 0.18009653976294432,
+        "2->1_advantage_mean": -3.91727869092426e-10
+      }
+    },
+    {
+      "epoch": 20,
+      "metrics": {
+        "1->2_pg_loss": 76.86170769470449,
+        "1->2_kl_reg": 153.7233691700232,
+        "1->2_reward_mean": -0.09840145190788979,
+        "1->2_reward_std": 0.19012549704849416,
+        "1->2_advantage_mean": -5.768595332525451e-10,
+        "2->1_pg_loss": 125.45732116699219,
+        "2->1_kl_reg": 250.91451921323915,
+        "2->1_reward_mean": -0.1002807690476982,
+        "2->1_reward_std": 0.18018942107368982,
+        "2->1_advantage_mean": -1.4685323311638435e-09
+      }
+    }
+  ]
+}

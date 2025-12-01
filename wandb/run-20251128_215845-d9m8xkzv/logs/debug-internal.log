@@ -1,0 +1,18 @@
+{"time":"2025-11-28T21:58:50.6331087+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-28T21:58:51.2421836+01:00","level":"INFO","msg":"stream: created new stream","id":"d9m8xkzv"}
+{"time":"2025-11-28T21:58:51.2421836+01:00","level":"INFO","msg":"handler: started","stream_id":"d9m8xkzv"}
+{"time":"2025-11-28T21:58:51.2494679+01:00","level":"INFO","msg":"stream: started","id":"d9m8xkzv"}
+{"time":"2025-11-28T21:58:51.2494679+01:00","level":"INFO","msg":"writer: started","stream_id":"d9m8xkzv"}
+{"time":"2025-11-28T21:58:51.2494679+01:00","level":"INFO","msg":"sender: started","stream_id":"d9m8xkzv"}
+{"time":"2025-11-28T22:01:27.9770535+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":547}
+{"time":"2025-11-28T22:01:28.171175+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":5}
+{"time":"2025-11-28T22:01:42.9554091+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":639}
+{"time":"2025-11-28T22:01:43.1608139+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":5}
+{"time":"2025-11-28T22:11:49.7721845+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 100.71.149.180:6356->35.186.228.49:443: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-11-28T23:51:50.7770943+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 100.71.149.180:14211->35.186.228.49:443: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-11-29T00:51:50.5547884+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-29T00:51:50.8801038+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-11-29T00:51:50.8934965+01:00","level":"INFO","msg":"stream: closing","id":"d9m8xkzv"}
+{"time":"2025-11-29T00:51:50.8934965+01:00","level":"INFO","msg":"handler: closed","stream_id":"d9m8xkzv"}
+{"time":"2025-11-29T00:51:50.8940331+01:00","level":"INFO","msg":"sender: closed","stream_id":"d9m8xkzv"}
+{"time":"2025-11-29T00:51:50.8940331+01:00","level":"INFO","msg":"stream: closed","id":"d9m8xkzv"}

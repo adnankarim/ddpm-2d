@@ -1,0 +1,83 @@
+
+✓ Weights & Biases initialized: ablation_kl0.5_clip0.1_lr1e-04_20251129_211645_20251129_211650
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  Dashboard: https://wandb.ai/adnankaremjs/ddmec-ablation-lr/runs/a5zpqkk1
+
+Initializing DDMEC...
+RL Hyperparameters:
+  KL Weight: 0.5
+  PPO Clip: 0.1
+  Warmup Epochs: 10
+  RL LR Scale: 0.1
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+============================================================
+Model Architecture
+============================================================
+
+DDPM Model 1 (N(2,1)):
+  Trainable parameters: 9,761
+  Total parameters:     9,761
+
+DDPM Model 2 (N(10,1)):
+  Trainable parameters: 9,761
+  Total parameters:     9,761
+
+DDMEC Overall:
+  Trainable parameters: 19,522
+  Total parameters:     19,522
+============================================================
+
+Creating coupled training data...
+X1: mean=2.00, std=1.00
+X2: mean=10.00, std=1.00
+Correlation: 1.000
+
+Training DDMEC...
+Phase 1: Warmup (supervised) - first 10 epochs
+Phase 2: Cooperative (RL-based) - remaining epochs
+------------------------------------------------------------
+Warmup: 10 epochs = 15620 steps
+Starting with warmup LR: 1.00e-05
+After warmup: supervised LR=1.00e-04, RL LR=1.00e-05
+Training DDMEC for 20 epochs, 1562 batches per epoch
+Saving checkpoints to: runs\ablation_kl0.5_clip0.1_lr1e-04_20251129_211645_20251129_211650\checkpoints
+Saving plots to: runs\ablation_kl0.5_clip0.1_lr1e-04_20251129_211645_20251129_211650\plots
+
+Epoch 1/20
+  Training Metrics:
+    loss_1: 1.0056
+    loss_2: 0.8499
+
+  Information-Theoretic Metrics (x2→x1):
+    KL Divergence (X1): 2233.5904
+    KL Divergence (X2): 0.0001
+    KL Divergence (Total): 2233.5905
+    Mutual Information I(X;Y): 0.0067
+
+  Information-Theoretic Metrics (x1→x2):
+    KL Divergence (X1): 0.0001
+    KL Divergence (X2): 716.6627
+    KL Divergence (Total): 716.6628
+    Mutual Information I(X;Y): 0.0003
+
+  Coupling Metrics:
+    Correlation x2→x1: -0.1234
+    Correlation x1→x2: 0.0514
+    MAE x2→x1: 49.3778
+    MAE x1→x2: 22.9203
+  Coupling plot saved: runs\ablation_kl0.5_clip0.1_lr1e-04_20251129_211645_20251129_211650\plots\epoch_0001\coupling_plot.png
+  Table saved: runs\ablation_kl0.5_clip0.1_lr1e-04_20251129_211645_20251129_211650\tables\epoch_metrics.csv
+
+
+Error occurred: cannot access local variable 'avg_kl_total' where it is not associated with a value
+Traceback (most recent call last):
+  File "C:\Users\dell\Music\resd\run_ddmec.py", line 484, in <module>
+    main(
+  File "C:\Users\dell\Music\resd\run_ddmec.py", line 370, in main
+    ddmec.train(
+  File "C:\Users\dell\Music\resd\ddmec_1d.py", line 1817, in train
+    "avg_kl_total": avg_kl_total,
+                    ^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'avg_kl_total' where it is not associated with a value

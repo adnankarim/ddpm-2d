@@ -1,0 +1,106 @@
+{
+  "kl_weight": [
+    {
+      "run_name": "ablation_kl0.1_clip0.1_lr1e-04_20251129_212416",
+      "kl_weight": 0.1,
+      "ppo_clip": 0.1,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl0.3_clip0.1_lr1e-04_20251130_014028",
+      "kl_weight": 0.3,
+      "ppo_clip": 0.1,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.1_lr1e-04_20251130_044839",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.1,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl1.0_clip0.1_lr1e-04_20251130_074658",
+      "kl_weight": 1.0,
+      "ppo_clip": 0.1,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    }
+  ],
+  "ppo_clip": [
+    {
+      "run_name": "ablation_kl0.5_clip0.05_lr1e-04_20251130_104337",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.05,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.1_lr1e-04_20251130_044839_20251130_044900",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.1,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": true,
+      "existing_path": "runs\\ablation_kl0.5_clip0.1_lr1e-04_20251130_044839_20251130_044900"
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.2_lr1e-04_20251130_134123",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.2,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.3_lr1e-04_20251130_164504",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.3,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": false
+    }
+  ],
+  "lr": [
+    {
+      "run_name": "ablation_kl0.5_clip0.1_lr1e-05_20251130_194249",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.1,
+      "lr": 1e-05,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.1_lr5e-05_20251130_224116",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.1,
+      "lr": 5e-05,
+      "return_code": 0,
+      "skipped": false
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.1_lr1e-04_20251130_044839_20251130_044900",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.1,
+      "lr": 0.0001,
+      "return_code": 0,
+      "skipped": true,
+      "existing_path": "runs\\ablation_kl0.5_clip0.1_lr1e-04_20251130_044839_20251130_044900"
+    },
+    {
+      "run_name": "ablation_kl0.5_clip0.1_lr5e-04_20251201_013832",
+      "kl_weight": 0.5,
+      "ppo_clip": 0.1,
+      "lr": 0.0005,
+      "return_code": 0,
+      "skipped": false
+    }
+  ]
+}

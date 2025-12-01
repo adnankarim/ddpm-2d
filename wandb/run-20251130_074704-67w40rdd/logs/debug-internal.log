@@ -1,0 +1,14 @@
+{"time":"2025-11-30T07:47:06.8887502+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-30T07:47:07.1982578+01:00","level":"INFO","msg":"stream: created new stream","id":"67w40rdd"}
+{"time":"2025-11-30T07:47:07.198939+01:00","level":"INFO","msg":"handler: started","stream_id":"67w40rdd"}
+{"time":"2025-11-30T07:47:07.208459+01:00","level":"INFO","msg":"stream: started","id":"67w40rdd"}
+{"time":"2025-11-30T07:47:07.208459+01:00","level":"INFO","msg":"writer: started","stream_id":"67w40rdd"}
+{"time":"2025-11-30T07:47:07.208459+01:00","level":"INFO","msg":"sender: started","stream_id":"67w40rdd"}
+{"time":"2025-11-30T09:51:28.0977109+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":2206}
+{"time":"2025-11-30T09:51:28.4566438+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":31}
+{"time":"2025-11-30T10:43:35.8084833+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-30T10:43:36.0672707+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-11-30T10:43:36.0806491+01:00","level":"INFO","msg":"stream: closing","id":"67w40rdd"}
+{"time":"2025-11-30T10:43:36.0806491+01:00","level":"INFO","msg":"handler: closed","stream_id":"67w40rdd"}
+{"time":"2025-11-30T10:43:36.0811564+01:00","level":"INFO","msg":"sender: closed","stream_id":"67w40rdd"}
+{"time":"2025-11-30T10:43:36.0811564+01:00","level":"INFO","msg":"stream: closed","id":"67w40rdd"}

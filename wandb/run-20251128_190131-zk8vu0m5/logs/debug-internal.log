@@ -1,0 +1,16 @@
+{"time":"2025-11-28T19:01:33.8420556+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-28T19:01:34.2241054+01:00","level":"INFO","msg":"stream: created new stream","id":"zk8vu0m5"}
+{"time":"2025-11-28T19:01:34.2241054+01:00","level":"INFO","msg":"handler: started","stream_id":"zk8vu0m5"}
+{"time":"2025-11-28T19:01:34.2256753+01:00","level":"INFO","msg":"stream: started","id":"zk8vu0m5"}
+{"time":"2025-11-28T19:01:34.2256753+01:00","level":"INFO","msg":"writer: started","stream_id":"zk8vu0m5"}
+{"time":"2025-11-28T19:01:34.2262239+01:00","level":"INFO","msg":"sender: started","stream_id":"zk8vu0m5"}
+{"time":"2025-11-28T20:11:59.129556+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 100.71.149.180:10366->35.186.228.49:443: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-11-28T20:31:46.8746043+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 100.71.149.180:10497->35.186.228.49:443: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-11-28T21:11:48.4754362+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 100.71.149.180:2935->35.186.228.49:443: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-11-28T21:51:48.4149472+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 100.71.149.180:14983->35.186.228.49:443: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-11-28T21:58:20.573595+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-28T21:58:20.9028411+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-11-28T21:58:20.9127107+01:00","level":"INFO","msg":"stream: closing","id":"zk8vu0m5"}
+{"time":"2025-11-28T21:58:20.9127107+01:00","level":"INFO","msg":"handler: closed","stream_id":"zk8vu0m5"}
+{"time":"2025-11-28T21:58:20.9134837+01:00","level":"INFO","msg":"sender: closed","stream_id":"zk8vu0m5"}
+{"time":"2025-11-28T21:58:20.9134837+01:00","level":"INFO","msg":"stream: closed","id":"zk8vu0m5"}
