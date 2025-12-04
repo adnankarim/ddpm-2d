@@ -2,7 +2,7 @@
 
 ## Summary of Issues Fixed
 
-### 1. **NaN Values in Information-Theoretic Metrics** ✅ FIXED
+### 1. **NaN Values in Information-Theoretic Metrics** 
 - **Problem**: RuntimeWarning "invalid value encountered in det" and all metrics showing NaN
 - **Root Cause**: Numerical instability in covariance determinant calculations, zero standard deviations, and log(0) operations
 - **Solution Applied**:
@@ -13,7 +13,7 @@
   - Ensured all metrics (KL, MI, conditional entropy) are non-negative
   - Added NaN checks with safe fallback values
 
-### 2. **NaN Values in Generated Samples** ✅ FIXED
+### 2. **NaN Values in Generated Samples** 
 - **Problem**: Generated x1 and x2 samples were all NaN, causing visualization to fail
 - **Root Causes**:
   1. Models trained on only 1000 samples instead of 1 million
@@ -26,7 +26,7 @@
   - Added clamping to x0_pred to prevent extreme values
   - Added NaN checks for initial noise and conditioning input
 
-### 3. **Training Data Size** ✅ FIXED
+### 3. **Training Data Size** 
 - **Problem**: Models were being trained on only 1000 samples
 - **Solution**: Updated to use 1 million samples
 - **Files Updated**:
@@ -164,5 +164,130 @@ If you still see NaN values:
 
 ---
 
+## ES-DDMEC Integration (NEW)
+
+### Overview
+Added Evolution Strategies (ES) as an alternative to PPO for DDMEC training, based on the paper:
+- **"Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning"**
+- arXiv: https://arxiv.org/abs/2509.24372
+- GitHub: https://github.com/VsonicV/es-fine-tuning-paper
+
+### New Files Added
+
+#### 1. `es_ddmec.py`
+Main ES-DDMEC implementation containing:
+- **`ESConfig`**: Configuration dataclass for ES hyperparameters
+- **`ESOptimizer`**: Evolution Strategies optimizer with:
+  - Layer-wise in-place perturbation (memory efficient)
+  - Z-score reward normalization
+  - Optional rank transform and mirror sampling
+  - Seed-based noise reconstruction
+- **`ESDDMEC1D`**: ES-based DDMEC class that replaces PPO with ES
+
+#### 2. `run_es_ddmec.py`
+Complete training script with:
+- Command-line interface for all hyperparameters
+- Ablation study support (`--ablation` flag)
+- W&B and TensorBoard integration
+- Comprehensive evaluation and visualization
+
+### Key Advantages of ES over PPO
+
+| Aspect | PPO-DDMEC | ES-DDMEC |
+|--------|-----------|----------|
+| **Update Rule** | Policy gradient with clipping | Weighted noise aggregation |
+| **KL Regularization** | Required (`kl_weight=0.5`) | Not needed |
+| **Hyperparameters** | Sensitive (β, α, clip_range) | Robust (only σ, α, N) |
+| **Gradient Computation** | Required (backprop) | Not needed (inference only) |
+| **Memory Usage** | Higher (gradient storage) | Lower (only seeds) |
+| **Stability** | Variable across runs | Consistent |
+| **Reward Hacking** | Prone | Resistant |
+
+### Usage
+
+#### Basic Training
+```bash
+python run_es_ddmec.py
+```
+
+#### Custom ES Parameters
+```bash
+python run_es_ddmec.py --population-size 50 --sigma 0.0005 --es-lr 1e-4
+```
+
+#### Ablation Study
+```bash
+python run_es_ddmec.py --ablation
+```
+
+#### All Options
+```bash
+python run_es_ddmec.py --help
+```
+
+### ES Hyperparameters (from paper)
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--population-size` | 30 | Number of perturbed models per ES step |
+| `--sigma` | 0.001 | Noise scale for perturbations |
+| `--es-lr` | 5e-4 | ES learning rate |
+| `--warmup-epochs` | 10 | Supervised warmup epochs |
+| `--use-rank-transform` | False | Use rank-based fitness shaping |
+| `--use-mirror-sampling` | False | Use antithetic sampling |
+
+### Architecture
+
+```
+ES-DDMEC Training Loop:
+┌─────────────────────────────────────────────────────────────┐
+│ Phase 1: Warmup (Supervised)                                │
+│   - Standard denoising loss                                 │
+│   - Same as PPO-DDMEC warmup                               │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ Phase 2: ES Cooperative Training                            │
+│                                                             │
+│   For each direction (1→2 and 2→1):                        │
+│     1. Perturb generator params (N times)                  │
+│     2. Evaluate each perturbation (greedy sampling)         │
+│     3. Compute rewards (NLL under partner model)           │
+│     4. Normalize rewards (z-score)                         │
+│     5. Update generator: θ ← θ + α/N Σᵢ Rᵢεᵢ              │
+│     6. Sync reward model (supervised)                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Output Files
+
+ES-DDMEC generates the same output structure as PPO-DDMEC:
+- `runs/<run_name>/checkpoints/` - Model checkpoints
+- `runs/<run_name>/plots/` - Coupling visualizations
+- `runs/<run_name>/tables/` - CSV metrics
+- `runs/<run_name>/logs/` - JSON training log
+- `runs/<run_name>/tensorboard/` - TensorBoard logs
+
+### Comparison with PPO-DDMEC
+
+Both implementations can be run on the same data:
+
+```bash
+# Run PPO-DDMEC
+python run_ddmec.py --kl-weight 0.5 --ppo-clip 0.1
+
+# Run ES-DDMEC  
+python run_es_ddmec.py --population-size 30 --sigma 0.001
+```
+
+Compare results using TensorBoard:
+```bash
+tensorboard --logdir runs/
+```
+
+---
+
 **All fixes have been applied and tested. The codebase is now ready for use!**
+
+**ES-DDMEC integration complete and verified!**
 
