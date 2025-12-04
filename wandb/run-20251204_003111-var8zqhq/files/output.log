@@ -1,0 +1,295 @@
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+
+[OK] W&B initialized: https://wandb.ai/adnankaremjs/es-ddmec-1d/runs/var8zqhq
+
+Creating training data...
+Dataset created (n=100000, seed=42):
+  X1: mean=2.00, std=1.01 (target: N(2,1))
+  X2: mean=10.00, std=1.01 (target: N(10,1))
+  Correlation: 1.0000
+
+Initializing ES-DDMEC...
+
+============================================================
+ES-DDMEC: Evolution Strategies for Minimum Entropy Coupling
+============================================================
+
+ES Hyperparameters:
+  Population Size: 30
+  Sigma: 0.001
+  ES Learning Rate: 0.0005
+  Warmup Epochs: 10
+  Rank Transform: False
+  Mirror Sampling: False
+  MC Steps: 5
+  Sampling Steps: 50
+
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+Device: cuda
+============================================================
+
+
+Model Architecture:
+  Model 1: 9,761 trainable / 9,761 total parameters
+  Model 2: 9,761 trainable / 9,761 total parameters
+  Total: 19,522 trainable parameters
+
+Starting training...
+============================================================
+TensorBoard: runs\my_es_experiment_20251204_003108\tensorboard
+
+Warmup: 10 epochs = 15620 steps
+
+Training ES-DDMEC for 50 epochs
+  Batches per epoch: 1562
+  Checkpoints: runs\my_es_experiment_20251204_003108\checkpoints
+  Plots: runs\my_es_experiment_20251204_003108\plots
+------------------------------------------------------------
+
+Epoch 1/50
+  Phase: warmup
+  Supervised Loss 1: 0.2217
+  Supervised Loss 2: 0.2686
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0114
+    KL Total (x1→x2): 0.0066
+    Mutual Info (x2→x1): 0.8889
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9118
+    Correlation x1→x2: 0.9468
+    MAE x2→x1: 0.3508
+    MAE x1→x2: 0.2448
+
+  [BEST] New best model! (Avg KL Total: 0.0090)
+
+Epoch 2/50
+  Phase: warmup
+  Supervised Loss 1: 0.1028
+  Supervised Loss 2: 0.0668
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0025
+    KL Total (x1→x2): 0.0021
+    Mutual Info (x2→x1): 1.3365
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9649
+    Correlation x1→x2: 0.9806
+    MAE x2→x1: 0.2144
+    MAE x1→x2: 0.1333
+
+  [BEST] New best model! (Avg KL Total: 0.0023)
+
+Epoch 3/50
+  Phase: warmup
+  Supervised Loss 1: 0.0640
+  Supervised Loss 2: 0.0422
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0011
+    KL Total (x1→x2): 0.0004
+    Mutual Info (x2→x1): 1.7026
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9833
+    Correlation x1→x2: 0.9936
+    MAE x2→x1: 0.1488
+    MAE x1→x2: 0.0926
+
+  [BEST] New best model! (Avg KL Total: 0.0007)
+
+Epoch 4/50
+  Phase: warmup
+  Supervised Loss 1: 0.0494
+  Supervised Loss 2: 0.0357
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0004
+    KL Total (x1→x2): 0.0001
+    Mutual Info (x2→x1): 1.8843
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9884
+    Correlation x1→x2: 0.9950
+    MAE x2→x1: 0.1222
+    MAE x1→x2: 0.0818
+
+  [BEST] New best model! (Avg KL Total: 0.0002)
+
+Epoch 5/50
+  Phase: warmup
+  Supervised Loss 1: 0.0405
+  Supervised Loss 2: 0.0304
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0001
+    KL Total (x1→x2): 0.0009
+    Mutual Info (x2→x1): 2.0652
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9919
+    Correlation x1→x2: 0.9963
+    MAE x2→x1: 0.0998
+    MAE x1→x2: 0.0757
+
+Epoch 6/50
+  Phase: warmup
+  Supervised Loss 1: 0.0346
+  Supervised Loss 2: 0.0260
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0018
+    KL Total (x1→x2): 0.0004
+    Mutual Info (x2→x1): 2.2458
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9944
+    Correlation x1→x2: 0.9975
+    MAE x2→x1: 0.0996
+    MAE x1→x2: 0.0603
+
+Epoch 7/50
+  Phase: warmup
+  Supervised Loss 1: 0.0322
+  Supervised Loss 2: 0.0236
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0002
+    KL Total (x1→x2): 0.0003
+    Mutual Info (x2→x1): 2.3830
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9957
+    Correlation x1→x2: 0.9980
+    MAE x2→x1: 0.0757
+    MAE x1→x2: 0.0519
+
+  [BEST] New best model! (Avg KL Total: 0.0002)
+
+Epoch 8/50
+  Phase: warmup
+  Supervised Loss 1: 0.0272
+  Supervised Loss 2: 0.0221
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0002
+    KL Total (x1→x2): 0.0003
+    Mutual Info (x2→x1): 2.5156
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9967
+    Correlation x1→x2: 0.9983
+    MAE x2→x1: 0.0655
+    MAE x1→x2: 0.0508
+
+Epoch 9/50
+  Phase: warmup
+  Supervised Loss 1: 0.0250
+  Supervised Loss 2: 0.0208
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0001
+    KL Total (x1→x2): 0.0001
+    Mutual Info (x2→x1): 2.5859
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9972
+    Correlation x1→x2: 0.9983
+    MAE x2→x1: 0.0621
+    MAE x1→x2: 0.0471
+
+  [BEST] New best model! (Avg KL Total: 0.0001)
+
+============================================================
+Setting up ES optimizers for cooperative training
+============================================================
+ES Optimizer initialized:
+  Population size: 30
+  Sigma: 0.001
+  Learning rate: 0.0005
+  Trainable parameters: 9,761
+  Use rank transform: False
+  Use mirror sampling: False
+
+ES Optimizer initialized:
+  Population size: 30
+  Sigma: 0.001
+  Learning rate: 0.0005
+  Trainable parameters: 9,761
+  Use rank transform: False
+  Use mirror sampling: False
+============================================================
+
+
+Epoch 10/50
+  Phase: warmup
+  Supervised Loss 1: 0.0237
+  Supervised Loss 2: 0.0185
+  ES Reward 1->2: -0.0377
+  ES Reward 2->1: -0.0331
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0028
+    KL Total (x1→x2): 0.0014
+    Mutual Info (x2→x1): 2.6601
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9976
+    Correlation x1→x2: 0.9987
+    MAE x2→x1: 0.0824
+    MAE x1→x2: 0.0600
+
+Epoch 11/50
+  Phase: warmup
+  ES Reward 1->2: -0.0353
+  ES Reward 2->1: -0.0375
+
+  Information Metrics:
+    KL Total (x2→x1): 4.0092
+    KL Total (x1→x2): 2.6983
+    Mutual Info (x2→x1): 2.9063
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9985
+    Correlation x1→x2: 0.9956
+    MAE x2→x1: 2.8113
+    MAE x1→x2: 2.3124
+
+Epoch 12/50
+  Phase: warmup
+  ES Reward 1->2: -0.0332
+  ES Reward 2->1: -0.0437
+
+  Information Metrics:
+    KL Total (x2→x1): 0.2007
+    KL Total (x1→x2): 0.2076
+    Mutual Info (x2→x1): 2.8558
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9983
+    Correlation x1→x2: 0.9974
+    MAE x2→x1: 0.6278
+    MAE x1→x2: 0.6421
+
+Epoch 13/50
+  Phase: warmup
+  ES Reward 1->2: -0.0290
+  ES Reward 2->1: -0.0422
+
+  Information Metrics:
+    KL Total (x2→x1): 3.3466
+    KL Total (x1→x2): 2.3397
+    Mutual Info (x2→x1): 3.1913
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9992
+    Correlation x1→x2: 0.9975
+    MAE x2→x1: 2.5725
+    MAE x1→x2: 2.1529
+
+
+Training interrupted by user.
