@@ -1,0 +1,14 @@
+{"time":"2025-12-05T15:26:55.9881055+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-12-05T15:26:56.3187352+01:00","level":"INFO","msg":"stream: created new stream","id":"botijp1m"}
+{"time":"2025-12-05T15:26:56.3187352+01:00","level":"INFO","msg":"handler: started","stream_id":"botijp1m"}
+{"time":"2025-12-05T15:26:56.3289922+01:00","level":"INFO","msg":"stream: started","id":"botijp1m"}
+{"time":"2025-12-05T15:26:56.3289922+01:00","level":"INFO","msg":"sender: started","stream_id":"botijp1m"}
+{"time":"2025-12-05T15:26:56.3289922+01:00","level":"INFO","msg":"writer: started","stream_id":"botijp1m"}
+{"time":"2025-12-05T15:26:57.3275122+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":38}
+{"time":"2025-12-05T15:26:57.5315634+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":11}
+{"time":"2025-12-05T15:31:21.7532516+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-12-05T15:31:22.1116614+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-12-05T15:31:22.1203387+01:00","level":"INFO","msg":"stream: closing","id":"botijp1m"}
+{"time":"2025-12-05T15:31:22.1203387+01:00","level":"INFO","msg":"handler: closed","stream_id":"botijp1m"}
+{"time":"2025-12-05T15:31:22.1208467+01:00","level":"INFO","msg":"sender: closed","stream_id":"botijp1m"}
+{"time":"2025-12-05T15:31:22.1208467+01:00","level":"INFO","msg":"stream: closed","id":"botijp1m"}

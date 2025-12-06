@@ -1,0 +1,48 @@
+{
+  "ablation_type": "mirror_sampling",
+  "ablation_name": "Mirror Sampling Ablation",
+  "num_experiments": 2,
+  "timestamp": "2025-12-05T15:39:36.614391",
+  "results": [
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "use_mirror_sampling": false
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size30_sigma0.001_use_mirror_samplingFalse_warmup_epochs10_20251205_153130",
+      "success": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.002818997049521348,
+        "kl_total_bwd": 0.0014379168884627045,
+        "mutual_info": 2.660077500411335,
+        "corr_x2_to_x1": 0.9975559050373493,
+        "corr_x1_to_x2": 0.9987249610746671,
+        "mae_x2_to_x1": 0.0824345201253891,
+        "mae_x1_to_x2": 0.059951867908239365
+      }
+    },
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "use_mirror_sampling": true
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size30_sigma0.001_use_mirror_samplingTrue_warmup_epochs10_20251205_153549",
+      "success": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.0038847620336268877,
+        "kl_total_bwd": 0.0028395691912083587,
+        "mutual_info": 2.691186140464311,
+        "corr_x2_to_x1": 0.9977035055336857,
+        "corr_x1_to_x2": 0.9986312458777458,
+        "mae_x2_to_x1": 0.09235663712024689,
+        "mae_x1_to_x2": 0.0770767480134964
+      }
+    }
+  ]
+}

@@ -993,6 +993,315 @@ class ESDDMEC1D:
         plt.savefig(save_path, dpi=100, bbox_inches='tight')
         plt.close(fig)
     
+    def _generate_detailed_epoch_plots(self, epoch: int, save_dir: str, 
+                                      x1_gen: np.ndarray, x2_gen: np.ndarray,
+                                      x1_test: np.ndarray, x2_test: np.ndarray,
+                                      info_metrics_1: dict, info_metrics_2: dict):
+        """Generate detailed individual plots for each metric."""
+        
+        # 1. Scatter plot with regression line
+        fig, ax = plt.subplots(figsize=(10, 8))
+        ax.scatter(x2_test, x1_gen, alpha=0.3, s=20, c='blue', label='Generated')
+        # Add ideal coupling line
+        x_line = np.linspace(x2_test.min(), x2_test.max(), 100)
+        ax.plot(x_line, x_line - 8, 'r--', linewidth=2, label='Ideal: x1 = x2 - 8')
+        corr = np.corrcoef(x2_test.flatten(), x1_gen.flatten())[0, 1]
+        ax.set_xlabel("x2 (condition)", fontsize=12)
+        ax.set_ylabel("x1 (generated)", fontsize=12)
+        ax.set_title(f"ES-DDMEC Coupling: x2→x1 (Epoch {epoch})\nCorrelation: {corr:.4f}", fontsize=14)
+        ax.legend(fontsize=11)
+        ax.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(save_dir, "coupling_x2_to_x1.png"), dpi=150)
+        plt.close(fig)
+        
+        # 2. Reverse coupling scatter
+        fig, ax = plt.subplots(figsize=(10, 8))
+        ax.scatter(x1_test, x2_gen, alpha=0.3, s=20, c='orange', label='Generated')
+        x_line = np.linspace(x1_test.min(), x1_test.max(), 100)
+        ax.plot(x_line, x_line + 8, 'r--', linewidth=2, label='Ideal: x2 = x1 + 8')
+        corr = np.corrcoef(x1_test.flatten(), x2_gen.flatten())[0, 1]
+        ax.set_xlabel("x1 (condition)", fontsize=12)
+        ax.set_ylabel("x2 (generated)", fontsize=12)
+        ax.set_title(f"ES-DDMEC Coupling: x1→x2 (Epoch {epoch})\nCorrelation: {corr:.4f}", fontsize=14)
+        ax.legend(fontsize=11)
+        ax.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(save_dir, "coupling_x1_to_x2.png"), dpi=150)
+        plt.close(fig)
+        
+        # 3. Marginal distributions comparison
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        
+        # X1 marginal
+        axes[0].hist(x1_gen, bins=40, density=True, alpha=0.6, color='blue', label='Generated')
+        x_range = np.linspace(x1_gen.min(), x1_gen.max(), 200)
+        axes[0].plot(x_range, 1/np.sqrt(2*np.pi) * np.exp(-(x_range-2)**2/2), 
+                    'r-', linewidth=2.5, label='Target N(2,1)')
+        axes[0].axvline(2.0, color='green', linestyle='--', linewidth=2, label='Target μ=2')
+        axes[0].axvline(x1_gen.mean(), color='blue', linestyle=':', linewidth=2, label=f'Learned μ={x1_gen.mean():.2f}')
+        axes[0].set_xlabel("x1", fontsize=12)
+        axes[0].set_ylabel("Density", fontsize=12)
+        axes[0].set_title(f"Marginal X1 (Epoch {epoch})\nμ={x1_gen.mean():.3f}, σ={x1_gen.std():.3f}", fontsize=13)
+        axes[0].legend(fontsize=10)
+        axes[0].grid(True, alpha=0.3)
+        
+        # X2 marginal
+        axes[1].hist(x2_gen, bins=40, density=True, alpha=0.6, color='orange', label='Generated')
+        x_range = np.linspace(x2_gen.min(), x2_gen.max(), 200)
+        axes[1].plot(x_range, 1/np.sqrt(2*np.pi) * np.exp(-(x_range-10)**2/2), 
+                    'r-', linewidth=2.5, label='Target N(10,1)')
+        axes[1].axvline(10.0, color='green', linestyle='--', linewidth=2, label='Target μ=10')
+        axes[1].axvline(x2_gen.mean(), color='orange', linestyle=':', linewidth=2, label=f'Learned μ={x2_gen.mean():.2f}')
+        axes[1].set_xlabel("x2", fontsize=12)
+        axes[1].set_ylabel("Density", fontsize=12)
+        axes[1].set_title(f"Marginal X2 (Epoch {epoch})\nμ={x2_gen.mean():.3f}, σ={x2_gen.std():.3f}", fontsize=13)
+        axes[1].legend(fontsize=10)
+        axes[1].grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(save_dir, "marginals.png"), dpi=150)
+        plt.close(fig)
+        
+        # 4. Error distributions
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        
+        error_1 = x1_gen - (x2_test - 8.0)
+        error_2 = x2_gen - (x1_test + 8.0)
+        
+        axes[0].hist(error_1, bins=40, density=True, alpha=0.7, color='blue')
+        axes[0].axvline(0, color='red', linestyle='--', linewidth=2, label='Perfect (0)')
+        axes[0].axvline(error_1.mean(), color='green', linestyle=':', linewidth=2, 
+                       label=f'Mean={error_1.mean():.3f}')
+        axes[0].set_xlabel("Error: x1_gen - (x2 - 8)", fontsize=12)
+        axes[0].set_ylabel("Density", fontsize=12)
+        axes[0].set_title(f"Coupling Error x2→x1\nMAE={np.abs(error_1).mean():.4f}", fontsize=13)
+        axes[0].legend(fontsize=10)
+        axes[0].grid(True, alpha=0.3)
+        
+        axes[1].hist(error_2, bins=40, density=True, alpha=0.7, color='orange')
+        axes[1].axvline(0, color='red', linestyle='--', linewidth=2, label='Perfect (0)')
+        axes[1].axvline(error_2.mean(), color='green', linestyle=':', linewidth=2,
+                       label=f'Mean={error_2.mean():.3f}')
+        axes[1].set_xlabel("Error: x2_gen - (x1 + 8)", fontsize=12)
+        axes[1].set_ylabel("Density", fontsize=12)
+        axes[1].set_title(f"Coupling Error x1→x2\nMAE={np.abs(error_2).mean():.4f}", fontsize=13)
+        axes[1].legend(fontsize=10)
+        axes[1].grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(save_dir, "error_distributions.png"), dpi=150)
+        plt.close(fig)
+        
+        # 5. 2D Joint distribution heatmap
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        
+        # Forward direction
+        h = axes[0].hist2d(x2_test.flatten(), x1_gen.flatten(), bins=40, cmap='Blues')
+        axes[0].plot([8, 12], [0, 4], 'r--', linewidth=2, label='Ideal coupling')
+        axes[0].set_xlabel("x2", fontsize=12)
+        axes[0].set_ylabel("x1", fontsize=12)
+        axes[0].set_title(f"Joint Distribution p(x1,x2) - Forward (Epoch {epoch})", fontsize=13)
+        axes[0].legend(fontsize=10)
+        plt.colorbar(h[3], ax=axes[0], label='Count')
+        
+        # Backward direction
+        h = axes[1].hist2d(x1_test.flatten(), x2_gen.flatten(), bins=40, cmap='Oranges')
+        axes[1].plot([0, 4], [8, 12], 'r--', linewidth=2, label='Ideal coupling')
+        axes[1].set_xlabel("x1", fontsize=12)
+        axes[1].set_ylabel("x2", fontsize=12)
+        axes[1].set_title(f"Joint Distribution p(x1,x2) - Backward (Epoch {epoch})", fontsize=13)
+        axes[1].legend(fontsize=10)
+        plt.colorbar(h[3], ax=axes[1], label='Count')
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(save_dir, "joint_distributions.png"), dpi=150)
+        plt.close(fig)
+        
+        # 6. Information metrics bar chart
+        fig, ax = plt.subplots(figsize=(12, 7))
+        
+        metrics = [
+            ('KL₁', info_metrics_1['kl_div_1']),
+            ('KL₂', info_metrics_1['kl_div_2']),
+            ('H(X)', info_metrics_1['entropy_x']),
+            ('H(Y)', info_metrics_1['entropy_y']),
+            ('H(X,Y)', info_metrics_1['joint_entropy']),
+            ('I(X;Y)', info_metrics_1['mutual_information']),
+            ('H(X|Y)', info_metrics_1['conditional_entropy_x_given_y']),
+            ('H(Y|X)', info_metrics_1['conditional_entropy_y_given_x']),
+        ]
+        
+        names, values = zip(*metrics)
+        colors = ['red', 'red', 'blue', 'orange', 'purple', 'green', 'cyan', 'magenta']
+        bars = ax.bar(names, values, color=colors, alpha=0.7, edgecolor='black', linewidth=1.5)
+        
+        # Add value labels on bars
+        for bar, val in zip(bars, values):
+            ax.text(bar.get_x() + bar.get_width()/2, val + 0.02, f'{val:.3f}',
+                   ha='center', va='bottom', fontsize=10, fontweight='bold')
+        
+        ax.set_ylabel("Value (nats / dimensionless)", fontsize=12)
+        ax.set_title(f"Information-Theoretic Metrics (Epoch {epoch})", fontsize=14, fontweight='bold')
+        ax.grid(True, alpha=0.3, axis='y')
+        plt.xticks(fontsize=11)
+        plt.tight_layout()
+        plt.savefig(os.path.join(save_dir, "information_metrics.png"), dpi=150)
+        plt.close(fig)
+    
+    def _generate_metrics_grid_plot(self, epoch: int, save_dir: str):
+        """Generate comprehensive 4x4 metrics grid plot."""
+        if not hasattr(self, 'local_log') or not self.local_log.get('epochs'):
+            return None
+        
+        epochs_data = self.local_log['epochs']
+        if len(epochs_data) == 0:
+            return None
+        
+        epochs = [e['epoch'] for e in epochs_data]
+        
+        # Extract all metrics
+        kl_fwd = [e['info_metrics_forward']['kl_div_total'] for e in epochs_data]
+        kl_bwd = [e['info_metrics_backward']['kl_div_total'] for e in epochs_data]
+        mi_fwd = [e['info_metrics_forward']['mutual_information'] for e in epochs_data]
+        mi_bwd = [e['info_metrics_backward']['mutual_information'] for e in epochs_data]
+        corr_x2_x1 = [e['coupling_metrics']['corr_x2_to_x1'] for e in epochs_data]
+        corr_x1_x2 = [e['coupling_metrics']['corr_x1_to_x2'] for e in epochs_data]
+        mae_x2_x1 = [e['coupling_metrics']['mae_x2_to_x1'] for e in epochs_data]
+        mae_x1_x2 = [e['coupling_metrics']['mae_x1_to_x2'] for e in epochs_data]
+        
+        # ES-specific metrics
+        es_reward_1 = [e['es_metrics'].get('reward_mean_1', 0) for e in epochs_data]
+        es_reward_2 = [e['es_metrics'].get('reward_mean_2', 0) for e in epochs_data]
+        
+        # Create 3x4 grid
+        fig, axes = plt.subplots(3, 4, figsize=(20, 15))
+        
+        # Row 1: KL Divergence and Mutual Information
+        axes[0, 0].plot(epochs, kl_fwd, 'b-', linewidth=2, label='Forward (x2→x1)')
+        axes[0, 0].plot(epochs, kl_bwd, 'r--', linewidth=2, label='Backward (x1→x2)')
+        axes[0, 0].set_xlabel('Epoch')
+        axes[0, 0].set_ylabel('KL Divergence')
+        axes[0, 0].set_title('KL Divergence Over Training')
+        axes[0, 0].legend()
+        axes[0, 0].grid(True, alpha=0.3)
+        
+        axes[0, 1].plot(epochs, mi_fwd, 'b-', linewidth=2, label='Forward')
+        axes[0, 1].plot(epochs, mi_bwd, 'r--', linewidth=2, label='Backward')
+        axes[0, 1].axhline(y=0, color='gray', linestyle=':', alpha=0.5)
+        axes[0, 1].set_xlabel('Epoch')
+        axes[0, 1].set_ylabel('Mutual Information (nats)')
+        axes[0, 1].set_title('Mutual Information I(X;Y)')
+        axes[0, 1].legend()
+        axes[0, 1].grid(True, alpha=0.3)
+        
+        axes[0, 2].plot(epochs, corr_x2_x1, 'b-', linewidth=2, marker='o', markersize=4, label='x2→x1')
+        axes[0, 2].plot(epochs, corr_x1_x2, 'r-', linewidth=2, marker='s', markersize=4, label='x1→x2')
+        axes[0, 2].axhline(y=1.0, color='green', linestyle='--', alpha=0.7)
+        axes[0, 2].set_xlabel('Epoch')
+        axes[0, 2].set_ylabel('Correlation')
+        axes[0, 2].set_title('Coupling Correlation')
+        axes[0, 2].legend()
+        axes[0, 2].grid(True, alpha=0.3)
+        axes[0, 2].set_ylim([max(0, min(min(corr_x2_x1), min(corr_x1_x2))-0.1), 1.1])
+        
+        axes[0, 3].plot(epochs, mae_x2_x1, 'b-', linewidth=2, marker='o', markersize=4, label='x2→x1')
+        axes[0, 3].plot(epochs, mae_x1_x2, 'r-', linewidth=2, marker='s', markersize=4, label='x1→x2')
+        axes[0, 3].axhline(y=0, color='green', linestyle='--', alpha=0.7)
+        axes[0, 3].set_xlabel('Epoch')
+        axes[0, 3].set_ylabel('Mean Absolute Error')
+        axes[0, 3].set_title('Coupling Error (MAE)')
+        axes[0, 3].legend()
+        axes[0, 3].grid(True, alpha=0.3)
+        
+        # Row 2: ES Rewards and Learning Progress
+        if any(es_reward_1) and any(es_reward_2):
+            axes[1, 0].plot(epochs, es_reward_1, 'b-', linewidth=2, label='Direction 1→2')
+            axes[1, 0].set_xlabel('Epoch')
+            axes[1, 0].set_ylabel('ES Reward (Negative NLL)')
+            axes[1, 0].set_title('ES Reward: Model 1 (x2→x1)')
+            axes[1, 0].legend()
+            axes[1, 0].grid(True, alpha=0.3)
+            
+            axes[1, 1].plot(epochs, es_reward_2, 'r-', linewidth=2, label='Direction 2→1')
+            axes[1, 1].set_xlabel('Epoch')
+            axes[1, 1].set_ylabel('ES Reward (Negative NLL)')
+            axes[1, 1].set_title('ES Reward: Model 2 (x1→x2)')
+            axes[1, 1].legend()
+            axes[1, 1].grid(True, alpha=0.3)
+        else:
+            axes[1, 0].text(0.5, 0.5, 'Warmup Phase\n(No ES rewards)', 
+                           ha='center', va='center', fontsize=12, transform=axes[1, 0].transAxes)
+            axes[1, 1].text(0.5, 0.5, 'Warmup Phase\n(No ES rewards)',
+                           ha='center', va='center', fontsize=12, transform=axes[1, 1].transAxes)
+        
+        # Average metrics
+        avg_corr = [(c1 + c2)/2 for c1, c2 in zip(corr_x2_x1, corr_x1_x2)]
+        avg_mae = [(m1 + m2)/2 for m1, m2 in zip(mae_x2_x1, mae_x1_x2)]
+        avg_kl = [(k1 + k2)/2 for k1, k2 in zip(kl_fwd, kl_bwd)]
+        
+        axes[1, 2].plot(epochs, avg_corr, 'g-', linewidth=2.5)
+        axes[1, 2].fill_between(epochs, avg_corr, alpha=0.3, color='green')
+        axes[1, 2].axhline(y=1.0, color='red', linestyle='--', alpha=0.7)
+        axes[1, 2].set_xlabel('Epoch')
+        axes[1, 2].set_ylabel('Average Correlation')
+        axes[1, 2].set_title('Average Coupling Quality')
+        axes[1, 2].grid(True, alpha=0.3)
+        
+        axes[1, 3].plot(epochs, avg_kl, 'purple', linewidth=2.5)
+        axes[1, 3].fill_between(epochs, avg_kl, alpha=0.3, color='purple')
+        axes[1, 3].set_xlabel('Epoch')
+        axes[1, 3].set_ylabel('Average KL Total')
+        axes[1, 3].set_title('Average KL Divergence (Lower is Better)')
+        axes[1, 3].grid(True, alpha=0.3)
+        
+        # Row 3: Learned statistics
+        mu_1 = [e['info_metrics_forward']['learned_mu_1'] for e in epochs_data]
+        mu_2 = [e['info_metrics_forward']['learned_mu_2'] for e in epochs_data]
+        sigma_1 = [e['info_metrics_forward']['learned_sigma_1'] for e in epochs_data]
+        sigma_2 = [e['info_metrics_forward']['learned_sigma_2'] for e in epochs_data]
+        
+        axes[2, 0].plot(epochs, mu_1, 'b-', linewidth=2, label='μ₁ (learned)')
+        axes[2, 0].axhline(y=2.0, color='red', linestyle='--', linewidth=2, label='Target μ₁=2.0')
+        axes[2, 0].set_xlabel('Epoch')
+        axes[2, 0].set_ylabel('Mean μ₁')
+        axes[2, 0].set_title('Learned Mean X1')
+        axes[2, 0].legend()
+        axes[2, 0].grid(True, alpha=0.3)
+        
+        axes[2, 1].plot(epochs, mu_2, 'r-', linewidth=2, label='μ₂ (learned)')
+        axes[2, 1].axhline(y=10.0, color='red', linestyle='--', linewidth=2, label='Target μ₂=10.0')
+        axes[2, 1].set_xlabel('Epoch')
+        axes[2, 1].set_ylabel('Mean μ₂')
+        axes[2, 1].set_title('Learned Mean X2')
+        axes[2, 1].legend()
+        axes[2, 1].grid(True, alpha=0.3)
+        
+        axes[2, 2].plot(epochs, sigma_1, 'b-', linewidth=2, label='σ₁ (learned)')
+        axes[2, 2].axhline(y=1.0, color='red', linestyle='--', linewidth=2, label='Target σ=1.0')
+        axes[2, 2].set_xlabel('Epoch')
+        axes[2, 2].set_ylabel('Std σ₁')
+        axes[2, 2].set_title('Learned Std X1')
+        axes[2, 2].legend()
+        axes[2, 2].grid(True, alpha=0.3)
+        
+        axes[2, 3].plot(epochs, sigma_2, 'r-', linewidth=2, label='σ₂ (learned)')
+        axes[2, 3].axhline(y=1.0, color='red', linestyle='--', linewidth=2, label='Target σ=1.0')
+        axes[2, 3].set_xlabel('Epoch')
+        axes[2, 3].set_ylabel('Std σ₂')
+        axes[2, 3].set_title('Learned Std X2')
+        axes[2, 3].legend()
+        axes[2, 3].grid(True, alpha=0.3)
+        
+        plt.suptitle(f'ES-DDMEC Comprehensive Metrics - Epoch {epoch}', fontsize=16, fontweight='bold')
+        plt.tight_layout()
+        
+        grid_path = os.path.join(save_dir, "metrics_grid.png")
+        plt.savefig(grid_path, dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        
+        return grid_path
+    
     @torch.no_grad()
     def sample_coupled(
         self,
@@ -1201,6 +1510,17 @@ class ESDDMEC1D:
                     x1_eval_np, x2_eval_np,
                     epoch + 1, plot_path
                 )
+                
+                # Generate detailed individual plots
+                self._generate_detailed_epoch_plots(
+                    epoch + 1, epoch_plots_dir,
+                    x1_gen_np, x2_gen_np,
+                    x1_eval_np, x2_eval_np,
+                    info_metrics_1, info_metrics_2
+                )
+                
+                # Generate comprehensive metrics grid plot
+                self._generate_metrics_grid_plot(epoch + 1, epoch_plots_dir)
                 
                 # Also save at top level
                 top_plot = os.path.join(plots_dir, f"epoch_{epoch+1:04d}.png")

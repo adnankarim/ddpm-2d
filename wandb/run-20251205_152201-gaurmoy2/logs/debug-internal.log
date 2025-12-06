@@ -1,0 +1,14 @@
+{"time":"2025-12-05T15:22:04.1418552+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-12-05T15:22:04.4784116+01:00","level":"INFO","msg":"stream: created new stream","id":"gaurmoy2"}
+{"time":"2025-12-05T15:22:04.4804102+01:00","level":"INFO","msg":"handler: started","stream_id":"gaurmoy2"}
+{"time":"2025-12-05T15:22:04.5392125+01:00","level":"INFO","msg":"stream: started","id":"gaurmoy2"}
+{"time":"2025-12-05T15:22:04.540832+01:00","level":"INFO","msg":"writer: started","stream_id":"gaurmoy2"}
+{"time":"2025-12-05T15:22:04.5421167+01:00","level":"INFO","msg":"sender: started","stream_id":"gaurmoy2"}
+{"time":"2025-12-05T15:22:05.8146362+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":38}
+{"time":"2025-12-05T15:22:05.992908+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":11}
+{"time":"2025-12-05T15:26:43.5273419+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-12-05T15:26:43.8291413+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-12-05T15:26:43.8368797+01:00","level":"INFO","msg":"stream: closing","id":"gaurmoy2"}
+{"time":"2025-12-05T15:26:43.8368797+01:00","level":"INFO","msg":"handler: closed","stream_id":"gaurmoy2"}
+{"time":"2025-12-05T15:26:43.8368797+01:00","level":"INFO","msg":"sender: closed","stream_id":"gaurmoy2"}
+{"time":"2025-12-05T15:26:43.8373864+01:00","level":"INFO","msg":"stream: closed","id":"gaurmoy2"}

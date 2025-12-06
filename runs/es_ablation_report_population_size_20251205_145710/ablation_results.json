@@ -1,0 +1,103 @@
+{
+  "ablation_type": "population_size",
+  "ablation_name": "Population Size Ablation",
+  "num_experiments": 5,
+  "timestamp": "2025-12-05T14:57:11.868828",
+  "results": [
+    {
+      "config": {
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "population_size": 10
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size10_sigma0.001_warmup_epochs10_20251204_234457_20251204_234503",
+      "skipped": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.29125223141211465,
+        "kl_total_bwd": 0.2977856934698111,
+        "mutual_info": 2.9462613593137985,
+        "corr_x2_to_x1": 0.9986218063397531,
+        "corr_x1_to_x2": 0.9980941332873998,
+        "mae_x2_to_x1": 0.7625917792320251,
+        "mae_x1_to_x2": 0.7713132500648499
+      }
+    },
+    {
+      "config": {
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "population_size": 20
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size20_sigma0.001_warmup_epochs10_20251205_021307_20251205_021312",
+      "skipped": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.00391239219394225,
+        "kl_total_bwd": 0.0025450352340916013,
+        "mutual_info": 2.6542438636373222,
+        "corr_x2_to_x1": 0.9975271862331094,
+        "corr_x1_to_x2": 0.9983304378026793,
+        "mae_x2_to_x1": 0.09326835721731186,
+        "mae_x1_to_x2": 0.07358714193105698
+      }
+    },
+    {
+      "config": {
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "population_size": 30
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size30_sigma0.001_warmup_epochs10_20251205_083455",
+      "skipped": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.002818997049521348,
+        "kl_total_bwd": 0.0014379168884627045,
+        "mutual_info": 2.660077500411335,
+        "corr_x2_to_x1": 0.9975559050373493,
+        "corr_x1_to_x2": 0.9987249610746671,
+        "mae_x2_to_x1": 0.0824345201253891,
+        "mae_x1_to_x2": 0.059951867908239365
+      }
+    },
+    {
+      "config": {
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "population_size": 40
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size40_sigma0.001_warmup_epochs10_20251205_083908",
+      "skipped": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.0021311314391506677,
+        "kl_total_bwd": 0.0023916288047440074,
+        "mutual_info": 2.6258816730196566,
+        "corr_x2_to_x1": 0.9973826739092995,
+        "corr_x1_to_x2": 0.998415871637871,
+        "mae_x2_to_x1": 0.07758566737174988,
+        "mae_x1_to_x2": 0.07180401682853699
+      }
+    },
+    {
+      "config": {
+        "sigma": 0.001,
+        "es_lr": 0.0005,
+        "warmup_epochs": 10,
+        "population_size": 50
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size50_sigma0.001_warmup_epochs10_20251205_084332",
+      "skipped": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.003894120216507221,
+        "kl_total_bwd": 0.00243798280132156,
+        "mutual_info": 2.666125272551362,
+        "corr_x2_to_x1": 0.9975853249166445,
+        "corr_x1_to_x2": 0.998702630867596,
+        "mae_x2_to_x1": 0.09274511784315109,
+        "mae_x1_to_x2": 0.07319842278957367
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{"time":"2025-12-05T02:12:14.1627934+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-12-05T02:12:35.5241941+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp 35.186.228.49:443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"time":"2025-12-05T02:12:49.3244711+01:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp 35.186.228.49:443: connectex: An established connection was aborted by the software in your host machine."}
+{"time":"2025-12-05T02:12:53.841404+01:00","level":"INFO","msg":"stream: created new stream","id":"ku68j03y"}
+{"time":"2025-12-05T02:12:53.841404+01:00","level":"INFO","msg":"handler: started","stream_id":"ku68j03y"}
+{"time":"2025-12-05T02:12:53.8544293+01:00","level":"INFO","msg":"stream: started","id":"ku68j03y"}
+{"time":"2025-12-05T02:12:53.8544293+01:00","level":"INFO","msg":"writer: started","stream_id":"ku68j03y"}
+{"time":"2025-12-05T02:12:53.8544293+01:00","level":"INFO","msg":"sender: started","stream_id":"ku68j03y"}
+{"time":"2025-12-05T02:12:54.2652444+01:00","level":"INFO","msg":"stream: closing","id":"ku68j03y"}
+{"time":"2025-12-05T02:12:55.2000084+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-12-05T02:12:55.2000084+01:00","level":"INFO","msg":"handler: closed","stream_id":"ku68j03y"}
+{"time":"2025-12-05T02:12:55.2005168+01:00","level":"INFO","msg":"sender: closed","stream_id":"ku68j03y"}
+{"time":"2025-12-05T02:12:55.2005168+01:00","level":"INFO","msg":"stream: closed","id":"ku68j03y"}

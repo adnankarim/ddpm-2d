@@ -1,0 +1,111 @@
+{
+  "experiment": "ES-DDMEC",
+  "run_dir": "runs\\es_ablation_es_lr0.0005_population_size30_sigma0.0015_warmup_epochs10_20251205_145504",
+  "config": {
+    "population_size": 30,
+    "sigma": 0.0015,
+    "es_lr": 0.0005,
+    "warmup_epochs": 10,
+    "num_epochs": 2,
+    "batch_size": 64,
+    "supervised_lr": 0.0001
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "phase": "warmup",
+      "info_metrics_forward": {
+        "kl_div_1": 0.011315576468099109,
+        "kl_div_2": 4.386504320377793e-05,
+        "kl_div_total": 0.011359441511302887,
+        "entropy_x": 1.5195908385831765,
+        "entropy_y": 1.4255353452794333,
+        "joint_entropy": 2.0561902592308794,
+        "mutual_information": 0.8889359246317303,
+        "conditional_entropy_x_given_y": 0.6306549139514461,
+        "conditional_entropy_y_given_x": 0.5365994206477029,
+        "learned_mu_1": 2.030635118484497,
+        "learned_sigma_1": 1.1058920621871948,
+        "learned_mu_2": 10.000556945800781,
+        "learned_sigma_2": 1.006618618965149
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 4.386504320377793e-05,
+        "kl_div_2": 0.006564850284550353,
+        "kl_div_total": 0.0066087153277541305,
+        "entropy_x": 1.4255353452794333,
+        "entropy_y": 1.4650593456299421,
+        "joint_entropy": 1.75786270258284,
+        "mutual_information": 1.1327319883265352,
+        "conditional_entropy_x_given_y": 0.29280335695289783,
+        "conditional_entropy_y_given_x": 0.3323273573034067,
+        "learned_mu_1": 2.0005569458007812,
+        "learned_sigma_1": 1.006618618965149,
+        "learned_mu_2": 9.906503677368164,
+        "learned_sigma_2": 1.0472009181976318
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9117787100146227,
+        "corr_x1_to_x2": 0.9467975404829586,
+        "mae_x2_to_x1": 0.3507929742336273,
+        "mae_x1_to_x2": 0.2447940558195114
+      },
+      "es_metrics": {
+        "reward_mean_1": 0.0,
+        "reward_mean_2": 0.0
+      },
+      "best": {
+        "kl_total": Infinity,
+        "epoch": 0
+      }
+    },
+    {
+      "epoch": 2,
+      "phase": "warmup",
+      "info_metrics_forward": {
+        "kl_div_1": 0.0024963310390178142,
+        "kl_div_2": 4.386504320377793e-05,
+        "kl_div_total": 0.002540196082221592,
+        "entropy_x": 1.45106407047777,
+        "entropy_y": 1.4255353452794333,
+        "joint_entropy": 1.5400886976667627,
+        "mutual_information": 1.3365107180904408,
+        "conditional_entropy_x_given_y": 0.11455335238732944,
+        "conditional_entropy_y_given_x": 0.08902462718899273,
+        "learned_mu_1": 1.9463005065917969,
+        "learned_sigma_1": 1.0326471328735352,
+        "learned_mu_2": 10.000556945800781,
+        "learned_sigma_2": 1.006618618965149
+      },
+      "info_metrics_backward": {
+        "kl_div_1": 4.386504320377793e-05,
+        "kl_div_2": 0.002023914832857448,
+        "kl_div_total": 0.002067779876061226,
+        "entropy_x": 1.4255353452794333,
+        "entropy_y": 1.4491485801176962,
+        "joint_entropy": 1.2472734074718128,
+        "mutual_information": 1.6274105179253169,
+        "conditional_entropy_x_given_y": -0.2018751726458834,
+        "conditional_entropy_y_given_x": -0.17826193780762045,
+        "learned_mu_1": 2.0005569458007812,
+        "learned_sigma_1": 1.006618618965149,
+        "learned_mu_2": 9.953253746032715,
+        "learned_sigma_2": 1.0306710004806519
+      },
+      "coupling_metrics": {
+        "corr_x2_to_x1": 0.9649324934376671,
+        "corr_x1_to_x2": 0.9805556620922189,
+        "mae_x2_to_x1": 0.2143973708152771,
+        "mae_x1_to_x2": 0.1333320140838623
+      },
+      "es_metrics": {
+        "reward_mean_1": 0.0,
+        "reward_mean_2": 0.0
+      },
+      "best": {
+        "kl_total": 0.008984078419528509,
+        "epoch": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+================================================================================
+ES-DDMEC ABLATION STUDY: Mirror Sampling Ablation
+================================================================================
+Timestamp: 2025-12-05 15:39:36
+Number of experiments: 2
+================================================================================
+
+Experiment 1/2
+--------------------------------------------------------------------------------
+Config: {'population_size': 30, 'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'use_mirror_sampling': False}
+Run dir: runs\es_ablation_es_lr0.0005_population_size30_sigma0.001_use_mirror_samplingFalse_warmup_epochs10_20251205_153130
+
+Final Metrics:
+  kl_total_fwd: 0.002819
+  kl_total_bwd: 0.001438
+  mutual_info: 2.660078
+  corr_x2_to_x1: 0.997556
+  corr_x1_to_x2: 0.998725
+  mae_x2_to_x1: 0.082435
+  mae_x1_to_x2: 0.059952
+
+Experiment 2/2
+--------------------------------------------------------------------------------
+Config: {'population_size': 30, 'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'use_mirror_sampling': True}
+Run dir: runs\es_ablation_es_lr0.0005_population_size30_sigma0.001_use_mirror_samplingTrue_warmup_epochs10_20251205_153549
+
+Final Metrics:
+  kl_total_fwd: 0.003885
+  kl_total_bwd: 0.002840
+  mutual_info: 2.691186
+  corr_x2_to_x1: 0.997704
+  corr_x1_to_x2: 0.998631
+  mae_x2_to_x1: 0.092357
+  mae_x1_to_x2: 0.077077
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+
+use_mirror_sampling KL Fwd     KL Bwd     MI         Corr→      Corr←      MAE→       MAE←      
+--------------------------------------------------------------------------------
+False           0.0028     0.0014     2.6601     0.9976     0.9987     0.0824     0.0600    
+True            0.0039     0.0028     2.6912     0.9977     0.9986     0.0924     0.0771    
+
+================================================================================
+BEST CONFIGURATION
+================================================================================
+Config: {'population_size': 30, 'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'use_mirror_sampling': False}
+Avg KL Total: 0.002128
+Run dir: runs\es_ablation_es_lr0.0005_population_size30_sigma0.001_use_mirror_samplingFalse_warmup_epochs10_20251205_153130

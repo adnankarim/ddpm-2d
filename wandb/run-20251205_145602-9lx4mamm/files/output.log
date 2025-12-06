@@ -1,0 +1,132 @@
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+
+[OK] W&B initialized: https://wandb.ai/adnankaremjs/es-ddmec-1d/runs/9lx4mamm
+
+Creating training data...
+Dataset created (n=100000, seed=42):
+  X1: mean=2.00, std=1.01 (target: N(2,1))
+  X2: mean=10.00, std=1.01 (target: N(10,1))
+  Correlation: 1.0000
+
+Initializing ES-DDMEC...
+
+============================================================
+ES-DDMEC: Evolution Strategies for Minimum Entropy Coupling
+============================================================
+
+ES Hyperparameters:
+  Population Size: 30
+  Sigma: 0.002
+  ES Learning Rate: 0.0005
+  Warmup Epochs: 10
+  Rank Transform: False
+  Mirror Sampling: False
+  MC Steps: 5
+  Sampling Steps: 50
+
+Loading Model 1 from ddpm_1d_2.pt
+Loading Model 2 from ddpm_1d_10.pt
+
+Device: cuda
+============================================================
+
+
+Model Architecture:
+  Model 1: 9,761 trainable / 9,761 total parameters
+  Model 2: 9,761 trainable / 9,761 total parameters
+  Total: 19,522 trainable parameters
+
+Starting training...
+============================================================
+TensorBoard: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\tensorboard
+
+Warmup: 10 epochs = 15620 steps
+
+Training ES-DDMEC for 2 epochs
+  Batches per epoch: 1562
+  Checkpoints: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\checkpoints
+  Plots: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\plots
+------------------------------------------------------------
+
+Epoch 1/2
+  Phase: warmup
+  Supervised Loss 1: 0.2217
+  Supervised Loss 2: 0.2686
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0114
+    KL Total (x1→x2): 0.0066
+    Mutual Info (x2→x1): 0.8889
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9118
+    Correlation x1→x2: 0.9468
+    MAE x2→x1: 0.3508
+    MAE x1→x2: 0.2448
+
+  [BEST] New best model! (Avg KL Total: 0.0090)
+
+Epoch 2/2
+  Phase: warmup
+  Supervised Loss 1: 0.1028
+  Supervised Loss 2: 0.0668
+
+  Information Metrics:
+    KL Total (x2→x1): 0.0025
+    KL Total (x1→x2): 0.0021
+    Mutual Info (x2→x1): 1.3365
+
+  Coupling Metrics:
+    Correlation x2→x1: 0.9649
+    Correlation x1→x2: 0.9806
+    MAE x2→x1: 0.2144
+    MAE x1→x2: 0.1333
+
+  [BEST] New best model! (Avg KL Total: 0.0023)
+
+============================================================
+ES-DDMEC Training Complete!
+============================================================
+Best epoch: 2
+Best Avg KL Total: 0.0023
+
+Outputs:
+  Checkpoints: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\checkpoints
+  Plots: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\plots
+  Metrics CSV: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\tables\epoch_metrics.csv
+  Log: runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\logs\training_log.json
+  TensorBoard: tensorboard --logdir=runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\tensorboard
+============================================================
+
+============================================================
+Evaluating Learned Coupling
+============================================================
+
+Direction x2 → x1:
+  Input x2: mean=9.99, std=0.99
+  Generated x1: mean=1.94, std=1.01
+  Expected x1: mean=2.00, std=1.00
+  Correlation: 0.9644
+  MAE from ideal coupling: 0.2124
+
+Direction x1 → x2:
+  Input x1: mean=2.01, std=0.99
+  Generated x2: mean=9.97, std=1.00
+  Expected x2: mean=10.00, std=1.00
+  Correlation: 0.9846
+  MAE from ideal coupling: 0.1307
+
+Round-trip (x2 → x1 → x2):
+  Reconstruction error: 0.2559
+
+Information-Theoretic Metrics:
+  KL Divergence (X1): 0.0022
+  KL Divergence (X2): 0.0002
+  Total KL: 0.0024
+  Mutual Information I(X1;X2): 1.3301
+
+Generating final visualization...
+
+Visualization saved to runs\es_ablation_es_lr0.0005_population_size30_sigma0.002_warmup_epochs10_20251205_145601\es_ddmec_final_results.png
+
+Visualization saved to es_ddmec_results.png

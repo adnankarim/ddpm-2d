@@ -1,0 +1,103 @@
+{
+  "ablation_type": "es_lr",
+  "ablation_name": "ES Learning Rate Ablation",
+  "num_experiments": 5,
+  "timestamp": "2025-12-05T15:31:25.140055",
+  "results": [
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "warmup_epochs": 10,
+        "es_lr": 0.0001
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0001_population_size30_sigma0.001_warmup_epochs10_20251205_151303",
+      "success": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.003233452641240017,
+        "kl_total_bwd": 0.0019179186378783502,
+        "mutual_info": 2.656891797286287,
+        "corr_x2_to_x1": 0.9975402636492483,
+        "corr_x1_to_x2": 0.9987277646953574,
+        "mae_x2_to_x1": 0.0863577276468277,
+        "mae_x1_to_x2": 0.06623169034719467
+      }
+    },
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "warmup_epochs": 10,
+        "es_lr": 0.00025
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.00025_population_size30_sigma0.001_warmup_epochs10_20251205_151707",
+      "success": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.003038713737914322,
+        "kl_total_bwd": 0.001730151517256091,
+        "mutual_info": 2.658510459084408,
+        "corr_x2_to_x1": 0.9975482235223841,
+        "corr_x1_to_x2": 0.9987266359168762,
+        "mae_x2_to_x1": 0.08450620621442795,
+        "mae_x1_to_x2": 0.06382421404123306
+      }
+    },
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "warmup_epochs": 10,
+        "es_lr": 0.0005
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.0005_population_size30_sigma0.001_warmup_epochs10_20251205_083455",
+      "skipped": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.002818997049521348,
+        "kl_total_bwd": 0.0014379168884627045,
+        "mutual_info": 2.660077500411335,
+        "corr_x2_to_x1": 0.9975559050373493,
+        "corr_x1_to_x2": 0.9987249610746671,
+        "mae_x2_to_x1": 0.0824345201253891,
+        "mae_x1_to_x2": 0.059951867908239365
+      }
+    },
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "warmup_epochs": 10,
+        "es_lr": 0.00075
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.00075_population_size30_sigma0.001_warmup_epochs10_20251205_152159",
+      "success": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.0026266831065858724,
+        "kl_total_bwd": 0.0011774767681911246,
+        "mutual_info": 2.6615989848196544,
+        "corr_x2_to_x1": 0.9975633400449915,
+        "corr_x1_to_x2": 0.9987236427946145,
+        "mae_x2_to_x1": 0.08061099797487259,
+        "mae_x1_to_x2": 0.05645553767681122
+      }
+    },
+    {
+      "config": {
+        "population_size": 30,
+        "sigma": 0.001,
+        "warmup_epochs": 10,
+        "es_lr": 0.001
+      },
+      "run_dir": "runs\\es_ablation_es_lr0.001_population_size30_sigma0.001_warmup_epochs10_20251205_152652",
+      "success": true,
+      "final_metrics": {
+        "kl_total_fwd": 0.002530355593821383,
+        "kl_total_bwd": 0.0009525331644344272,
+        "mutual_info": 2.662228278127829,
+        "corr_x2_to_x1": 0.9975664087009545,
+        "corr_x1_to_x2": 0.9987227268430332,
+        "mae_x2_to_x1": 0.07971353083848953,
+        "mae_x1_to_x2": 0.053374480456113815
+      }
+    }
+  ]
+}

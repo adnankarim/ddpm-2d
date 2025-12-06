@@ -1,0 +1,108 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            4f7bgh9ebufmke30zizvl187eyag8lx5:
+                args:
+                    - --num-epochs
+                    - "10"
+                    - --batch-size
+                    - "64"
+                    - --num-samples
+                    - "100000"
+                    - --run-name
+                    - es_ablation_es_lr0.0005_population_size50_sigma0.001_warmup_epochs10
+                    - --sigma
+                    - "0.001"
+                    - --es-lr
+                    - "0.0005"
+                    - --warmup-epochs
+                    - "10"
+                    - --population-size
+                    - "50"
+                codePath: run_es_ddmec.py
+                codePathLocal: run_es_ddmec.py
+                cpu_count: 6
+                cpu_count_logical: 12
+                cudaVersion: "12.5"
+                disk:
+                    /:
+                        total: "341898686464"
+                        used: "319910297600"
+                email: adnankaremjs@gmail.com
+                executable: C:\Users\dell\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\python.exe
+                git:
+                    commit: db2574039fc8354141052824c0dc2c4742578cd7
+                    remote: https://github.com/adnankarim/ddpm-2d.git
+                gpu: NVIDIA GeForce RTX 3090
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 10496
+                      memoryTotal: "25769803776"
+                      name: NVIDIA GeForce RTX 3090
+                      uuid: GPU-52a0ace5-5c52-65b5-c262-b6023ee9285f
+                host: DESKTOP-LITA292
+                memory:
+                    total: "34266128384"
+                os: Windows-11-10.0.26200-SP0
+                program: C:\Users\dell\Music\resd\run_es_ddmec.py
+                python: CPython 3.12.10
+                root: C:\Users\dell\Music\resd
+                startedAt: "2025-12-05T07:43:33.114141Z"
+                writerId: 4f7bgh9ebufmke30zizvl187eyag8lx5
+        m: []
+        python_version: 3.12.10
+        t:
+            "1":
+                - 1
+                - 105
+            "2":
+                - 1
+                - 105
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.10
+            "5": 0.23.0
+            "8":
+                - 3
+            "10":
+                - 21
+            "12": 0.23.0
+            "13": windows-amd64
+batch_size:
+    value: 64
+es_lr:
+    value: 0.0005
+mc_steps:
+    value: 5
+method:
+    value: ES-DDMEC
+model_1_params:
+    value: 9761
+model_2_params:
+    value: 9761
+num_epochs:
+    value: 10
+num_samples:
+    value: 100000
+population_size:
+    value: 50
+sampling_steps:
+    value: 50
+seed:
+    value: 42
+sigma:
+    value: 0.001
+supervised_lr:
+    value: 0.0001
+total_params:
+    value: 19522
+use_mirror_sampling:
+    value: false
+use_rank_transform:
+    value: false
+warmup_epochs:
+    value: 10

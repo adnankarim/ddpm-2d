@@ -1,0 +1,95 @@
+================================================================================
+ES-DDMEC ABLATION STUDY: Population Size Ablation
+================================================================================
+Timestamp: 2025-12-05 14:53:34
+Number of experiments: 5
+================================================================================
+
+Experiment 1/5
+--------------------------------------------------------------------------------
+Config: {'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'population_size': 10}
+Run dir: runs\es_ablation_es_lr0.0005_population_size10_sigma0.001_warmup_epochs10_20251204_234457_20251204_234503
+
+Final Metrics:
+  kl_total_fwd: 0.291252
+  kl_total_bwd: 0.297786
+  mutual_info: 2.946261
+  corr_x2_to_x1: 0.998622
+  corr_x1_to_x2: 0.998094
+  mae_x2_to_x1: 0.762592
+  mae_x1_to_x2: 0.771313
+
+Experiment 2/5
+--------------------------------------------------------------------------------
+Config: {'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'population_size': 20}
+Run dir: runs\es_ablation_es_lr0.0005_population_size20_sigma0.001_warmup_epochs10_20251205_021307_20251205_021312
+
+Final Metrics:
+  kl_total_fwd: 0.003912
+  kl_total_bwd: 0.002545
+  mutual_info: 2.654244
+  corr_x2_to_x1: 0.997527
+  corr_x1_to_x2: 0.998330
+  mae_x2_to_x1: 0.093268
+  mae_x1_to_x2: 0.073587
+
+Experiment 3/5
+--------------------------------------------------------------------------------
+Config: {'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'population_size': 30}
+Run dir: runs\es_ablation_es_lr0.0005_population_size30_sigma0.001_warmup_epochs10_20251205_083455
+
+Final Metrics:
+  kl_total_fwd: 0.002819
+  kl_total_bwd: 0.001438
+  mutual_info: 2.660078
+  corr_x2_to_x1: 0.997556
+  corr_x1_to_x2: 0.998725
+  mae_x2_to_x1: 0.082435
+  mae_x1_to_x2: 0.059952
+
+Experiment 4/5
+--------------------------------------------------------------------------------
+Config: {'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'population_size': 40}
+Run dir: runs\es_ablation_es_lr0.0005_population_size40_sigma0.001_warmup_epochs10_20251205_083908
+
+Final Metrics:
+  kl_total_fwd: 0.002131
+  kl_total_bwd: 0.002392
+  mutual_info: 2.625882
+  corr_x2_to_x1: 0.997383
+  corr_x1_to_x2: 0.998416
+  mae_x2_to_x1: 0.077586
+  mae_x1_to_x2: 0.071804
+
+Experiment 5/5
+--------------------------------------------------------------------------------
+Config: {'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'population_size': 50}
+Run dir: runs\es_ablation_es_lr0.0005_population_size50_sigma0.001_warmup_epochs10_20251205_084332
+
+Final Metrics:
+  kl_total_fwd: 0.003894
+  kl_total_bwd: 0.002438
+  mutual_info: 2.666125
+  corr_x2_to_x1: 0.997585
+  corr_x1_to_x2: 0.998703
+  mae_x2_to_x1: 0.092745
+  mae_x1_to_x2: 0.073198
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+
+population_size KL Fwd     KL Bwd     MI         Corr→      Corr←      MAE→       MAE←      
+--------------------------------------------------------------------------------
+10              0.2913     0.2978     2.9463     0.9986     0.9981     0.7626     0.7713    
+20              0.0039     0.0025     2.6542     0.9975     0.9983     0.0933     0.0736    
+30              0.0028     0.0014     2.6601     0.9976     0.9987     0.0824     0.0600    
+40              0.0021     0.0024     2.6259     0.9974     0.9984     0.0776     0.0718    
+50              0.0039     0.0024     2.6661     0.9976     0.9987     0.0927     0.0732    
+
+================================================================================
+BEST CONFIGURATION
+================================================================================
+Config: {'sigma': 0.001, 'es_lr': 0.0005, 'warmup_epochs': 10, 'population_size': 30}
+Avg KL Total: 0.002128
+Run dir: runs\es_ablation_es_lr0.0005_population_size30_sigma0.001_warmup_epochs10_20251205_083455

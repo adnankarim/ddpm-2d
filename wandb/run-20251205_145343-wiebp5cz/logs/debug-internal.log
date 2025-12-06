@@ -1,0 +1,14 @@
+{"time":"2025-12-05T14:53:48.2619434+01:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-12-05T14:53:48.8869078+01:00","level":"INFO","msg":"stream: created new stream","id":"wiebp5cz"}
+{"time":"2025-12-05T14:53:48.8869078+01:00","level":"INFO","msg":"handler: started","stream_id":"wiebp5cz"}
+{"time":"2025-12-05T14:53:48.8977895+01:00","level":"INFO","msg":"stream: started","id":"wiebp5cz"}
+{"time":"2025-12-05T14:53:48.8977895+01:00","level":"INFO","msg":"writer: started","stream_id":"wiebp5cz"}
+{"time":"2025-12-05T14:53:48.8977895+01:00","level":"INFO","msg":"sender: started","stream_id":"wiebp5cz"}
+{"time":"2025-12-05T14:53:56.3565867+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":38}
+{"time":"2025-12-05T14:53:56.568866+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":11}
+{"time":"2025-12-05T14:54:58.2795716+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-12-05T14:54:58.5461781+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-12-05T14:54:58.5528281+01:00","level":"INFO","msg":"stream: closing","id":"wiebp5cz"}
+{"time":"2025-12-05T14:54:58.5528281+01:00","level":"INFO","msg":"handler: closed","stream_id":"wiebp5cz"}
+{"time":"2025-12-05T14:54:58.5533344+01:00","level":"INFO","msg":"sender: closed","stream_id":"wiebp5cz"}
+{"time":"2025-12-05T14:54:58.5533344+01:00","level":"INFO","msg":"stream: closed","id":"wiebp5cz"}
